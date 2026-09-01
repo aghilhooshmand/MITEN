@@ -1,0 +1,251 @@
+id,year,list_index,name,slug,description,category,verification_status,published_on,mit_source_url,benchmark_ticker
+1,2001,1,Brain-Machine Interface,2001-brain-machine-interface,Early neural interfaces connecting brains to machines.,biotech,verified,2001-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+2,2001,2,Flexible Transistors,2001-flexible-transistors,Transistors on flexible substrates for new form factors.,hardware,verified,2001-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+3,2001,3,Data Mining,2001-data-mining,Extracting patterns from large datasets at commercial scale.,ai,verified,2001-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+4,2001,4,Digital Rights Management,2001-digital-rights-management,Technical controls for digital media distribution.,consumer,verified,2001-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+5,2001,5,Biometrics,2001-biometrics,"Identity from fingerprints, faces, and other biological signals.",hardware,verified,2001-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+6,2001,6,Natural Language Processing,2001-natural-language-processing,Machines reading and generating human language.,ai,verified,2001-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+7,2001,7,Microphotonics,2001-microphotonics,Optical components at chip scale.,hardware,verified,2001-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+165,2001,8,Untangling Code,2001-untangling-code,Tools for understanding and restructuring complex software.,ai,verified,2001-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+9,2001,9,Robot Design,2001-robot-design,New approaches to designing practical robots.,hardware,verified,2001-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+10,2001,10,Microfluidics,2001-microfluidics,Lab-on-a-chip fluid handling.,biotech,verified,2001-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+11,2003,1,Wireless Sensor Networks,2003-wireless-sensor-networks,Distributed sensing over wireless mesh networks.,hardware,verified,2003-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+12,2003,2,Injectable Tissue Engineering,2003-injectable-tissue-engineering,Injectable materials that help tissue regenerate.,biotech,verified,2003-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+13,2003,3,Nano Solar Cells,2003-nano-solar-cells,Nanomaterials aimed at cheaper photovoltaics.,energy,verified,2003-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+14,2003,4,Mechatronics,2003-mechatronics,"Tight integration of mechanics, electronics, and control.",hardware,verified,2003-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+15,2003,5,Grid Computing,2003-grid-computing,Shared computing across institutional boundaries.,ai,verified,2003-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+16,2003,6,Molecular Imaging,2003-molecular-imaging,Imaging biochemical processes in living systems.,biotech,verified,2003-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+17,2003,7,Nanoimprint Lithography,2003-nanoimprint-lithography,Stamping nanoscale patterns as an alternative to photolithography.,hardware,verified,2003-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+18,2003,8,Software Assurance,2003-software-assurance,Methods to prove software behaves as specified.,ai,verified,2003-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+19,2003,9,Glycomics,2003-glycomics,Systematic study of sugars in biology.,biotech,verified,2003-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+20,2003,10,Quantum Cryptography,2003-quantum-cryptography,Key distribution using quantum states.,hardware,verified,2003-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+21,2004,1,Universal Translation,2004-universal-translation,Machine translation toward language-universal coverage.,ai,verified,2004-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+22,2004,2,Synthetic Biology,2004-synthetic-biology,Engineering living systems from standardized parts.,biotech,verified,2004-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+23,2004,3,Nanowires,2004-nanowires,One-dimensional conductors for electronics and sensing.,hardware,verified,2004-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+25,2004,4,T-Rays,2004-t-rays,Terahertz imaging between microwave and infrared.,hardware,verified,2004-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+26,2004,5,Distributed Storage,2004-distributed-storage,Data stored across many machines rather than one vault.,ai,verified,2004-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+27,2004,6,RNAi Interference,2004-rnai-interference,Silencing genes with RNA interference.,biotech,verified,2004-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+28,2004,7,Power Grid Control,2004-power-grid-control,Software and sensors for a more controllable grid.,energy,verified,2004-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+29,2004,8,Microfluidic Optical Fibers,2004-microfluidic-optical-fibers,Fibers that combine light and fluid channels.,hardware,verified,2004-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+24,2004,9,Bayesian Machine Learning,2004-bayesian-machine-learning,Probabilistic models that quantify uncertainty.,ai,verified,2004-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+30,2004,10,Personal Genomics,2004-personal-genomics,Cheap enough genomes to be individual medical records.,biotech,verified,2004-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+166,2005,1,Airborne Networks,2005-airborne-networks,Ad-hoc networks among aircraft and other flying nodes.,hardware,verified,2005-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+167,2005,2,Quantum Wires,2005-quantum-wires,One-dimensional conductors with quantum behavior.,hardware,verified,2005-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+168,2005,3,Silicon Photonics,2005-silicon-photonics,Optical communication built in silicon chip processes.,hardware,verified,2005-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+169,2005,4,Metabolomics,2005-metabolomics,Systematic measurement of metabolites in cells and tissues.,biotech,verified,2005-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+170,2005,5,Magnetic-Resonance Force Microscopy,2005-magnetic-resonance-force-microscopy,Imaging at molecular scale with magnetic resonance.,hardware,verified,2005-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+171,2005,6,Universal Memory,2005-universal-memory,"Memory that aims to replace DRAM, flash, and hard disks.",hardware,verified,2005-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+172,2005,7,Bacterial Factories,2005-bacterial-factories,Engineered microbes as chemical production plants.,biotech,verified,2005-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+173,2005,8,Enviromatics,2005-enviromatics,Informatics for environmental monitoring and prediction.,energy,verified,2005-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+174,2005,9,Cell-Phone Viruses,2005-cell-phone-viruses,Malware spreading across mobile handsets.,consumer,verified,2005-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+175,2005,10,Biomechatronics,2005-biomechatronics,Machines integrated with the human neuromuscular system.,biotech,verified,2005-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+176,2006,1,Nanomedicine,2006-nanomedicine,Medical devices and drugs at the nanoscale.,biotech,verified,2006-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+177,2006,2,Nanobiomechanics,2006-nanobiomechanics,Measuring mechanical forces inside cells.,biotech,verified,2006-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+178,2006,3,Epigenetics,2006-epigenetics,Heritable gene-activity changes without rewriting DNA sequence.,biotech,verified,2006-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+179,2006,4,Comparative Interactomics,2006-comparative-interactomics,Comparing protein-interaction networks across species.,biotech,verified,2006-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+180,2006,5,Diffusion Tensor Imaging,2006-diffusion-tensor-imaging,MRI that maps white-matter tracts in the brain.,biotech,verified,2006-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+181,2006,6,Cognitive Radio,2006-cognitive-radio,Radios that find and use spare spectrum dynamically.,hardware,verified,2006-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+182,2006,7,Pervasive Wireless,2006-pervasive-wireless,Always-on wireless coverage as a default layer.,hardware,verified,2006-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+183,2006,8,Universal Authentication,2006-universal-authentication,One identity system across services and devices.,consumer,verified,2006-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+184,2006,9,Nuclear Reprogramming,2006-nuclear-reprogramming,Resetting adult cells toward an embryonic-like state.,biotech,verified,2006-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+185,2006,10,Stretchable Silicon,2006-stretchable-silicon,Electronics that bend and stretch with the body or device.,hardware,verified,2006-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+186,2007,1,Peering into Video's Future,2007-peering-into-videos-future,Internet video moving from clips to a primary medium.,consumer,verified,2007-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+187,2007,2,Nanocharging Solar,2007-nanocharging-solar,Nanomaterials to raise solar conversion efficiency.,energy,verified,2007-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,TAN
+188,2007,3,Invisible Revolution,2007-invisible-revolution,Metamaterials that steer light around objects.,hardware,verified,2007-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+189,2007,4,Personalized Medical Monitors,2007-personalized-medical-monitors,"Continuous, personal diagnostic sensors.",biotech,verified,2007-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+190,2007,5,Single-Cell Analysis,2007-single-cell-analysis,Measuring biology one cell at a time.,biotech,verified,2007-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+191,2007,6,A New Focus for Light,2007-a-new-focus-for-light,Lenses and optics that beat old diffraction limits.,hardware,verified,2007-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+192,2007,7,Neuron Control,2007-neuron-control,Tools to switch neurons on and off.,biotech,verified,2007-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+193,2007,8,Nanohealing,2007-nanohealing,Nanomaterials that stop bleeding or repair tissue.,biotech,verified,2007-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+194,2007,9,"Digital Imaging, Reimagined",2007-digital-imaging-reimagined,New camera architectures beyond the conventional sensor.,hardware,verified,2007-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+195,2007,10,Augmented Reality,2007-augmented-reality,Graphics registered onto the real world.,consumer,verified,2007-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+196,2008,1,Modeling Surprise,2008-modeling-surprise,Systems that detect and reason about unexpected events.,ai,verified,2008-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+197,2008,2,Probabilistic Chips,2008-probabilistic-chips,Processors that trade a little error for a lot of efficiency.,hardware,verified,2008-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SOXX
+198,2008,3,NanoRadio,2008-nanoradio,Radios built from nanoscale mechanical resonators.,hardware,verified,2008-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+199,2008,4,Wireless Power,2008-wireless-power,Transferring energy without a cable.,hardware,verified,2008-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+200,2008,5,Atomic Magnetometers,2008-atomic-magnetometers,Tiny sensors of magnetic fields at atomic sensitivity.,hardware,verified,2008-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+201,2008,6,Offline Web Applications,2008-offline-web-applications,Web apps that keep working without a live connection.,consumer,verified,2008-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+202,2008,7,Graphene Transistors,2008-graphene-transistors,Carbon-sheet electronics as a silicon alternative.,hardware,verified,2008-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SOXX
+203,2008,8,Connectomics,2008-connectomics,Mapping every connection in a nervous system.,biotech,verified,2008-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+204,2008,9,Reality Mining,2008-reality-mining,Inferring social behavior from phone and sensor traces.,ai,verified,2008-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+205,2008,10,Cellulolytic Enzymes,2008-cellulolytic-enzymes,Enzymes that break cellulose into fuel sugars.,energy,verified,2008-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+206,2009,1,Intelligent Software Assistant,2009-intelligent-software-assistant,Software that acts on a user's behalf from natural language.,ai,verified,2009-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+207,2009,2,$100 Genome,2009-100-genome,Sequencing cheap enough for routine medicine.,biotech,verified,2009-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XBI
+208,2009,3,Racetrack Memory,2009-racetrack-memory,IBM's dense magnetic-domain memory concept.,hardware,verified,2009-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+209,2009,4,Biological Machines,2009-biological-machines,Living systems engineered as machines.,biotech,verified,2009-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+210,2009,5,Paper Diagnostics,2009-paper-diagnostics,"Medical tests printed on paper for cheap, distributed use.",biotech,verified,2009-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+211,2009,6,Liquid Battery,2009-liquid-battery,Flowing-electrolyte storage for the grid.,energy,verified,2009-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XLE
+212,2009,7,Traveling-Wave Reactor,2009-traveling-wave-reactor,A reactor design that burns depleted uranium more completely.,energy,verified,2009-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XLE
+213,2009,8,Nanopiezoelectronics,2009-nanopiezoelectronics,Nanowires that generate current from mechanical strain.,hardware,verified,2009-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+214,2009,9,HashCache,2009-hashcache,"A caching scheme for cheap, large-scale web storage.",ai,verified,2009-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+215,2009,10,Software-Defined Networking,2009-software-defined-networking,Network control pulled out of hardware into software.,hardware,verified,2009-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+216,2010,1,Real-Time Search,2010-real-time-search,Search that includes what was just posted.,ai,verified,2010-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+217,2010,2,Mobile 3-D,2010-mobile-3-d,Stereoscopic 3-D on phones and handhelds.,consumer,verified,2010-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+218,2010,3,Engineered Stem Cells,2010-engineered-stem-cells,Stem cells made more controllable for therapy.,biotech,verified,2010-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XBI
+219,2010,4,Solar Fuel,2010-solar-fuel,Using sunlight to make chemical fuels.,energy,verified,2010-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XLE
+220,2010,5,Light-Trapping Photovoltaics,2010-light-trapping-photovoltaics,Cell textures that trap more of the incoming light.,energy,verified,2010-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,TAN
+221,2010,6,Social TV,2010-social-tv,Television designed around chatting and sharing.,consumer,verified,2010-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+222,2010,7,Green Concrete,2010-green-concrete,Cement and concrete with a much smaller carbon footprint.,energy,verified,2010-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+223,2010,8,Implantable Electronics,2010-implantable-electronics,Electronics meant to live inside the body.,biotech,verified,2010-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+224,2010,9,Dual-Action Antibodies,2010-dual-action-antibodies,Antibodies engineered to bind two targets at once.,biotech,verified,2010-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XBI
+225,2010,10,Cloud Programming,2010-cloud-programming,Languages and tools built for cloud-scale software.,ai,verified,2010-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+226,2011,1,Social Indexing,2011-social-indexing,Ranking information using a person's social graph.,ai,verified,2011-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+227,2011,2,Smart Transformers,2011-smart-transformers,Grid transformers that sense and switch in real time.,energy,verified,2011-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+228,2011,3,Gestural Interfaces,2011-gestural-interfaces,Computers controlled by hand and body motion.,consumer,verified,2011-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+229,2011,4,Cancer Genomics,2011-cancer-genomics,Sequencing tumors to choose treatment.,biotech,verified,2011-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XBI
+230,2011,5,Solid-State Batteries,2011-solid-state-batteries,Batteries that replace liquid electrolyte with solid material.,energy,verified,2011-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XLE
+231,2011,6,Homomorphic Encryption,2011-homomorphic-encryption,Computing on data without decrypting it.,ai,verified,2011-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+232,2011,7,Cloud Streaming,2011-cloud-streaming,Running software in the cloud and streaming the result.,consumer,verified,2011-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+233,2011,8,Crash-Proof Code,2011-crash-proof-code,Methods that make software fail less often.,ai,verified,2011-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+234,2011,9,Separating Chromosomes,2011-separating-chromosomes,Reading maternal and paternal chromosomes apart.,biotech,verified,2011-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+235,2011,10,Synthetic Cells,2011-synthetic-cells,Cells whose genomes are written rather than inherited.,biotech,verified,2011-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+236,2012,1,Egg Stem Cells,2012-egg-stem-cells,Stem cells that can become human eggs.,biotech,verified,2012-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+237,2012,2,Ultra-Efficient Solar,2012-ultra-efficient-solar,Photovoltaics pushing conversion efficiency higher.,energy,verified,2012-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,TAN
+238,2012,3,Light-Field Photography,2012-light-field-photography,Cameras that capture a scene to refocus later.,consumer,verified,2012-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+239,2012,4,Solar Microgrids,2012-solar-microgrids,"Local solar-plus-storage grids, especially off the main grid.",energy,verified,2012-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,TAN
+240,2012,5,3-D Transistors,2012-3-d-transistors,FinFET-style transistors leaving the flat plane.,hardware,verified,2012-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SOXX
+241,2012,6,A Faster Fourier Transform,2012-a-faster-fourier-transform,A faster algorithm for a core signal-processing transform.,ai,verified,2012-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+242,2012,7,Nanopore Sequencing,2012-nanopore-sequencing,Reading DNA as it threads through a nanopore.,biotech,verified,2012-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XBI
+243,2012,8,Crowdfunding,2012-crowdfunding,Raising capital from large numbers of small backers.,consumer,verified,2012-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+244,2012,9,High-Speed Materials Discovery,2012-high-speed-materials-discovery,Combinatorial methods to find new materials faster.,hardware,verified,2012-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+245,2012,10,Facebook's Timeline,2012-facebooks-timeline,A chronological social profile as a product pattern.,consumer,verified,2012-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+31,2013,1,Deep Learning,2013-deep-learning,Multi-layer neural nets becoming practical for perception and speech.,ai,verified,2013-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SOXX
+32,2013,2,Ultra-Efficient Solar Power,2013-ultra-efficient-solar-power,Higher-efficiency photovoltaics approaching cost competitiveness.,energy,verified,2013-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,TAN
+33,2013,3,Big Data from Cheap Phones,2013-big-data-from-cheap-phones,Mobile devices as a planetary sensor network.,ai,verified,2013-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+34,2013,4,Temporary Social Media,2013-temporary-social-media,Ephemeral posts as a product pattern.,consumer,verified,2013-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+35,2013,5,Smart Watches,2013-smart-watches,Wrist computers leaving niche gadget status.,consumer,verified,2013-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+246,2013,6,Memory Implants,2013-memory-implants,Neural prostheses aimed at restoring memory.,biotech,verified,2013-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+247,2013,7,Baxter: The Blue-Collar Robot,2013-baxter-the-blue-collar-robot,A factory robot designed to work beside people.,hardware,verified,2013-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+248,2013,8,Additive Manufacturing,2013-additive-manufacturing,3-D printing moving from prototypes toward production parts.,hardware,verified,2013-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+249,2013,9,Prenatal DNA Sequencing,2013-prenatal-dna-sequencing,Fetal genomes read from the mother's blood.,biotech,verified,2013-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XBI
+250,2013,10,Supergrids,2013-supergrids,"Long-distance, high-capacity grids for renewable power.",energy,verified,2013-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+36,2014,1,Agricultural Drones,2014-agricultural-drones,UAVs for crop monitoring and spraying.,industrial,verified,2014-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+37,2014,2,Ultraprivate Smartphones,2014-ultraprivate-smartphones,Handsets designed around default privacy.,consumer,verified,2014-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+38,2014,3,Brain Mapping,2014-brain-mapping,Large-scale maps of neural connections.,biotech,verified,2014-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XBI
+39,2014,4,Neuromorphic Chips,2014-neuromorphic-chips,Processors that mimic neural architecture.,hardware,verified,2014-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SOXX
+40,2014,5,Genome Editing,2014-genome-editing,CRISPR-class tools to rewrite DNA.,biotech,verified,2014-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XBI
+41,2014,6,Microscale 3-D Printing,2014-microscale-3-d-printing,Additive manufacturing at very small feature sizes.,hardware,verified,2014-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+42,2014,7,Mobile Collaboration,2014-mobile-collaboration,Work tools built for phones rather than desks.,consumer,verified,2014-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+43,2014,8,Oculus Rift,2014-oculus-rift,Consumer VR headset that reset expectations for virtual reality.,consumer,verified,2014-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+44,2014,9,Agile Robots,2014-agile-robots,Robots that balance and move in unstructured spaces.,hardware,verified,2014-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+45,2014,10,Smart Wind and Solar Power,2014-smart-wind-and-solar-power,Forecasting and controls that make renewables dispatchable.,energy,verified,2014-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,TAN
+46,2015,1,Magic Leap,2015-magic-leap,Optical see-through AR as a computing platform.,consumer,verified,2015-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+47,2015,2,Nano-Architecture,2015-nano-architecture,Materials whose properties come from nanoscale geometry.,hardware,verified,2015-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+48,2015,3,Car-to-Car Communication,2015-car-to-car-communication,Vehicles sharing state to reduce collisions.,industrial,verified,2015-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+49,2015,4,Project Loon,2015-project-loon,Balloon-based internet for uncovered regions.,consumer,verified,2015-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+50,2015,5,Liquid Biopsy,2015-liquid-biopsy,Cancer detection from blood rather than tissue.,biotech,verified,2015-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XBI
+51,2015,6,Megascale Desalination,2015-megascale-desalination,Very large plants making seawater a municipal supply.,energy,verified,2015-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+52,2015,7,Apple Pay,2015-apple-pay,NFC payments reaching default consumer behavior.,consumer,verified,2015-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+53,2015,8,Brain Organoids,2015-brain-organoids,Lab-grown mini-brains for research.,biotech,verified,2015-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XBI
+54,2015,9,Supercharged Photosynthesis,2015-supercharged-photosynthesis,Rewiring plants to fix carbon more efficiently.,energy,verified,2015-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+55,2015,10,Internet of DNA,2015-internet-of-dna,Shared genomic databases across labs and clinics.,biotech,verified,2015-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XBI
+56,2016,1,Immune Engineering,2016-immune-engineering,Reprogramming immune cells as living drugs.,biotech,verified,2016-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XBI
+57,2016,2,Precise Gene Editing in Plants,2016-precise-gene-editing-in-plants,CRISPR applied to crops.,biotech,verified,2016-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XBI
+58,2016,3,Conversational Interfaces,2016-conversational-interfaces,Voice assistants as a primary computer interface.,ai,verified,2016-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XLK
+59,2016,4,Reusable Rockets,2016-reusable-rockets,Orbital-class boosters that land and fly again.,space,verified,2016-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,ITA
+60,2016,5,Robots That Teach Each Other,2016-robots-that-teach-each-other,Skill transfer across robot fleets.,ai,verified,2016-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+61,2016,6,DNA App Store,2016-dna-app-store,On-demand genetic constructs as a service.,biotech,verified,2016-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+62,2016,7,SolarCity's Gigafactory,2016-solarcitys-gigafactory,US-scale solar manufacturing bet.,energy,verified,2016-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,TAN
+63,2016,8,Slack,2016-slack,Workplace chat displacing email threads.,consumer,verified,2016-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XLK
+64,2016,9,Tesla Autopilot,2016-tesla-autopilot,Highway driver assistance as a consumer product.,industrial,verified,2016-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XLY
+251,2016,10,Power from the Air,2016-power-from-the-air,Harvesting energy from ambient radio waves.,hardware,verified,2016-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+65,2017,1,Reversing Paralysis,2017-reversing-paralysis,Neural interfaces restoring movement.,biotech,verified,2017-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XBI
+66,2017,2,Self-Driving Trucks,2017-self-driving-trucks,"Autonomy first on highways, not city streets.",industrial,verified,2017-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XLY
+67,2017,3,Paying with Your Face,2017-paying-with-your-face,Face as authentication for payments.,consumer,verified,2017-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+68,2017,4,Practical Quantum Computers,2017-practical-quantum-computers,Machines leaving pure lab demos toward usable qubits.,hardware,verified,2017-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XLK
+69,2017,5,The 360-Degree Selfie,2017-the-360-degree-selfie,Consumer capture of full spherical video.,consumer,verified,2017-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+70,2017,6,Hot Solar Cells,2017-hot-solar-cells,Harvesting waste heat to raise solar efficiency.,energy,verified,2017-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,TAN
+71,2017,7,Gene Therapy 2.0,2017-gene-therapy-2-0,Approved gene therapies after decades of false starts.,biotech,verified,2017-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XBI
+72,2017,8,The Cell Atlas,2017-the-cell-atlas,A reference map of human cell types.,biotech,verified,2017-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XBI
+73,2017,9,Botnets of Things,2017-botnets-of-things,IoT devices as an attack surface.,hardware,verified,2017-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+74,2017,10,Reinforcement Learning,2017-reinforcement-learning,Agents that learn from reward rather than labels.,ai,verified,2017-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XLK
+75,2018,1,3-D Metal Printing,2018-3-d-metal-printing,Additive manufacturing of production metal parts.,hardware,verified,2018-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+76,2018,2,Artificial Embryos,2018-artificial-embryos,Embryo-like structures grown from stem cells.,biotech,verified,2018-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XBI
+77,2018,3,Sensing City,2018-sensing-city,Urban infrastructure instrumented with sensors.,industrial,verified,2018-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+78,2018,4,AI for Everybody,2018-ai-for-everybody,Cloud APIs putting machine learning in ordinary software.,ai,verified,2018-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XLK
+79,2018,5,Dueling Neural Networks,2018-dueling-neural-networks,Generative adversarial networks leaving research papers.,ai,verified,2018-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XLK
+80,2018,6,Babel-Fish Earbuds,2018-babel-fish-earbuds,Near real-time spoken translation in an earpiece.,consumer,verified,2018-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+81,2018,7,Zero-Carbon Natural Gas,2018-zero-carbon-natural-gas,Gas plants that capture their carbon.,energy,verified,2018-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XLE
+82,2018,8,Perfect Online Privacy,2018-perfect-online-privacy,Cryptographic tools aiming at default private communication.,consumer,verified,2018-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+83,2018,9,Genetic Fortune-Telling,2018-genetic-fortune-telling,Polygenic scores claiming to predict traits and disease.,biotech,verified,2018-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XBI
+84,2018,10,Materials' Quantum Leap,2018-materials-quantum-leap,Quantum methods to discover materials.,hardware,verified,2018-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+85,2019,1,Robot Dexterity,2019-robot-dexterity,"Hands that manipulate messy, varied objects.",hardware,verified,2019-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+86,2019,2,New-Wave Nuclear Power,2019-new-wave-nuclear-power,"Smaller, safer reactor designs aiming at cheaper nuclear.",energy,verified,2019-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XLE
+87,2019,3,Predicting Preemies,2019-predicting-preemies,Tests to forecast preterm birth.,biotech,verified,2019-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XBI
+88,2019,4,Gut Probe in a Pill,2019-gut-probe-in-a-pill,Ingestible diagnostics for the GI tract.,biotech,verified,2019-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XBI
+89,2019,5,Custom Cancer Vaccines,2019-custom-cancer-vaccines,Vaccines tailored to a patient's tumor mutations.,biotech,verified,2019-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XBI
+90,2019,6,The Cow-Free Burger,2019-the-cow-free-burger,Plant or cultured protein sold as a burger.,consumer,verified,2019-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XLY
+91,2019,7,Carbon Dioxide Catcher,2019-carbon-dioxide-catcher,Machines that pull CO2 from air.,energy,verified,2019-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XLE
+92,2019,8,An ECG on Your Wrist,2019-an-ecg-on-your-wrist,Medical-grade heart traces from a watch.,consumer,verified,2019-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+93,2019,9,Sanitation Without Sewers,2019-sanitation-without-sewers,Toilet systems that do not need municipal pipes.,industrial,verified,2019-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+94,2019,10,Smooth-Talking AI Assistants,2019-smooth-talking-ai-assistants,Voice agents that hold a natural conversation.,ai,verified,2019-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XLK
+95,2020,1,Unhackable Internet,2020-unhackable-internet,Quantum and cryptographic paths toward harder-to-tap networks.,hardware,verified,2020-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+96,2020,2,Hyper-Personalized Medicine,2020-hyper-personalized-medicine,Treatments designed around a single patient.,biotech,verified,2020-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XBI
+97,2020,3,Digital Money,2020-digital-money,Crypto and digital cash moving into the financial mainstream.,consumer,verified,2020-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+98,2020,4,Anti-Aging Drugs,2020-anti-aging-drugs,Compounds aimed at aging mechanisms rather than one disease.,biotech,verified,2020-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XBI
+99,2020,5,AI-Discovered Molecules,2020-ai-discovered-molecules,Machine learning proposing drug candidates.,biotech,verified,2020-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XBI
+100,2020,6,Satellite Mega-Constellations,2020-satellite-mega-constellations,Hundreds to thousands of small satellites for global coverage.,space,verified,2020-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,ITA
+101,2020,7,Quantum Supremacy,2020-quantum-supremacy,A quantum device beating classical computers on a contrived task.,hardware,verified,2020-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XLK
+102,2020,8,Tiny AI,2020-tiny-ai,Neural nets small enough to run on phones and microcontrollers.,ai,verified,2020-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SOXX
+103,2020,9,Differential Privacy,2020-differential-privacy,Math that lets datasets be used without exposing individuals.,ai,verified,2020-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+104,2020,10,Climate-Change Attribution,2020-climate-change-attribution,Science that ties extreme weather to climate change in near-real time.,energy,verified,2020-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+105,2021,1,Messenger RNA Vaccines,2021-messenger-rna-vaccines,mRNA as a rapid vaccine platform after COVID-19.,biotech,verified,2021-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XBI
+106,2021,2,GPT-3,2021-gpt-3,Large language models becoming a general-purpose interface.,ai,verified,2021-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XLK
+108,2021,3,TikTok Recommendation Algorithms,2021-tiktok-recommendation-algorithms,For-you feeds that outperform social graphs.,ai,verified,2021-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XLK
+109,2021,4,Lithium-Metal Batteries,2021-lithium-metal-batteries,Anodes that raise energy density beyond graphite.,energy,verified,2021-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XLE
+107,2021,5,Data Trusts,2021-data-trusts,Legal wrappers for pooling data without giving it away.,consumer,verified,2021-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+110,2021,6,Green Hydrogen,2021-green-hydrogen,Hydrogen from renewables as an industrial fuel.,energy,verified,2021-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XLE
+111,2021,7,Digital Contact Tracing,2021-digital-contact-tracing,Phone-based exposure notification.,consumer,verified,2021-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+112,2021,8,Hyper-Accurate Positioning,2021-hyper-accurate-positioning,Location precision beyond classic GPS.,hardware,verified,2021-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+113,2021,9,Remote Everything,2021-remote-everything,"Work, medicine, and school designed to happen off-site.",consumer,verified,2021-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XLK
+114,2021,10,Multi-Skilled AI,2021-multi-skilled-ai,"Models that combine language, vision, and action.",ai,verified,2021-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XLK
+121,2022,1,COVID Pill,2022-covid-pill,Oral antivirals for SARS-CoV-2.,biotech,verified,2022-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XBI
+122,2022,2,Practical Fusion Reactors,2022-practical-fusion-reactors,Private fusion moving from physics demo toward plants.,energy,verified,2022-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XLE
+120,2022,3,A Proof of Stake,2022-a-proof-of-stake,Ethereum-class networks dropping proof of work.,consumer,verified,2022-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+117,2022,4,Long-Lasting Grid Batteries,2022-long-lasting-grid-batteries,"Storage that holds power for many hours, not minutes.",energy,verified,2022-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XLE
+118,2022,5,AI for Protein Folding,2022-ai-for-protein-folding,Structure prediction as a default biology tool.,biotech,verified,2022-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XBI
+119,2022,6,Malaria Vaccine,2022-malaria-vaccine,A vaccine with real-world impact against malaria.,biotech,verified,2022-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XBI
+123,2022,7,Synthetic Data for AI,2022-synthetic-data-for-ai,Fake data used to train models when real data is scarce.,ai,verified,2022-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XLK
+124,2022,8,Carbon Removal Factory,2022-carbon-removal-factory,Industrial plants whose product is negative emissions.,energy,verified,2022-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XLE
+115,2022,9,The End of Passwords,2022-the-end-of-passwords,Passkeys and device-bound credentials replacing passwords.,consumer,verified,2022-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+116,2022,10,COVID Variant Tracking,2022-covid-variant-tracking,Genomic surveillance of viral evolution.,biotech,verified,2022-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XBI
+125,2023,1,CRISPR for High Cholesterol,2023-crispr-for-high-cholesterol,"Over the past decade, the gene-editing tool CRISPR has rapidly evolved from the lab to the clinic. It started with experimental treatments for rare genetic disorders and has recently expanded into clinical trials for common conditions, including high cholesterol. New forms of CRISPR could take things further still.",biotech,verified,2023-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XBI
+126,2023,2,AI That Makes Images,2023-ai-that-makes-images,Diffusion models turning text into pictures.,ai,verified,2023-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XLK
+127,2023,3,A Chip Design That Changes Everything,2023-a-chip-design-that-changes-everything,A shift in how high-performance chips are architected.,hardware,verified,2023-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SOXX
+128,2023,4,Mass-Market Military Drones,2023-mass-market-military-drones,Cheap drones changing the economics of conflict.,industrial,verified,2023-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,ITA
+129,2023,5,Abortion Pills via Telemedicine,2023-abortion-pills-via-telemedicine,Medication abortion delivered remotely.,biotech,verified,2023-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+130,2023,6,Organs on Demand,2023-organs-on-demand,Lab-grown or xenotransplant organs.,biotech,verified,2023-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XBI
+131,2023,7,The Inevitable EV,2023-the-inevitable-ev,"Electric cars as the default trajectory, not a niche.",energy,verified,2023-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XLY
+132,2023,8,James Webb Space Telescope,2023-james-webb-space-telescope,A working observatory rewriting early-universe astronomy.,space,verified,2023-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,ITA
+133,2023,9,Ancient DNA Analysis,2023-ancient-dna-analysis,Genomes from remains as a historical instrument.,biotech,verified,2023-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XBI
+134,2023,10,Battery Recycling,2023-battery-recycling,Closing the loop on EV and grid battery materials.,energy,verified,2023-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XLE
+135,2024,1,AI for Everything,2024-ai-for-everything,Generative models and agents entering ordinary software.,ai,verified,2024-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XLK
+136,2024,2,Super-Efficient Solar Cells,2024-super-efficient-solar-cells,Tandem and perovskite cells pushing conversion efficiency.,energy,verified,2024-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,TAN
+137,2024,3,Apple Vision Pro,2024-apple-vision-pro,A high-end spatial computer from Apple.,consumer,verified,2024-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+138,2024,4,Weight-Loss Drugs,2024-weight-loss-drugs,GLP-1 medicines reshaping obesity and adjacent diseases.,biotech,verified,2024-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XBI
+139,2024,5,Enhanced Geothermal Systems,2024-enhanced-geothermal-systems,Engineered geothermal beyond natural hydrothermal sites.,energy,verified,2024-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XLE
+140,2024,6,Chiplets,2024-chiplets,Disaggregating processors into packaged chiplets.,hardware,verified,2024-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SOXX
+141,2024,7,The First Gene-Editing Treatment,2024-the-first-gene-editing-treatment,Approved CRISPR therapy reaching patients.,biotech,verified,2024-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XBI
+142,2024,8,Exascale Computers,2024-exascale-computers,Supercomputers crossing a quintillion operations per second.,hardware,verified,2024-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XLK
+143,2024,9,Heat Pumps,2024-heat-pumps,Electrified heating as a climate and consumer appliance story.,energy,verified,2024-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+144,2024,10,Twitter Killers,2024-twitter-killers,Alternatives competing for the public square after Twitter.,consumer,verified,2024-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+147,2025,1,Small Language Models,2025-small-language-models,Capable models that run locally or cheaply.,ai,verified,2025-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SOXX
+145,2025,2,Vera C. Rubin Observatory,2025-vera-c-rubin-observatory,A survey telescope built to film the changing sky.,space,verified,2025-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,ITA
+152,2025,3,Long-Acting HIV Prevention,2025-long-acting-hiv-prevention,Infrequent dosing that could change HIV prevention.,biotech,verified,2025-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XBI
+146,2025,4,Generative AI Search,2025-generative-ai-search,Answers instead of ten blue links.,ai,verified,2025-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XLK
+148,2025,5,Cattle Burping Remedies,2025-cattle-burping-remedies,Feed additives that cut methane from cattle.,energy,verified,2025-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+150,2025,6,Cleaner Jet Fuel,2025-cleaner-jet-fuel,Sustainable aviation fuel at commercial blend levels.,energy,verified,2025-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XLE
+151,2025,7,Fast-Learning Robots,2025-fast-learning-robots,Robots acquiring skills from less demonstration data.,ai,verified,2025-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,SPY
+154,2025,8,Stem-Cell Treatments That Work,2025-stem-cell-treatments-that-work,Stem-cell treatments crossing from hope to outcomes.,biotech,verified,2025-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XBI
+149,2025,9,Robotaxis,2025-robotaxis,Driverless ride-hailing leaving geofenced demos.,industrial,verified,2025-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XLY
+153,2025,10,Green Steel,2025-green-steel,Steelmaking that cuts coal-based emissions.,energy,verified,2025-02-01,https://www.technologyreview.com/supertopic/tr10-archive/,XLE
+155,2026,1,Hyperscale AI Data Centers,2026-hyperscale-ai-data-centers,"Campus-scale facilities built around training and serving frontier models, at a steep energy cost.",ai,verified,2026-01-12,https://www.technologyreview.com/2026/01/12/1130697,XLK
+160,2026,2,Sodium-Ion Batteries,2026-sodium-ion-batteries,"Salt-based storage aiming at cheaper, safer packs than lithium for EVs and the grid.",energy,verified,2026-01-12,https://www.technologyreview.com/2026/01/12/1130697,XLE
+162,2026,3,Personalized Gene Editing,2026-personalized-gene-editing,Personalized base editing used as a one-patient therapy.,biotech,verified,2026-01-12,https://www.technologyreview.com/2026/01/12/1129999,XBI
+163,2026,4,AI Interpretability,2026-ai-interpretability,Tools that try to explain why a neural net did what it did.,ai,verified,2026-01-12,https://www.technologyreview.com/2026/01/12/1130697,XLK
+156,2026,5,Advanced Nuclear Reactors,2026-advanced-nuclear-reactors,Novel materials and compact designs meant to make nuclear safer and cheaper.,energy,verified,2026-01-12,https://www.technologyreview.com/2026/01/12/1130697,XLE
+157,2026,6,Embryo Genetic Scoring,2026-embryo-genetic-scoring,"Genetic tests sold as a way to rank embryos on traits, not only disease.",biotech,verified,2026-01-12,https://www.technologyreview.com/2026/01/12/1130697,XBI
+158,2026,7,AI Companion Agents,2026-ai-companion-agents,"Chatbots used as intimate, always-on companions.",ai,verified,2026-01-12,https://www.technologyreview.com/2026/01/12/1130697,XLK
+164,2026,8,Gene Restoration,2026-gene-restoration,Reconstructing extinct or lost genetic sequences for conservation and research.,biotech,verified,2026-01-12,https://www.technologyreview.com/2026/01/12/1130697,XBI
+161,2026,9,Generative Coding,2026-generative-coding,AI that writes a material share of production software.,ai,verified,2026-01-12,https://www.technologyreview.com/2026/01/12/1130697,XLK
+159,2026,10,Commercial Space Stations,2026-commercial-space-stations,Private orbital outposts intended to succeed the ISS.,space,verified,2026-01-12,https://www.technologyreview.com/2026/01/12/1130697,ITA

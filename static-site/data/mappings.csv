@@ -1,0 +1,226 @@
+technology_id,company_id,ticker,confidence,role_note,added_by,added_at
+31,1,NVDA,direct,Already the leading GPU vendor; researchers were adopting CUDA for neural nets by 2013.,seed-v1,2026-09-01T00:00:00
+31,2,GOOGL,direct,Google Brain was a named deep-learning effort before the 2013 list.,seed-v1,2026-09-01T00:00:00
+31,7,IBM,direct,Watson and later neuromorphic/AI bets were the public IBM story at the time.,seed-v1,2026-09-01T00:00:00
+31,3,MSFT,exposed,Enterprise software vendor building ML tooling; not a pure-play then.,seed-v1,2026-09-01T00:00:00
+31,8,INTC,exposed,Incumbent CPU vendor that tried to stay relevant to training workloads and lagged.,seed-v1,2026-09-01T00:00:00
+31,12,BIDU,exposed,Chinese search company with an early public deep-learning lab.,seed-v1,2026-09-01T00:00:00
+32,13,FSLR,direct,Thin-film utility solar manufacturer operating at list time.,seed-v1,2026-09-01T00:00:00
+32,16,CSIQ,direct,Module manufacturer exposed to efficiency and cost curves.,seed-v1,2026-09-01T00:00:00
+32,14,ENPH,exposed,Microinverters; downstream of panel efficiency rather than cell physics.,seed-v1,2026-09-01T00:00:00
+34,82,SNAP,direct,Snapchat is the product MIT was pointing at; IPO was later so returns start at IPO.,seed-v1,2026-09-01T00:00:00
+34,5,META,exposed,"Incumbent social network that copied Stories; included as exposed, not the originator.",seed-v1,2026-09-01T00:00:00
+35,17,GRMN,direct,Shipped consumer smartwatches before Apple Watch.,seed-v1,2026-09-01T00:00:00
+35,90,FIT,direct,Wearable specialist later acquired by Alphabet — kept at exit to avoid survivorship bias.,seed-v1,2026-09-01T00:00:00
+35,6,AAPL,exposed,Apple Watch shipped in 2015; included as the firm that made the category mass-market.,seed-v1,2026-09-01T00:00:00
+36,23,DE,direct,John Deere was already buying precision-ag and later drone/see-and-spray capabilities. DJI is private.,seed-v1,2026-09-01T00:00:00
+36,88,HON,exposed,Industrial automation and aerospace sensors; indirect.,seed-v1,2026-09-01T00:00:00
+39,7,IBM,direct,TrueNorth was the named IBM neuromorphic project of that era.,seed-v1,2026-09-01T00:00:00
+39,8,INTC,direct,Loihi research chips; commercial impact stayed limited.,seed-v1,2026-09-01T00:00:00
+39,1,NVDA,exposed,"Won the adjacent AI-silicon market with GPUs, not neuromorphic designs.",seed-v1,2026-09-01T00:00:00
+40,18,CRSP,direct,CRISPR therapeutics company; IPO 2016 so window starts then.,seed-v1,2026-09-01T00:00:00
+40,19,EDIT,direct,Editas was an early CRISPR name.,seed-v1,2026-09-01T00:00:00
+40,20,NTLA,direct,"Intellia, another first-wave CRISPR company.",seed-v1,2026-09-01T00:00:00
+40,21,VRTX,exposed,Large biotech that later partnered on CRISPR medicines; not a CRISPR startup.,seed-v1,2026-09-01T00:00:00
+43,5,META,direct,Bought Oculus in 2014; this is the public-market vehicle for that bet.,seed-v1,2026-09-01T00:00:00
+43,6,AAPL,exposed,Later shipped Vision Pro; not a 2014 VR incumbent.,seed-v1,2026-09-01T00:00:00
+43,82,SNAP,exposed,"Spectacles / AR camera glasses; adjacent hardware, not Oculus.",seed-v1,2026-09-01T00:00:00
+45,13,FSLR,direct,Utility solar operator/manufacturer whose value depends on dispatchable renewables.,seed-v1,2026-09-01T00:00:00
+45,14,ENPH,direct,Inverters and energy management software.,seed-v1,2026-09-01T00:00:00
+45,87,RUN,exposed,Residential solar installer; demand-side of 'smart' solar.,seed-v1,2026-09-01T00:00:00
+46,5,META,exposed,"Magic Leap stayed private and struggled; Meta is the public AR/VR analog, not the named company.",seed-v1,2026-09-01T00:00:00
+46,82,SNAP,exposed,Consumer AR glasses; a weak proxy and labelled exposed on purpose.,seed-v1,2026-09-01T00:00:00
+49,2,GOOGL,direct,"Loon was an Alphabet X project, later shut down — the parent is the listed vehicle.",seed-v1,2026-09-01T00:00:00
+50,26,GH,direct,Guardant is a named liquid-biopsy company (IPO 2018).,seed-v1,2026-09-01T00:00:00
+50,27,EXAS,direct,Cologuard / cancer screening from blood and stool.,seed-v1,2026-09-01T00:00:00
+50,28,NTRA,direct,Cell-free DNA testing company.,seed-v1,2026-09-01T00:00:00
+50,22,ILMN,exposed,Sequencing picks-and-shovels rather than a biopsy product.,seed-v1,2026-09-01T00:00:00
+52,6,AAPL,direct,The named product.,seed-v1,2026-09-01T00:00:00
+52,29,V,exposed,Card networks capture volume if tap-to-pay wins.,seed-v1,2026-09-01T00:00:00
+52,30,MA,exposed,Same network exposure as Visa.,seed-v1,2026-09-01T00:00:00
+55,22,ILMN,direct,Sequencing hardware and data platforms sit under shared genomic databases.,seed-v1,2026-09-01T00:00:00
+58,4,AMZN,direct,Alexa was the breakout consumer assistant of that moment.,seed-v1,2026-09-01T00:00:00
+58,2,GOOGL,direct,Google Assistant / Home.,seed-v1,2026-09-01T00:00:00
+58,6,AAPL,exposed,Siri existed; less commercially central in 2016.,seed-v1,2026-09-01T00:00:00
+58,3,MSFT,exposed,Cortana was a live bet that did not become the interface.,seed-v1,2026-09-01T00:00:00
+59,33,BA,direct,"Legacy launch competitor; SpaceX is private so Boeing is a listed, often losing, analog.",seed-v1,2026-09-01T00:00:00
+59,34,LMT,exposed,Launch and space systems; not a reusable-booster specialist.,seed-v1,2026-09-01T00:00:00
+59,32,RKLB,exposed,Public small-launch company (IPO 2021); not SpaceX and not 2016-listed.,seed-v1,2026-09-01T00:00:00
+62,31,TSLA,direct,Tesla acquired SolarCity in 2016; the factory bet sits on this ticker.,seed-v1,2026-09-01T00:00:00
+63,89,WORK,direct,Slack itself; delisted at the Salesforce deal so the score keeps the exit.,seed-v1,2026-09-01T00:00:00
+63,3,MSFT,exposed,"Teams is the incumbent response, not the MIT subject.",seed-v1,2026-09-01T00:00:00
+63,37,CRM,exposed,Acquirer; holds Slack after July 2021.,seed-v1,2026-09-01T00:00:00
+64,31,TSLA,direct,The named product.,seed-v1,2026-09-01T00:00:00
+64,35,GM,exposed,"Super Cruise / Cruise — a real contemporaneous ADAS effort, including later setbacks.",seed-v1,2026-09-01T00:00:00
+64,91,MBLY,exposed,Mobileye (re-IPO 2022) sold the vision stack many OEMs used.,seed-v1,2026-09-01T00:00:00
+66,31,TSLA,exposed,Semi and autonomy narrative; not a trucking-autonomy pure play.,seed-v1,2026-09-01T00:00:00
+66,35,GM,exposed,Cruise attempted broader autonomy and retrenched.,seed-v1,2026-09-01T00:00:00
+68,7,IBM,direct,Public cloud quantum program running at list time.,seed-v1,2026-09-01T00:00:00
+68,2,GOOGL,direct,Hardware quantum effort that later claimed supremacy.,seed-v1,2026-09-01T00:00:00
+68,38,IONQ,exposed,"Pure-play, but listed years later — window starts at IPO.",seed-v1,2026-09-01T00:00:00
+68,39,RGTI,exposed,Same caveat as IonQ.,seed-v1,2026-09-01T00:00:00
+71,40,SRPT,direct,Commercial gene-therapy franchise.,seed-v1,2026-09-01T00:00:00
+71,41,BMRN,direct,Early commercial gene-therapy company.,seed-v1,2026-09-01T00:00:00
+71,21,VRTX,exposed,"Large biotech with genetic-disease drugs, not classic gene therapy.",seed-v1,2026-09-01T00:00:00
+74,2,GOOGL,direct,DeepMind's RL results were the public proof point.,seed-v1,2026-09-01T00:00:00
+74,1,NVDA,exposed,Sells the compute RL consumes.,seed-v1,2026-09-01T00:00:00
+74,3,MSFT,exposed,Cloud and later OpenAI; not an RL lab in 2017.,seed-v1,2026-09-01T00:00:00
+74,31,TSLA,exposed,Autonomy framed as a learning-from-fleet problem.,seed-v1,2026-09-01T00:00:00
+75,24,DDD,direct,Incumbent additive manufacturer.,seed-v1,2026-09-01T00:00:00
+75,25,SSYS,direct,Incumbent additive manufacturer.,seed-v1,2026-09-01T00:00:00
+75,88,HON,exposed,Aerospace manufacturer that uses and supplies additive parts.,seed-v1,2026-09-01T00:00:00
+78,3,MSFT,direct,Azure cognitive APIs and later OpenAI distribution.,seed-v1,2026-09-01T00:00:00
+78,2,GOOGL,direct,Cloud AI APIs and TensorFlow.,seed-v1,2026-09-01T00:00:00
+78,4,AMZN,direct,AWS ML services.,seed-v1,2026-09-01T00:00:00
+78,37,CRM,exposed,"Enterprise apps embedding AI, not a model lab.",seed-v1,2026-09-01T00:00:00
+79,1,NVDA,direct,GANs were a GPU-heavy research workload.,seed-v1,2026-09-01T00:00:00
+79,67,ADBE,exposed,Creative software that later shipped Firefly; not a 2018 GAN company.,seed-v1,2026-09-01T00:00:00
+79,5,META,exposed,Published GAN research; not a product GAN company then.,seed-v1,2026-09-01T00:00:00
+83,22,ILMN,direct,Sequencing is the input to polygenic scores.,seed-v1,2026-09-01T00:00:00
+83,28,NTRA,exposed,Sells genetic tests; not a consumer trait-score app.,seed-v1,2026-09-01T00:00:00
+86,45,BWXT,direct,Nuclear components and naval reactors — listed at the time.,seed-v1,2026-09-01T00:00:00
+86,43,SMR,exposed,NuScale listed later via SPAC; window starts at listing.,seed-v1,2026-09-01T00:00:00
+86,44,OKLO,exposed,Advanced-reactor SPAC; listed later.,seed-v1,2026-09-01T00:00:00
+86,42,CEG,exposed,"Largest US nuclear operator, spun 2022.",seed-v1,2026-09-01T00:00:00
+90,46,BYND,direct,The public plant-meat vehicle. Impossible Foods is private.,seed-v1,2026-09-01T00:00:00
+90,47,TSN,exposed,Incumbent meatpacker that invested in alternatives.,seed-v1,2026-09-01T00:00:00
+92,6,AAPL,direct,Watch ECG was the consumer product MIT meant.,seed-v1,2026-09-01T00:00:00
+92,48,IRTC,direct,Medical-grade ambulatory ECG patch company.,seed-v1,2026-09-01T00:00:00
+94,2,GOOGL,direct,Duplex was the contemporaneous demo.,seed-v1,2026-09-01T00:00:00
+94,4,AMZN,direct,Alexa installed base.,seed-v1,2026-09-01T00:00:00
+94,3,MSFT,exposed,Voice in Office / later Copilot.,seed-v1,2026-09-01T00:00:00
+97,50,PYPL,direct,Consumer digital wallet at list time.,seed-v1,2026-09-01T00:00:00
+97,51,XYZ,direct,Cash App / bitcoin services (Block).,seed-v1,2026-09-01T00:00:00
+97,49,COIN,exposed,Crypto exchange IPO 2021.,seed-v1,2026-09-01T00:00:00
+97,52,MSTR,exposed,"Corporate bitcoin proxy, not a payments rail.",seed-v1,2026-09-01T00:00:00
+100,54,IRDM,direct,Existing satellite communications operator.,seed-v1,2026-09-01T00:00:00
+100,53,ASTS,exposed,"Direct-to-cell constellation, listed later. SpaceX/Starlink is private.",seed-v1,2026-09-01T00:00:00
+100,32,RKLB,exposed,Launch provider to constellation customers.,seed-v1,2026-09-01T00:00:00
+101,2,GOOGL,direct,Google's Sycamore claim is the event MIT was naming.,seed-v1,2026-09-01T00:00:00
+101,7,IBM,direct,Public counter-program and cloud access.,seed-v1,2026-09-01T00:00:00
+101,38,IONQ,exposed,Listed later.,seed-v1,2026-09-01T00:00:00
+102,1,NVDA,direct,Jetson / embedded inference.,seed-v1,2026-09-01T00:00:00
+102,6,AAPL,direct,On-device neural engines in phones.,seed-v1,2026-09-01T00:00:00
+102,9,AMD,exposed,Edge and PC inference silicon.,seed-v1,2026-09-01T00:00:00
+105,55,MRNA,direct,Named mRNA platform company.,seed-v1,2026-09-01T00:00:00
+105,56,BNTX,direct,Pfizer partner; mRNA specialist.,seed-v1,2026-09-01T00:00:00
+105,57,PFE,direct,Commercial partner/distributor of BNT162b2.,seed-v1,2026-09-01T00:00:00
+105,58,NVAX,exposed,"Protein-subunit COVID vaccine — related immunization, not mRNA.",seed-v1,2026-09-01T00:00:00
+106,3,MSFT,direct,Exclusive cloud partner to OpenAI by 2020-21.,seed-v1,2026-09-01T00:00:00
+106,2,GOOGL,exposed,Competing large-model lab (Google Brain / DeepMind).,seed-v1,2026-09-01T00:00:00
+106,1,NVDA,exposed,Picks and shovels for training GPT-class models.,seed-v1,2026-09-01T00:00:00
+106,4,AMZN,exposed,AWS competitor in the same cloud AI race.,seed-v1,2026-09-01T00:00:00
+109,59,QS,direct,Lithium-metal solid-state developer; listed around this period.,seed-v1,2026-09-01T00:00:00
+109,31,TSLA,exposed,Largest EV battery buyer; not a lithium-metal specialist.,seed-v1,2026-09-01T00:00:00
+109,60,ALB,exposed,"Lithium supplier; commodity exposure, not cell design.",seed-v1,2026-09-01T00:00:00
+110,61,PLUG,direct,Public hydrogen fuel-cell and electrolyzer name.,seed-v1,2026-09-01T00:00:00
+110,62,BE,direct,Solid-oxide fuel cells / hydrogen-capable systems.,seed-v1,2026-09-01T00:00:00
+110,63,APD,exposed,Industrial gas incumbent that can supply hydrogen.,seed-v1,2026-09-01T00:00:00
+113,3,MSFT,direct,Teams / Azure as the WFH stack.,seed-v1,2026-09-01T00:00:00
+113,37,CRM,exposed,Cloud software that benefits if work stays distributed.,seed-v1,2026-09-01T00:00:00
+113,36,NOW,exposed,Workflow software for distributed enterprises.,seed-v1,2026-09-01T00:00:00
+115,93,OKTA,direct,Identity vendor whose business is replacing passwords.,seed-v1,2026-09-01T00:00:00
+115,3,MSFT,exposed,Windows Hello / Entra passkeys at OS scale.,seed-v1,2026-09-01T00:00:00
+115,6,AAPL,exposed,Passkeys in iOS / Safari.,seed-v1,2026-09-01T00:00:00
+117,66,FLNC,direct,Grid storage integrator.,seed-v1,2026-09-01T00:00:00
+117,31,TSLA,direct,Megapack is a named grid-battery product.,seed-v1,2026-09-01T00:00:00
+117,14,ENPH,exposed,"Mostly residential / commercial, not long-duration utility.",seed-v1,2026-09-01T00:00:00
+118,65,SDGR,direct,Physics-plus-ML drug design company.,seed-v1,2026-09-01T00:00:00
+118,64,RXRX,direct,Recursion uses ML on biology images and structures.,seed-v1,2026-09-01T00:00:00
+118,57,PFE,exposed,"Pharma buyer of the method, not AlphaFold.",seed-v1,2026-09-01T00:00:00
+120,49,COIN,direct,US exchange whose volumes track ETH and crypto activity.,seed-v1,2026-09-01T00:00:00
+120,52,MSTR,exposed,"Bitcoin proxy — related digital-asset beta, not ETH staking.",seed-v1,2026-09-01T00:00:00
+125,20,NTLA,direct,In vivo CRISPR programs including cardiovascular.,seed-v1,2026-09-01T00:00:00
+125,18,CRSP,direct,CRISPR medicines including cardiovascular partnerships.,seed-v1,2026-09-01T00:00:00
+125,21,VRTX,exposed,Partner on CRISPR therapies (Casgevy) — not a cholesterol CRISPR name.,seed-v1,2026-09-01T00:00:00
+125,86,REGN,exposed,Antibody/genetic-medicine large cap with related cardiometabolic work.,seed-v1,2026-09-01T00:00:00
+126,3,MSFT,direct,DALL-E via OpenAI partnership / Copilot image.,seed-v1,2026-09-01T00:00:00
+126,2,GOOGL,direct,Imagen / Gemini image generation.,seed-v1,2026-09-01T00:00:00
+126,67,ADBE,direct,Firefly is a commercial image-gen product on this ticker.,seed-v1,2026-09-01T00:00:00
+126,1,NVDA,exposed,Training hardware.,seed-v1,2026-09-01T00:00:00
+127,1,NVDA,direct,The architecture shift investors actually paid for was accelerated computing.,seed-v1,2026-09-01T00:00:00
+127,9,AMD,direct,Chiplet-heavy CPUs/GPUs already shipping.,seed-v1,2026-09-01T00:00:00
+127,8,INTC,exposed,Incumbent trying to catch the same design shift.,seed-v1,2026-09-01T00:00:00
+127,10,TSM,exposed,Foundry that manufactures the new designs.,seed-v1,2026-09-01T00:00:00
+131,31,TSLA,direct,Category-defining EV maker.,seed-v1,2026-09-01T00:00:00
+131,68,RIVN,direct,Public EV startup — included so the cohort is not only the winner.,seed-v1,2026-09-01T00:00:00
+131,69,LCID,direct,Public EV startup with a harder path.,seed-v1,2026-09-01T00:00:00
+131,35,GM,exposed,"Incumbent EV transition, including Cruise reversal.",seed-v1,2026-09-01T00:00:00
+131,70,F,exposed,Incumbent EV transition.,seed-v1,2026-09-01T00:00:00
+134,60,ALB,exposed,Lithium producer; recycling is a competing/complementary source of units.,seed-v1,2026-09-01T00:00:00
+134,31,TSLA,exposed,Operates recycling at Nevada; not a recycling pure play.,seed-v1,2026-09-01T00:00:00
+135,3,MSFT,direct,"Copilot distributed across Office, GitHub, Azure.",seed-v1,2026-09-01T00:00:00
+135,2,GOOGL,direct,"Gemini across search, cloud, Android.",seed-v1,2026-09-01T00:00:00
+135,1,NVDA,direct,Accelerators for the training/inference wave.,seed-v1,2026-09-01T00:00:00
+135,5,META,exposed,Open-weights Llama; ads business with AI spend.,seed-v1,2026-09-01T00:00:00
+135,77,PLTR,exposed,"Enterprise AI applications, not a foundation-model lab.",seed-v1,2026-09-01T00:00:00
+135,4,AMZN,exposed,AWS Bedrock / Trainium.,seed-v1,2026-09-01T00:00:00
+136,13,FSLR,direct,CdTe modules; US utility solar.,seed-v1,2026-09-01T00:00:00
+136,14,ENPH,direct,Inverters attached to higher-efficiency arrays.,seed-v1,2026-09-01T00:00:00
+136,15,SEDG,exposed,Inverter peer; more cyclical than cell physics.,seed-v1,2026-09-01T00:00:00
+138,71,LLY,direct,Tirzepatide franchise.,seed-v1,2026-09-01T00:00:00
+138,72,NVO,direct,Semaglutide franchise.,seed-v1,2026-09-01T00:00:00
+138,73,AMGN,exposed,Obesity pipeline challenger.,seed-v1,2026-09-01T00:00:00
+138,57,PFE,exposed,Attempted oral obesity drugs; included as a contemporaneous large-pharma effort.,seed-v1,2026-09-01T00:00:00
+140,9,AMD,direct,Shipped chiplet CPUs/GPUs years before the list.,seed-v1,2026-09-01T00:00:00
+140,11,AVGO,direct,Custom accelerators and packaging.,seed-v1,2026-09-01T00:00:00
+140,10,TSM,exposed,Advanced packaging / CoWoS constraint in the chiplet era.,seed-v1,2026-09-01T00:00:00
+140,8,INTC,exposed,Foundry and tile strategy; execution mixed.,seed-v1,2026-09-01T00:00:00
+141,18,CRSP,direct,Casgevy co-developer.,seed-v1,2026-09-01T00:00:00
+141,21,VRTX,direct,Casgevy commercial partner.,seed-v1,2026-09-01T00:00:00
+141,20,NTLA,exposed,"CRISPR peer, not the first approved therapy.",seed-v1,2026-09-01T00:00:00
+143,74,CARR,direct,Residential and commercial HVAC including heat pumps.,seed-v1,2026-09-01T00:00:00
+143,76,TT,direct,Trane / climate systems.,seed-v1,2026-09-01T00:00:00
+143,75,JCI,direct,Building efficiency and HVAC.,seed-v1,2026-09-01T00:00:00
+137,6,AAPL,direct,The named product.,seed-v1,2026-09-01T00:00:00
+137,5,META,exposed,Volume XR competitor (Quest).,seed-v1,2026-09-01T00:00:00
+146,3,MSFT,direct,Bing / Copilot search.,seed-v1,2026-09-01T00:00:00
+146,2,GOOGL,direct,Incumbent search plus AI Overviews.,seed-v1,2026-09-01T00:00:00
+146,5,META,exposed,AI answers inside social surfaces.,seed-v1,2026-09-01T00:00:00
+147,6,AAPL,direct,On-device models as a product strategy.,seed-v1,2026-09-01T00:00:00
+147,3,MSFT,direct,Phi and on-device Copilot work.,seed-v1,2026-09-01T00:00:00
+147,1,NVDA,exposed,Still sells the GPUs even if models shrink.,seed-v1,2026-09-01T00:00:00
+147,9,AMD,exposed,PC and edge NPUs.,seed-v1,2026-09-01T00:00:00
+149,31,TSLA,direct,Robotaxi product claim on this ticker.,seed-v1,2026-09-01T00:00:00
+149,2,GOOGL,direct,Waymo is the operating robotaxi fleet inside Alphabet.,seed-v1,2026-09-01T00:00:00
+149,35,GM,exposed,Cruise was a real robotaxi attempt that was scaled back.,seed-v1,2026-09-01T00:00:00
+149,4,AMZN,exposed,Zoox; not yet a material earnings driver.,seed-v1,2026-09-01T00:00:00
+155,1,NVDA,direct,Accelerators that fill the halls.,seed-v1,2026-09-01T00:00:00
+155,4,AMZN,direct,AWS is a hyperscale operator.,seed-v1,2026-09-01T00:00:00
+155,3,MSFT,direct,Azure is a hyperscale operator.,seed-v1,2026-09-01T00:00:00
+155,2,GOOGL,direct,Google Cloud / TPU campuses.,seed-v1,2026-09-01T00:00:00
+155,79,EQIX,exposed,Retail colocation; not a GPU campus builder but listed data-center real estate.,seed-v1,2026-09-01T00:00:00
+155,80,DLR,exposed,Wholesale data-center REIT.,seed-v1,2026-09-01T00:00:00
+155,81,VRT,exposed,Power and cooling gear for dense racks.,seed-v1,2026-09-01T00:00:00
+155,42,CEG,exposed,Nuclear-heavy generator selling power into AI load.,seed-v1,2026-09-01T00:00:00
+156,45,BWXT,direct,Nuclear manufacturing incumbent.,seed-v1,2026-09-01T00:00:00
+156,43,SMR,direct,NuScale small modular reactor developer.,seed-v1,2026-09-01T00:00:00
+156,44,OKLO,direct,Advanced fission developer.,seed-v1,2026-09-01T00:00:00
+156,42,CEG,exposed,Existing nuclear fleet that would compete with or host new designs.,seed-v1,2026-09-01T00:00:00
+156,84,GEV,exposed,Hitachi-GE nuclear heritage via GE Vernova.,seed-v1,2026-09-01T00:00:00
+156,85,VST,exposed,"Merchant power, including nuclear, leveraged to AI load.",seed-v1,2026-09-01T00:00:00
+157,22,ILMN,direct,Sequencing used in embryo genetic tests.,seed-v1,2026-09-01T00:00:00
+157,28,NTRA,exposed,Reproductive genetic testing company.,seed-v1,2026-09-01T00:00:00
+158,82,SNAP,direct,AR / chat products with companion-like bots.,seed-v1,2026-09-01T00:00:00
+158,5,META,direct,Character-style AIs inside social apps.,seed-v1,2026-09-01T00:00:00
+158,2,GOOGL,exposed,Assistant / Gemini as a companion surface.,seed-v1,2026-09-01T00:00:00
+158,3,MSFT,exposed,"Copilot as a work companion, not a social one.",seed-v1,2026-09-01T00:00:00
+159,33,BA,direct,Heritage station contractor (Starliner / ISS).,seed-v1,2026-09-01T00:00:00
+159,34,LMT,exposed,Space systems prime.,seed-v1,2026-09-01T00:00:00
+159,83,NOC,exposed,Space systems prime.,seed-v1,2026-09-01T00:00:00
+159,32,RKLB,exposed,Launch and space-systems company that could serve stations.,seed-v1,2026-09-01T00:00:00
+160,60,ALB,exposed,"Lithium producer — sodium-ion is a competing chemistry, labelled exposed.",seed-v1,2026-09-01T00:00:00
+160,31,TSLA,exposed,Battery buyer that could adopt or ignore sodium-ion.,seed-v1,2026-09-01T00:00:00
+160,59,QS,exposed,Next-gen battery developer on a different chemistry.,seed-v1,2026-09-01T00:00:00
+161,3,MSFT,direct,GitHub Copilot is the named commercial product.,seed-v1,2026-09-01T00:00:00
+161,2,GOOGL,direct,Gemini / Cloud code assistants.,seed-v1,2026-09-01T00:00:00
+161,78,GTLB,exposed,Dev platform that embeds assistants; not the model provider.,seed-v1,2026-09-01T00:00:00
+161,94,ANET,exposed,"Networking gear pulled by AI cluster buildout — weak mapping, exposed.",seed-v1,2026-09-01T00:00:00
+162,20,NTLA,direct,In vivo CRISPR/base-editing peer.,seed-v1,2026-09-01T00:00:00
+162,18,CRSP,direct,CRISPR medicines platform.,seed-v1,2026-09-01T00:00:00
+162,21,VRTX,exposed,Commercial CRISPR partner.,seed-v1,2026-09-01T00:00:00
+163,2,GOOGL,exposed,DeepMind publishes interpretability research.,seed-v1,2026-09-01T00:00:00
+163,3,MSFT,exposed,OpenAI-adjacent research distributed via Microsoft.,seed-v1,2026-09-01T00:00:00
+163,5,META,exposed,Open-weights models make interpretability a product risk topic.,seed-v1,2026-09-01T00:00:00
+164,22,ILMN,exposed,Sequencing is the measurement layer; Colossal etc. are private.,seed-v1,2026-09-01T00:00:00
+164,18,CRSP,exposed,Gene-editing tools that such projects would use.,seed-v1,2026-09-01T00:00:00

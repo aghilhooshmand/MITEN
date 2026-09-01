@@ -32,6 +32,17 @@ npm run dev
 
 Open http://localhost:5173
 
+## Static copy (GitHub Pages, no server)
+
+`static-site/` is the same dashboard with **no FastAPI and no MySQL**. It reads CSV files in `static-site/data/`.
+
+```bash
+cd static-site
+python3 -m http.server 8080
+```
+
+Open http://localhost:8080. See `static-site/README.md` to publish on GitHub Pages. Refresh CSVs from MySQL with `PYTHONPATH=. python seed/export_static.py` from `backend/`.
+
 Re-fetch prices and recompute scores later with `PYTHONPATH=. python seed/seed.py`.
 
 ## What the score means
