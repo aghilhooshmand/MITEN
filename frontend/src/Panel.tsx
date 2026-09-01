@@ -1,4 +1,5 @@
 import { useEffect, useState, type ReactNode } from "react";
+import { ExplainTip } from "./ExplainTip";
 
 const STORAGE_KEY = "ledger-panels";
 
@@ -14,11 +15,12 @@ type Props = {
   id: string;
   title: string;
   subtitle?: string;
+  titleTip?: string;
   defaultOpen?: boolean;
   children: ReactNode;
 };
 
-export function Panel({ id, title, subtitle, defaultOpen = true, children }: Props) {
+export function Panel({ id, title, subtitle, titleTip, defaultOpen = true, children }: Props) {
   const [open, setOpen] = useState(() => {
     const stored = readState();
     return stored[id] ?? defaultOpen;
@@ -34,7 +36,9 @@ export function Panel({ id, title, subtitle, defaultOpen = true, children }: Pro
     <section className={`panel ${open ? "open" : "closed"}`}>
       <button className="panel-head" onClick={() => setOpen((v) => !v)} type="button">
         <span className="panel-chevron">{open ? "▾" : "▸"}</span>
-        <span className="panel-title">{title}</span>
+        <ExplainTip text={titleTip}>
+          <span className="panel-title">{title}</span>
+        </ExplainTip>
         {subtitle ? <span className="panel-sub">{subtitle}</span> : null}
         <span className="panel-action">{open ? "Hide" : "Show"}</span>
       </button>

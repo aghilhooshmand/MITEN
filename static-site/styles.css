@@ -487,6 +487,35 @@ th {
   cursor: help;
 }
 
+button.col-head {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  text-align: inherit;
+}
+
+.col-head.sortable {
+  cursor: pointer;
+}
+
+.col-head.sortable.on,
+th.sorted .col-head {
+  color: var(--gold);
+}
+
+th[data-sort] {
+  cursor: pointer;
+}
+
+.tip-label {
+  border-bottom: 1px dotted #5c6578;
+  cursor: help;
+}
+
 td {
   padding: 9px 8px;
   border-bottom: 1px solid #151b24;

@@ -143,6 +143,15 @@ h1 {
   overflow: hidden;
 }
 
+.filters .segment > span {
+  display: flex;
+  flex: 1;
+}
+
+.filters .segment > span button {
+  width: 100%;
+}
+
 .segment button {
   background: transparent;
   color: var(--muted);
@@ -425,6 +434,11 @@ h1 {
   gap: 10px;
 }
 
+.kpi-wrap {
+  display: block;
+  min-width: 0;
+}
+
 .kpi {
   border: 1px solid var(--line);
   border-radius: 6px;
@@ -479,6 +493,30 @@ th {
 }
 
 .col-head {
+  border-bottom: 1px dotted #5c6578;
+  cursor: help;
+}
+
+button.col-head {
+  background: none;
+  border: 0;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  letter-spacing: inherit;
+  text-transform: inherit;
+  text-align: inherit;
+}
+
+.col-head.sortable {
+  cursor: pointer;
+}
+
+th[data-sort] {
+  cursor: pointer;
+}
+
+.tip-label {
   border-bottom: 1px dotted #5c6578;
   cursor: help;
 }

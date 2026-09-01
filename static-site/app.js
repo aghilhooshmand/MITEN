@@ -25,6 +25,94 @@ const VERDICT = {
   insufficient: "Thin sample",
 };
 
+const TIPS = {
+  year: "Which MIT Technology Review 10 Breakthrough Technologies edition to read. 2002 was unpublished.",
+  breakthrough: "The named technology from that year’s list, in MIT’s order. Pick one to load its chart and mapped companies.",
+  mappedOnly: "When checked, the ledger hides technologies with no public-company map. MIT still named them; we just have no cohort yet.",
+  universeAll: "Score using every mapped name: direct (this essentially is their business) and exposed (partial / indirect).",
+  universeDirect: "Score using only direct mappings. Exposed names are dropped so a loose link cannot carry the average.",
+  panelMit: "MIT’s named list for the selected year, in publication order. Click a name to open its market chart below.",
+  panelPulse: "Archive-wide counts for the current mapping universe (all mappings or direct only), not just this year.",
+  panelLedger: "One row per MIT-named technology in this year. Click a row to load the chart. Click a column title to sort.",
+  panelChart: "Equal-weight mapped companies versus market indexes, all rebased to 100 on the list date (or IPO). The prediction score uses SPY only.",
+  panelNames: "The editorial map from this technology to listed companies, with each name’s return versus SPY. Click a column title to sort.",
+  panelRank: "Every scored technology in the archive, not just this year. Default order is prediction score. Click a column title to sort.",
+  panelWatch: "2026 names and hand-picked historical analogs. Analog excess is history, not a forecast, and not a buy list.",
+  kpiTechnologies: "How many MIT TR10 names are in this archive across all years, including list-only items.",
+  kpiMapped: "How many of those names have at least one mapped public company in the current universe (all mappings or direct only).",
+  kpiBeatSpy: "Among scored categories (at least two names with prices), how many beat SPY: excess above +5pp and hit rate at least 50%.",
+  kpiMedianExcess: "Median of category-level average excess versus SPY. Half the scored technologies did better than this, half worse.",
+  kpiListed: "Distinct public companies in the mapping tables, including later delistings kept at exit.",
+  colYear: "The MIT TR10 edition year.",
+  colTechnology: "MIT’s TR10 name — a technology, not a ticker. Hover the name for MIT’s description.",
+  colCategory: "Our editorial bucket (AI, biotech, energy, hardware, and so on). It chooses the sector ETF on the chart. It is not MIT’s taxonomy.",
+  colNames: "How many mapped companies have a usable price history for this score.",
+  colCohort: "Equal-weight average total return of the mapped companies from the list date (or IPO) to the last price or delisting.",
+  colExcess: "Average of (company return − SPY) over the same dates, in percentage points. This is what the prediction score is based on. +20pp means twenty points more than SPY, not a 20% return.",
+  colHit: "Share of mapped companies that beat SPY. A high excess with a low hit rate usually means one name carried the average.",
+  colScore: "50 = in line with SPY. Higher beat the market after shrinking for small samples and disagreement among names. Lower lagged.",
+  colVerdict: "Beat market: excess above +5pp and hit rate at least 50%. Lagged: excess below −5pp. Mixed: in between. Thin sample or too early if there is not enough history.",
+  colRank: "Rank by prediction score, highest first. This number stays put if you sort other columns.",
+  colSigma: "Dispersion: standard deviation of the companies’ total returns. High σ means the names disagreed, so the average is less trustworthy and the score is pulled toward 50.",
+  colTicker: "Yahoo Finance listing ticker used for prices.",
+  colCompany: "Legal or trading name. Delisted names stay in at their last or acquisition exit.",
+  colMap: "direct = this essentially is their business. exposed = partial or indirect exposure to the named technology.",
+  colReturn: "Total return from the MIT list date (or IPO if later) to the latest price, or to delisting. Not annualized.",
+  colVsSpy: "That company’s total return minus SPY over the exact same dates, in percentage points.",
+  colWhy: "Why this ticker was mapped to the MIT technology. Editorial, timestamped, auditable.",
+  predScore: "Prediction score for this technology. 50 means the mapped companies matched SPY over the same dates. Always versus SPY, never versus Nasdaq, gold, or oil.",
+  chartExcess: "Average excess versus SPY for this cohort, and how many years of overlapping prices that window covers.",
+  dispersion: "σ of company total returns. High dispersion means the mapped names disagreed, so the average is less reliable.",
+  withPrices: "Mapped companies that have a usable Yahoo price history versus names in the mapping table.",
+  shortWindow: "Fewer than three years of overlapping prices, so the score is less trustworthy.",
+  analogExcess: "Average excess versus SPY of the hand-picked analog technologies, after their own list dates. History, not a forecast.",
+  indexBase: "Every chart line is rebased to 100 on the MIT list date, or IPO if later. 150 means +50% from that start. The score still uses SPY only.",
+  indexCohort: "Equal-weight basket of mapped public companies, rebased to 100 at the start. This is the MIT technology as a market series — not an MIT stock. Always shown.",
+  indexSpy: "SPDR S&P 500 ETF (SPY). The prediction score is always versus this line on the same dates. Extra indexes are context only.",
+  indexSector: "Sector ETF for this technology’s editorial category. Context only — it does not change the prediction score, which is always versus SPY.",
+  indexNasdaq: "Invesco QQQ — Nasdaq-100. A growth/tech-heavy index for context. It does not change the prediction score.",
+  indexGold: "SPDR Gold Shares (GLD). Listed gold proxy for context. It does not change the prediction score.",
+  indexOil: "United States Oil Fund (USO). WTI crude oil proxy for context. It does not change the prediction score.",
+  listOnly: "MIT named this technology, but we have no mapped public company with prices in the current universe.",
+  mitSource: "MIT Technology Review page for this named technology.",
+};
+
+const VERDICT_TIPS = {
+  beat: "Beat market: average excess versus SPY above +5 percentage points, and at least half the mapped names beat SPY.",
+  lag: "Lagged: average excess versus SPY below −5 percentage points.",
+  mixed: "Mixed: the cohort neither clearly beat nor lagged SPY on the excess and hit-rate rules.",
+  too_early: "Too early: the list is too recent for a fair hold-to-now score.",
+  insufficient: "Thin sample: fewer than two mapped companies with a usable price history.",
+  none: "Unscored: no cohort result in this universe yet.",
+};
+
+const CONFIDENCE_TIPS = {
+  direct: "direct: this essentially is their business, not a side bet on the named technology.",
+  exposed: "exposed: partial or indirect exposure. Included in All mappings; dropped in Direct only.",
+};
+
+const VERIFY_TIPS = {
+  verified: "verified: the ten titles for this year were checked against MIT’s published list.",
+  secondary: "secondary: taken from a secondary compilation, not re-read against the MIT page.",
+  partial: "partial: some titles for this year are confirmed; others are not.",
+  gap: "gap: MIT published a list, but we did not independently verify the ten titles here.",
+  none: "none: MIT Technology Review did not publish a 10 Breakthrough Technologies list this year.",
+};
+
+const CATEGORY_TIPS = {
+  ai: "AI: models, chips, and software around machine intelligence. Chart sector line is usually XLK.",
+  biotech: "Biotech: drugs, genomics, and tools. Chart sector line is usually XBI or XLV.",
+  energy: "Energy: generation, storage, climate tech. Chart sector line is usually XLE or ICLN.",
+  hardware: "Hardware: devices, robotics, semiconductors beyond a pure AI map.",
+  consumer: "Consumer: products and platforms sold to people rather than labs or plants.",
+  space: "Space: launch, satellites, and related listed names.",
+  industrial: "Industrial: manufacturing, logistics, and capital equipment.",
+  other: "Other: did not fit a tighter editorial bucket.",
+};
+
+const VERDICT_ORDER = { beat: 5, mixed: 3, too_early: 2, insufficient: 1, lag: 0, none: -1 };
+const MAP_ORDER = { direct: 2, exposed: 1 };
+
 const state = {
   universe: "all",
   year: "2026",
@@ -33,6 +121,11 @@ const state = {
   compareOn: { cohort: true, spy: true, sector: true, nasdaq: false, gold: false, oil: false },
   menuOpen: false,
   db: null,
+  sort: {
+    ledger: { key: "list_index", dir: "asc" },
+    ranking: { key: "score", dir: "desc" },
+    names: { key: "ticker", dir: "asc" },
+  },
 };
 
 function parseCsv(text) {
@@ -146,6 +239,65 @@ function esc(s) {
 function tipAttr(text) {
   if (!text) return "";
   return ` data-tip="${esc(text)}"`;
+}
+
+function verdictTip(v) {
+  return VERDICT_TIPS[v || "none"] || VERDICT_TIPS.none;
+}
+
+function confidenceTip(v) {
+  return CONFIDENCE_TIPS[v] || TIPS.colMap;
+}
+
+function verifyTip(v) {
+  return VERIFY_TIPS[v] || "How completely this year’s MIT list was checked.";
+}
+
+function categoryTip(v) {
+  return CATEGORY_TIPS[v] || TIPS.colCategory;
+}
+
+function indexTip(key, ticker) {
+  if (key === "cohort") return TIPS.indexCohort;
+  if (key === "spy") return TIPS.indexSpy;
+  if (key === "nasdaq") return TIPS.indexNasdaq;
+  if (key === "gold") return TIPS.indexGold;
+  if (key === "oil") return TIPS.indexOil;
+  if (key === "sector") {
+    return ticker ? `${TIPS.indexSector} This row uses ${ticker}.` : TIPS.indexSector;
+  }
+  return TIPS.indexBase;
+}
+
+function cmpNum(a, b, dir) {
+  const aMissing = a == null || Number.isNaN(a);
+  const bMissing = b == null || Number.isNaN(b);
+  if (aMissing && bMissing) return 0;
+  if (aMissing) return 1;
+  if (bMissing) return -1;
+  return dir === "asc" ? a - b : b - a;
+}
+
+function cmpStr(a, b, dir) {
+  const cmp = String(a ?? "").localeCompare(String(b ?? ""), undefined, {
+    numeric: true,
+    sensitivity: "base",
+  });
+  return dir === "asc" ? cmp : -cmp;
+}
+
+function cmpVerdict(a, b, dir) {
+  return cmpNum(VERDICT_ORDER[a || "none"] ?? -1, VERDICT_ORDER[b || "none"] ?? -1, dir);
+}
+
+function cmpMap(a, b, dir) {
+  return cmpNum(MAP_ORDER[a] ?? 0, MAP_ORDER[b] ?? 0, dir);
+}
+
+function sortMark(table, key) {
+  const spec = state.sort[table];
+  if (!spec || spec.key !== key) return "";
+  return spec.dir === "asc" ? " ↑" : " ↓";
 }
 
 async function loadDb() {
@@ -289,12 +441,12 @@ function setPanel(id, open) {
   localStorage.setItem("static-ledger-panels", JSON.stringify(stored));
 }
 
-function panel(id, title, subtitle, body, defaultOpen = true) {
+function panel(id, title, subtitle, body, defaultOpen = true, titleTip) {
   const open = panelOpen(id, defaultOpen);
   return `<section class="panel ${open ? "open" : "closed"}" data-panel="${id}">
     <button class="panel-head" type="button" data-toggle-panel="${id}">
       <span class="panel-chevron">${open ? "▾" : "▸"}</span>
-      <span class="panel-title">${esc(title)}</span>
+      <span class="panel-title"${tipAttr(titleTip)}>${esc(title)}</span>
       ${subtitle ? `<span class="panel-sub">${esc(subtitle)}</span>` : ""}
       <span class="panel-action">${open ? "Hide" : "Show"}</span>
     </button>
@@ -709,10 +861,10 @@ function render() {
       </p>
     </header>
     <div class="filters">
-      <label>Year
+      <label><span class="tip-label"${tipAttr(TIPS.year)}>Year</span>
         <select id="year">${yearOpts}</select>
       </label>
-      <label class="grow">MIT breakthrough
+      <label class="grow"><span class="tip-label"${tipAttr(TIPS.breakthrough)}>MIT breakthrough</span>
         <div class="break-select" id="break-select">
           <button type="button" class="break-trigger" id="break-trigger" ${picks.length ? "" : "disabled"}>
             ${esc(trigger)}
@@ -722,21 +874,21 @@ function render() {
       </label>
       <label class="check">
         <input type="checkbox" id="mapped-only" ${state.mappedOnly ? "checked" : ""} />
-        Mapped only
+        <span class="tip-label"${tipAttr(TIPS.mappedOnly)}>Mapped only</span>
       </label>
       <div class="segment">
-        <button type="button" class="${state.universe === "all" ? "on" : ""}" data-universe="all">All mappings</button>
-        <button type="button" class="${state.universe === "direct" ? "on" : ""}" data-universe="direct">Direct only</button>
+        <button type="button" class="${state.universe === "all" ? "on" : ""}" data-universe="all"${tipAttr(TIPS.universeAll)}>All mappings</button>
+        <button type="button" class="${state.universe === "direct" ? "on" : ""}" data-universe="direct"${tipAttr(TIPS.universeDirect)}>Direct only</button>
       </div>
     </div>
     <div class="banner">${esc(ov.disclaimer)}</div>
-    ${panel("mit-list", "MIT 10 Breakthrough Technologies", edition ? `${edition.year} · ${picks.length} named` : "Year-by-year TR10 lists", mitBody)}
-    ${panel("pulse", "Market pulse", `as of ${ov.as_of}`, kpis(ov))}
-    ${panel("ledger", "Technology ledger", `${rows.length} rows · click a name`, ledgerTable(rows))}
-    ${panel("chart", "Cohort vs market", detail ? `${detail.tech.year} ${detail.tech.name} · equal-weight vs SPY` : "Select a technology", chartPanel(detail), true)}
-    ${panel("names", "Mapped companies", detail ? `${detail.companies.length} names` : "", namesTable(detail))}
-    ${panel("ranking", "Prediction ranking", "Sorted by score · 50 means the mapped names matched SPY", rankTable(), false)}
-    ${panel("watch", "2026 watchlist", "Live book · analog history, not a forecast", watchGrid())}
+    ${panel("mit-list", "MIT 10 Breakthrough Technologies", edition ? `${edition.year} · ${picks.length} named` : "Year-by-year TR10 lists", mitBody, true, TIPS.panelMit)}
+    ${panel("pulse", "Market pulse", `as of ${ov.as_of}`, kpis(ov), true, TIPS.panelPulse)}
+    ${panel("ledger", "Technology ledger", `${rows.length} rows · click a name · click a column to sort`, ledgerTable(rows), true, TIPS.panelLedger)}
+    ${panel("chart", "Cohort vs market", detail ? `${detail.tech.year} ${detail.tech.name} · equal-weight vs SPY` : "Select a technology", chartPanel(detail), true, TIPS.panelChart)}
+    ${panel("names", "Mapped companies", detail ? `${detail.companies.length} names · click a column to sort` : "", namesTable(detail), true, TIPS.panelNames)}
+    ${panel("ranking", "Prediction ranking", "Click a column to sort · 50 means the mapped names matched SPY", rankTable(), false, TIPS.panelRank)}
+    ${panel("watch", "2026 watchlist", "Live book · analog history, not a forecast", watchGrid(), true, TIPS.panelWatch)}
     ${panel("method", "How the score is computed", "", methodBody(), false)}
     <footer class="contact">
       <span>Aghil Hooshmand</span>
@@ -749,7 +901,7 @@ function render() {
 
 function editionMeta(edition) {
   return `<div class="edition-meta">
-    <span class="pill ${esc(edition.verification_status)}">${esc(edition.verification_status)}</span>
+    <span class="pill ${esc(edition.verification_status)}"${tipAttr(verifyTip(edition.verification_status))}>${esc(edition.verification_status)}</span>
     <p>${esc(edition.note)}</p>
     ${edition.source_url ? `<a href="${esc(edition.source_url)}" target="_blank" rel="noreferrer">MIT archive</a>` : ""}
   </div>`;
@@ -768,15 +920,15 @@ function mitList(picks, edition) {
       const s = scoreOf(item.id, state.universe);
       const mapped = isMapped(item.id, state.universe);
       return `<li>
-        <button type="button" class="mit-item ${item.id === state.selectedId ? "selected" : ""}" data-select="${item.id}"${tipAttr(item.description)}>
+        <button type="button" class="mit-item ${item.id === state.selectedId ? "selected" : ""}" data-select="${item.id}">
           <span class="mit-num mono">${String(item.list_index).padStart(2, "0")}</span>
-          <span class="mit-body"><span class="name">${esc(item.name)}</span></span>
+          <span class="mit-body"><span class="name"${tipAttr(item.description)}>${esc(item.name)}</span></span>
           <span class="mit-side">
-            <span class="muted">${esc(catLabel(item.category))}</span>
+            <span class="muted"${tipAttr(categoryTip(item.category))}>${esc(catLabel(item.category))}</span>
             ${
               mapped
-                ? `<span class="pill ${esc(s?.verdict || "mixed")}">${esc(verdictLabel(s?.verdict))}</span>`
-                : `<span class="pill none">List only</span>`
+                ? `<span class="pill ${esc(s?.verdict || "mixed")}"${tipAttr(verdictTip(s?.verdict))}>${esc(verdictLabel(s?.verdict))}</span>`
+                : `<span class="pill none"${tipAttr(TIPS.listOnly)}>List only</span>`
             }
           </span>
         </button>
@@ -791,46 +943,66 @@ function kpis(ov) {
     (ov.median_excess_return || 0) > 0 ? "up" : (ov.median_excess_return || 0) < 0 ? "down" : "";
   const beatVal = ov.beat_rate == null ? "—" : `${ov.beat_count}/${ov.n_scored}`;
   return `<div class="kpis">
-    <div class="kpi"><span class="k">Technologies</span><span class="v">${fmtNum(ov.n_technologies)}</span><span class="h">in the archive</span></div>
-    <div class="kpi"><span class="k">Mapped</span><span class="v">${fmtNum(ov.n_mapped_technologies)}</span><span class="h">have a cohort</span></div>
-    <div class="kpi"><span class="k">Beat SPY</span><span class="v ${beatTone}">${beatVal}</span><span class="h">${fmtPct(ov.beat_rate, 0)} of scored</span></div>
-    <div class="kpi"><span class="k">Median excess</span><span class="v ${exTone}">${fmtPp(ov.median_excess_return)}</span><span class="h">vs SPY, scored categories</span></div>
-    <div class="kpi"><span class="k">Listed names</span><span class="v">${fmtNum(ov.n_companies)}</span><span class="h">in CSV snapshot</span></div>
+    <div class="kpi"${tipAttr(TIPS.kpiTechnologies)}><span class="k tip-label">Technologies</span><span class="v">${fmtNum(ov.n_technologies)}</span><span class="h">in the archive</span></div>
+    <div class="kpi"${tipAttr(TIPS.kpiMapped)}><span class="k tip-label">Mapped</span><span class="v">${fmtNum(ov.n_mapped_technologies)}</span><span class="h">have a cohort</span></div>
+    <div class="kpi"${tipAttr(TIPS.kpiBeatSpy)}><span class="k tip-label">Beat SPY</span><span class="v ${beatTone}">${beatVal}</span><span class="h">${fmtPct(ov.beat_rate, 0)} of scored</span></div>
+    <div class="kpi"${tipAttr(TIPS.kpiMedianExcess)}><span class="k tip-label">Median excess</span><span class="v ${exTone}">${fmtPp(ov.median_excess_return)}</span><span class="h">vs SPY, scored categories</span></div>
+    <div class="kpi"${tipAttr(TIPS.kpiListed)}><span class="k tip-label">Listed names</span><span class="v">${fmtNum(ov.n_companies)}</span><span class="h">in CSV snapshot</span></div>
   </div>`;
 }
 
-function col(label, explain, align) {
-  return `<th class="${align === "r" ? "r" : ""}"><span class="col-head"${tipAttr(explain)}>${esc(label)}</span></th>`;
+function col(label, explain, align, table, key, defaultDir = "desc") {
+  const on = state.sort[table]?.key === key;
+  const cls = [align === "r" ? "r" : "", on ? "sorted" : ""].filter(Boolean).join(" ");
+  return `<th class="${cls}" data-sort="${esc(key)}" data-sort-table="${esc(table)}" data-sort-default="${esc(defaultDir)}">
+    <button type="button" class="col-head sortable ${on ? "on" : ""}"${tipAttr(`${explain} Click to sort.`)}>${esc(label)}${sortMark(table, key)}</button>
+  </th>`;
 }
 
 function ledgerTable(rows) {
-  const body = rows
+  const spec = state.sort.ledger;
+  const sorted = [...rows].sort((a, b) => {
+    const sa = scoreOf(a.id, state.universe);
+    const sb = scoreOf(b.id, state.universe);
+    const { key, dir } = spec;
+    if (key === "year") return cmpNum(a.year, b.year, dir);
+    if (key === "name") return cmpStr(a.name, b.name, dir);
+    if (key === "category") return cmpStr(catLabel(a.category), catLabel(b.category), dir);
+    if (key === "names") return cmpNum(sa?.n_with_prices, sb?.n_with_prices, dir);
+    if (key === "cohort") return cmpNum(sa?.cohort_mean_return, sb?.cohort_mean_return, dir);
+    if (key === "excess") return cmpNum(sa?.mean_excess_return, sb?.mean_excess_return, dir);
+    if (key === "hit") return cmpNum(sa?.hit_rate, sb?.hit_rate, dir);
+    if (key === "score") return cmpNum(sa?.prediction_score, sb?.prediction_score, dir);
+    if (key === "verdict") return cmpVerdict(sa?.verdict, sb?.verdict, dir);
+    return cmpNum(a.list_index ?? a.id, b.list_index ?? b.id, dir);
+  });
+  const body = sorted
     .map((t) => {
       const s = scoreOf(t.id, state.universe);
       return `<tr class="${t.id === state.selectedId ? "selected" : ""}" data-select="${t.id}">
         <td class="mono">${t.year}</td>
-        <td><div class="name"${tipAttr(t.description)}>${esc(t.name)}</div>${s?.window_short ? `<div class="hint">short window</div>` : ""}</td>
-        <td class="muted">${esc(catLabel(t.category))}</td>
+        <td><div class="name"${tipAttr(t.description)}>${esc(t.name)}</div>${s?.window_short ? `<div class="hint"${tipAttr(TIPS.shortWindow)}>short window</div>` : ""}</td>
+        <td class="muted"><span${tipAttr(categoryTip(t.category))}>${esc(catLabel(t.category))}</span></td>
         <td class="r mono">${s?.n_with_prices ?? 0}</td>
         <td class="r ${signed(s?.cohort_mean_return)}">${fmtPct(s?.cohort_mean_return)}</td>
         <td class="r ${signed(s?.mean_excess_return)}">${fmtPp(s?.mean_excess_return)}</td>
         <td class="r mono">${fmtPct(s?.hit_rate, 0)}</td>
         <td class="r mono gold">${fmtScore(s?.prediction_score)}</td>
-        <td><span class="pill ${esc(s?.verdict || "none")}">${esc(verdictLabel(s?.verdict))}</span></td>
+        <td><span class="pill ${esc(s?.verdict || "none")}"${tipAttr(verdictTip(s?.verdict))}>${esc(verdictLabel(s?.verdict))}</span></td>
       </tr>`;
     })
     .join("");
   return `<div class="table-wrap"><table>
     <thead><tr>
-      <th>Year</th>
-      ${col("Technology", "MIT’s TR10 name — a technology, not a ticker.")}
-      ${col("Cat.", "Editorial bucket used to pick a sector ETF on the chart.")}
-      ${col("Names", "Mapped companies with a usable price history.", "r")}
-      ${col("Cohort", "Equal-weight average total return of mapped companies.", "r")}
-      ${col("Excess vs SPY", "Average of (company return − SPY) on the same dates.", "r")}
-      ${col("Hit", "Share of mapped companies that beat SPY.", "r")}
-      ${col("Score", "50 = in line with SPY.", "r")}
-      ${col("Verdict", "Beat market: excess above +5pp and hit rate at least 50%.")}
+      ${col("Year", TIPS.colYear, "", "ledger", "year", "desc")}
+      ${col("Technology", TIPS.colTechnology, "", "ledger", "name", "asc")}
+      ${col("Cat.", TIPS.colCategory, "", "ledger", "category", "asc")}
+      ${col("Names", TIPS.colNames, "r", "ledger", "names")}
+      ${col("Cohort", TIPS.colCohort, "r", "ledger", "cohort")}
+      ${col("Excess vs SPY", TIPS.colExcess, "r", "ledger", "excess")}
+      ${col("Hit", TIPS.colHit, "r", "ledger", "hit")}
+      ${col("Score", TIPS.colScore, "r", "ledger", "score")}
+      ${col("Verdict", TIPS.colVerdict, "", "ledger", "verdict")}
     </tr></thead>
     <tbody>${body || `<tr><td colspan="9" class="empty">No rows for these filters.</td></tr>`}</tbody>
   </table></div>`;
@@ -852,7 +1024,7 @@ function chartPanel(detail) {
   ]
     .map((c) => {
       const on = c.key === "cohort" || state.compareOn[c.key];
-      return `<button type="button" class="compare-chip ${on ? "on" : ""}" data-series="${c.key}" ${c.key === "cohort" ? "disabled" : ""} style="--chip:${LINE[c.key]}">
+      return `<button type="button" class="compare-chip ${on ? "on" : ""}" data-series="${c.key}" ${c.key === "cohort" ? "disabled" : ""} style="--chip:${LINE[c.key]}"${tipAttr(indexTip(c.key, detail.tech.benchmark_ticker))}>
         ${esc(c.label)}${c.ticker ? ` (${c.ticker})` : ""}
       </button>`;
     })
@@ -864,18 +1036,18 @@ function chartPanel(detail) {
         <p>${esc(detail.tech.description)}</p>
       </div>
       <div class="score-box">
-        <span class="k">Prediction score</span>
+        <span class="k tip-label"${tipAttr(TIPS.predScore)}>Prediction score</span>
         <span class="v">${fmtScore(s?.prediction_score)}</span>
-        <span class="pill ${esc(s?.verdict || "none")}">${esc(verdictLabel(s?.verdict))}</span>
+        <span class="pill ${esc(s?.verdict || "none")}"${tipAttr(verdictTip(s?.verdict))}>${esc(verdictLabel(s?.verdict))}</span>
       </div>
     </div>
     <div class="chart-meta">
-      <span>Excess ${fmtPp(s?.mean_excess_return)} vs SPY over ${fmtNum(s?.window_years, 1)}y</span>
-      <span>Dispersion ${fmtPct(s?.dispersion)}</span>
-      <span>${s?.n_with_prices ?? 0}/${s?.n_companies ?? 0} with prices</span>
-      ${detail.tech.mit_source_url ? `<a href="${esc(detail.tech.mit_source_url)}" target="_blank" rel="noreferrer">MIT source</a>` : ""}
+      <span class="tip-label"${tipAttr(TIPS.chartExcess)}>Excess ${fmtPp(s?.mean_excess_return)} vs SPY over ${fmtNum(s?.window_years, 1)}y</span>
+      <span class="tip-label"${tipAttr(TIPS.dispersion)}>Dispersion ${fmtPct(s?.dispersion)}</span>
+      <span class="tip-label"${tipAttr(TIPS.withPrices)}>${s?.n_with_prices ?? 0}/${s?.n_companies ?? 0} with prices</span>
+      ${detail.tech.mit_source_url ? `<a href="${esc(detail.tech.mit_source_url)}" target="_blank" rel="noreferrer"${tipAttr(TIPS.mitSource)}>MIT source</a>` : ""}
     </div>
-    <p class="chart-note">The score is always versus the S&amp;P 500. Toggle extra lines for context — sector ETF, Nasdaq, gold, and oil. Series come from charts.csv (weekly snapshot).</p>
+    <p class="chart-note"><span class="tip-label"${tipAttr(TIPS.indexBase)}>Indexed to 100 at the list date.</span> The score is always versus the S&amp;P 500. Toggle extra lines for context — sector ETF, Nasdaq, gold, and oil. Series come from charts.csv (weekly snapshot).</p>
     <div class="compare-toggles">${chips}</div>
     <div class="chart" id="chart-host">${drawChart(detail.points, keys, chartHostWidth(null))}</div>
   `;
@@ -883,7 +1055,18 @@ function chartPanel(detail) {
 
 function namesTable(detail) {
   if (!detail) return `<p class="empty">Pick a technology to see the mapping audit trail.</p>`;
-  const body = detail.companies
+  const spec = state.sort.names;
+  const sorted = [...detail.companies].sort((a, b) => {
+    const { key, dir } = spec;
+    if (key === "ticker") return cmpStr(a.ticker, b.ticker, dir);
+    if (key === "name") return cmpStr(a.name, b.name, dir);
+    if (key === "map") return cmpMap(a.confidence, b.confidence, dir);
+    if (key === "return") return cmpNum(a.total_return, b.total_return, dir);
+    if (key === "excess") return cmpNum(a.excess_return, b.excess_return, dir);
+    if (key === "why") return cmpStr(a.role_note, b.role_note, dir);
+    return cmpStr(a.ticker, b.ticker, dir);
+  });
+  const body = sorted
     .map(
       (c) => `<tr>
         <td class="mono">${esc(c.ticker)}</td>
@@ -891,7 +1074,7 @@ function namesTable(detail) {
           <div class="name">${esc(c.name)}</div>
           ${c.delisted_date ? `<div class="hint">Delisted ${esc(c.delisted_date)}${c.delisted_reason ? ` · ${esc(c.delisted_reason)}` : ""}</div>` : ""}
         </td>
-        <td><span class="pill ${esc(c.confidence)}">${esc(c.confidence)}</span></td>
+        <td><span class="pill ${esc(c.confidence)}"${tipAttr(confidenceTip(c.confidence))}>${esc(c.confidence)}</span></td>
         <td class="r ${signed(c.total_return)}">${fmtPct(c.total_return)}</td>
         <td class="r ${signed(c.excess_return)}">${fmtPp(c.excess_return)}</td>
         <td class="note">${esc(c.role_note)}</td>
@@ -899,36 +1082,56 @@ function namesTable(detail) {
     )
     .join("");
   return `<div class="table-wrap"><table>
-    <thead><tr><th>Ticker</th><th>Company</th><th>Map</th><th class="r">Return</th><th class="r">vs SPY</th><th>Why it is here</th></tr></thead>
+    <thead><tr>
+      ${col("Ticker", TIPS.colTicker, "", "names", "ticker", "asc")}
+      ${col("Company", TIPS.colCompany, "", "names", "name", "asc")}
+      ${col("Map", TIPS.colMap, "", "names", "map")}
+      ${col("Return", TIPS.colReturn, "r", "names", "return")}
+      ${col("vs SPY", TIPS.colVsSpy, "r", "names", "excess")}
+      ${col("Why it is here", TIPS.colWhy, "", "names", "why", "asc")}
+    </tr></thead>
     <tbody>${body || `<tr><td colspan="6" class="empty">No mapped names in this universe.</td></tr>`}</tbody>
   </table></div>`;
 }
 
 function rankTable() {
-  const rows = ranking()
+  const spec = state.sort.ranking;
+  const sorted = [...ranking()].sort((a, b) => {
+    const { key, dir } = spec;
+    if (key === "rank") return cmpNum(a.rank, b.rank, dir);
+    if (key === "name") return cmpStr(`${a.tech.year} ${a.tech.name}`, `${b.tech.year} ${b.tech.name}`, dir);
+    if (key === "category") return cmpStr(catLabel(a.tech.category), catLabel(b.tech.category), dir);
+    if (key === "score") return cmpNum(a.score.prediction_score, b.score.prediction_score, dir);
+    if (key === "excess") return cmpNum(a.score.mean_excess_return, b.score.mean_excess_return, dir);
+    if (key === "hit") return cmpNum(a.score.hit_rate, b.score.hit_rate, dir);
+    if (key === "sigma") return cmpNum(a.score.dispersion, b.score.dispersion, dir);
+    if (key === "verdict") return cmpVerdict(a.score.verdict, b.score.verdict, dir);
+    return cmpNum(a.score.prediction_score, b.score.prediction_score, dir);
+  });
+  const rows = sorted
     .map(
       (r) => `<tr class="${r.tech.id === state.selectedId ? "selected" : ""}" data-select="${r.tech.id}">
         <td class="mono muted">${r.rank}</td>
         <td><div class="name"${tipAttr(r.tech.description)}>${r.tech.year} ${esc(r.tech.name)}</div></td>
-        <td class="muted">${esc(catLabel(r.tech.category))}</td>
+        <td class="muted"><span${tipAttr(categoryTip(r.tech.category))}>${esc(catLabel(r.tech.category))}</span></td>
         <td class="r mono gold">${fmtScore(r.score.prediction_score)}</td>
         <td class="r ${signed(r.score.mean_excess_return)}">${fmtPp(r.score.mean_excess_return)}</td>
         <td class="r mono">${fmtPct(r.score.hit_rate, 0)}</td>
         <td class="r mono">${fmtPct(r.score.dispersion)}</td>
-        <td><span class="pill ${esc(r.score.verdict)}">${esc(verdictLabel(r.score.verdict))}</span></td>
+        <td><span class="pill ${esc(r.score.verdict)}"${tipAttr(verdictTip(r.score.verdict))}>${esc(verdictLabel(r.score.verdict))}</span></td>
       </tr>`,
     )
     .join("");
   return `<div class="table-wrap"><table>
     <thead><tr>
-      ${col("#", "Rank by prediction score, highest first.")}
-      ${col("Technology", "MIT’s TR10 name and year.")}
-      ${col("Cat.", "Editorial bucket.")}
-      ${col("Score", "50 = mapped companies matched SPY.", "r")}
-      ${col("Excess", "Average excess vs SPY in percentage points.", "r")}
-      ${col("Hit", "Share of mapped companies that beat SPY.", "r")}
-      ${col("σ", "Standard deviation of company total returns.", "r")}
-      ${col("Verdict", "Beat / lagged / mixed from excess and hit rate.")}
+      ${col("#", TIPS.colRank, "", "ranking", "rank", "asc")}
+      ${col("Technology", TIPS.colTechnology, "", "ranking", "name", "asc")}
+      ${col("Cat.", TIPS.colCategory, "", "ranking", "category", "asc")}
+      ${col("Score", TIPS.colScore, "r", "ranking", "score")}
+      ${col("Excess", TIPS.colExcess, "r", "ranking", "excess")}
+      ${col("Hit", TIPS.colHit, "r", "ranking", "hit")}
+      ${col("σ", TIPS.colSigma, "r", "ranking", "sigma")}
+      ${col("Verdict", TIPS.colVerdict, "", "ranking", "verdict")}
     </tr></thead>
     <tbody>${rows}</tbody>
   </table></div>`;
@@ -947,13 +1150,13 @@ function watchGrid() {
         .join("");
       return `<button type="button" class="watch-card ${item.id === state.selectedId ? "selected" : ""}" data-select="${item.id}">
         <div class="watch-top">
-          <span class="muted">${esc(catLabel(item.category))}</span>
-          <span class="pill ${esc(item.verification_status)}">${esc(item.verification_status)}</span>
+          <span class="muted"${tipAttr(categoryTip(item.category))}>${esc(catLabel(item.category))}</span>
+          <span class="pill ${esc(item.verification_status)}"${tipAttr(verifyTip(item.verification_status))}>${esc(item.verification_status)}</span>
         </div>
         <h3>${esc(item.name)}</h3>
         <p>${esc(item.description)}</p>
         <div class="tickers">${tickers}</div>
-        <div class="watch-analog">Analog excess <span class="${signed(item.historical_analog_excess)}">${fmtPp(item.historical_analog_excess)}</span></div>
+        <div class="watch-analog"><span class="tip-label"${tipAttr(TIPS.analogExcess)}>Analog excess</span> <span class="${signed(item.historical_analog_excess)}">${fmtPp(item.historical_analog_excess)}</span></div>
         ${analogs}
       </button>`;
     })
@@ -972,6 +1175,20 @@ function methodBody() {
 }
 
 function onAppClick(e) {
+  const sortHead = e.target.closest("[data-sort]");
+  if (sortHead) {
+    e.stopPropagation();
+    const table = sortHead.getAttribute("data-sort-table");
+    const key = sortHead.getAttribute("data-sort");
+    const fallback = sortHead.getAttribute("data-sort-default") || "desc";
+    const cur = state.sort[table] || { key: "", dir: "desc" };
+    state.sort[table] =
+      cur.key === key
+        ? { key, dir: cur.dir === "asc" ? "desc" : "asc" }
+        : { key, dir: fallback };
+    render();
+    return;
+  }
   const toggle = e.target.closest("[data-toggle-panel]");
   if (toggle) {
     const id = toggle.getAttribute("data-toggle-panel");
@@ -1043,13 +1260,16 @@ document.addEventListener("mouseover", (e) => {
   tip.hidden = false;
   const rect = node.getBoundingClientRect();
   const width = Math.min(380, window.innerWidth - 16);
+  tip.style.width = `${width}px`;
   let left = rect.left;
   if (left + width > window.innerWidth - 8) left = window.innerWidth - width - 8;
+  const height = tip.offsetHeight || 120;
   let top = rect.bottom + 8;
-  if (top + 120 > window.innerHeight) top = Math.max(8, rect.top - 128);
+  if (top + height > window.innerHeight - 8 && rect.top > height + 16) {
+    top = rect.top - height - 8;
+  }
   tip.style.left = `${Math.max(8, left)}px`;
-  tip.style.top = `${top}px`;
-  tip.style.width = `${width}px`;
+  tip.style.top = `${Math.max(8, top)}px`;
 });
 document.addEventListener("mouseout", (e) => {
   if (e.target.closest("[data-tip]") && !e.relatedTarget?.closest("[data-tip]")) {

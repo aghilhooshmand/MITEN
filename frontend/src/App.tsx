@@ -28,6 +28,15 @@ import {
   signedClass,
   verdictLabel,
 } from "./format";
+import {
+  TIPS,
+  categoryTip,
+  confidenceTip,
+  indexTip,
+  verdictTip,
+  verifyTip,
+} from "./copy";
+import { cmpMap, cmpNum, cmpStr, cmpVerdict, nextSort, sortMark, type SortSpec } from "./sort";
 import type {
   Archive,
   ArchiveItem,
@@ -61,6 +70,9 @@ export default function App() {
     gold: false,
     oil: false,
   });
+  const [ledgerSort, setLedgerSort] = useState<SortSpec>({ key: "list_index", dir: "asc" });
+  const [rankSort, setRankSort] = useState<SortSpec>({ key: "score", dir: "desc" });
+  const [namesSort, setNamesSort] = useState<SortSpec>({ key: "ticker", dir: "asc" });
 
   useEffect(() => {
     setLoading(true);
@@ -116,6 +128,58 @@ export default function App() {
   const mitPicks = archiveEdition?.technologies ?? [];
   const selectedScore = detail?.score;
 
+  const sortedTechs = useMemo(() => {
+    const rows = [...techs];
+    const { key, dir } = ledgerSort;
+    rows.sort((a, b) => {
+      const sa = a.score;
+      const sb = b.score;
+      if (key === "year") return cmpNum(a.year, b.year, dir);
+      if (key === "name") return cmpStr(a.name, b.name, dir);
+      if (key === "category") return cmpStr(categoryLabel(a.category), categoryLabel(b.category), dir);
+      if (key === "names") return cmpNum(sa?.n_with_prices, sb?.n_with_prices, dir);
+      if (key === "cohort") return cmpNum(sa?.cohort_mean_return, sb?.cohort_mean_return, dir);
+      if (key === "excess") return cmpNum(sa?.mean_excess_return, sb?.mean_excess_return, dir);
+      if (key === "hit") return cmpNum(sa?.hit_rate, sb?.hit_rate, dir);
+      if (key === "score") return cmpNum(sa?.prediction_score, sb?.prediction_score, dir);
+      if (key === "verdict") return cmpVerdict(sa?.verdict, sb?.verdict, dir);
+      return cmpNum(a.list_index ?? a.id, b.list_index ?? b.id, dir);
+    });
+    return rows;
+  }, [techs, ledgerSort]);
+
+  const sortedRanking = useMemo(() => {
+    const rows = [...ranking];
+    const { key, dir } = rankSort;
+    rows.sort((a, b) => {
+      if (key === "rank") return cmpNum(a.rank, b.rank, dir);
+      if (key === "name") return cmpStr(`${a.year} ${a.name}`, `${b.year} ${b.name}`, dir);
+      if (key === "category") return cmpStr(categoryLabel(a.category), categoryLabel(b.category), dir);
+      if (key === "score") return cmpNum(a.prediction_score, b.prediction_score, dir);
+      if (key === "excess") return cmpNum(a.mean_excess_return, b.mean_excess_return, dir);
+      if (key === "hit") return cmpNum(a.hit_rate, b.hit_rate, dir);
+      if (key === "sigma") return cmpNum(a.dispersion, b.dispersion, dir);
+      if (key === "verdict") return cmpVerdict(a.verdict, b.verdict, dir);
+      return cmpNum(a.prediction_score, b.prediction_score, dir);
+    });
+    return rows;
+  }, [ranking, rankSort]);
+
+  const sortedCompanies = useMemo(() => {
+    const rows = [...(detail?.companies ?? [])];
+    const { key, dir } = namesSort;
+    rows.sort((a, b) => {
+      if (key === "ticker") return cmpStr(a.ticker, b.ticker, dir);
+      if (key === "name") return cmpStr(a.name, b.name, dir);
+      if (key === "map") return cmpMap(a.confidence, b.confidence, dir);
+      if (key === "return") return cmpNum(a.total_return, b.total_return, dir);
+      if (key === "excess") return cmpNum(a.excess_return, b.excess_return, dir);
+      if (key === "why") return cmpStr(a.role_note, b.role_note, dir);
+      return cmpStr(a.ticker, b.ticker, dir);
+    });
+    return rows;
+  }, [detail, namesSort]);
+
   return (
     <div className="app">
       <header className="top">
@@ -134,7 +198,9 @@ export default function App() {
 
       <div className="filters">
         <label>
-          Year
+          <ExplainTip text={TIPS.year}>
+            <span className="tip-label">Year</span>
+          </ExplainTip>
           <select value={year} onChange={(e) => setYear(e.target.value)}>
             {years.length === 0 ? <option value={year}>{year}</option> : null}
             {years.map((y) => (
@@ -145,7 +211,9 @@ export default function App() {
           </select>
         </label>
         <label className="grow">
-          MIT breakthrough
+          <ExplainTip text={TIPS.breakthrough}>
+            <span className="tip-label">MIT breakthrough</span>
+          </ExplainTip>
           <BreakthroughSelect
             key={year}
             items={mitPicks}
@@ -160,23 +228,29 @@ export default function App() {
             checked={mappedOnly}
             onChange={(e) => setMappedOnly(e.target.checked)}
           />
-          Mapped only
+          <ExplainTip text={TIPS.mappedOnly}>
+            <span className="tip-label">Mapped only</span>
+          </ExplainTip>
         </label>
         <div className="segment">
-          <button
-            className={universe === "all" ? "on" : ""}
-            type="button"
-            onClick={() => setUniverse("all")}
-          >
-            All mappings
-          </button>
-          <button
-            className={universe === "direct" ? "on" : ""}
-            type="button"
-            onClick={() => setUniverse("direct")}
-          >
-            Direct only
-          </button>
+          <ExplainTip text={TIPS.universeAll}>
+            <button
+              className={universe === "all" ? "on" : ""}
+              type="button"
+              onClick={() => setUniverse("all")}
+            >
+              All mappings
+            </button>
+          </ExplainTip>
+          <ExplainTip text={TIPS.universeDirect}>
+            <button
+              className={universe === "direct" ? "on" : ""}
+              type="button"
+              onClick={() => setUniverse("direct")}
+            >
+              Direct only
+            </button>
+          </ExplainTip>
         </div>
       </div>
 
@@ -186,6 +260,7 @@ export default function App() {
       <Panel
         id="mit-list"
         title="MIT 10 Breakthrough Technologies"
+        titleTip={TIPS.panelMit}
         subtitle={
           archiveEdition
             ? `${archiveEdition.year} · ${archiveEdition.technologies.length} named`
@@ -195,9 +270,11 @@ export default function App() {
         {archiveEdition ? (
           <>
             <div className="edition-meta">
-              <span className={`pill ${archiveEdition.verification_status}`}>
-                {archiveEdition.verification_status}
-              </span>
+              <ExplainTip text={verifyTip(archiveEdition.verification_status)}>
+                <span className={`pill ${archiveEdition.verification_status}`}>
+                  {archiveEdition.verification_status}
+                </span>
+              </ExplainTip>
               <p>{archiveEdition.note}</p>
               {archiveEdition.source_url ? (
                 <a href={archiveEdition.source_url} target="_blank" rel="noreferrer">
@@ -215,30 +292,36 @@ export default function App() {
               <ol className="mit-list">
                 {archiveEdition.technologies.map((item) => (
                   <li key={item.id}>
-                    <ExplainTip text={item.description} className="tip-fill">
-                      <button
-                        type="button"
-                        className={`mit-item ${item.id === selectedId ? "selected" : ""}`}
-                        onClick={() => setSelectedId(item.id)}
-                      >
-                        <span className="mit-num mono">
-                          {String(item.list_index).padStart(2, "0")}
-                        </span>
-                        <span className="mit-body">
+                    <button
+                      type="button"
+                      className={`mit-item ${item.id === selectedId ? "selected" : ""}`}
+                      onClick={() => setSelectedId(item.id)}
+                    >
+                      <span className="mit-num mono">
+                        {String(item.list_index).padStart(2, "0")}
+                      </span>
+                      <span className="mit-body">
+                        <ExplainTip text={item.description}>
                           <span className="name">{item.name}</span>
-                        </span>
+                        </ExplainTip>
+                      </span>
                       <span className="mit-side">
-                        <span className="muted">{categoryLabel(item.category)}</span>
+                        <ExplainTip text={categoryTip(item.category)}>
+                          <span className="muted">{categoryLabel(item.category)}</span>
+                        </ExplainTip>
                         {item.mapped ? (
-                          <span className={`pill ${item.score?.verdict || "mixed"}`}>
-                            {verdictLabel(item.score?.verdict)}
-                          </span>
+                          <ExplainTip text={verdictTip(item.score?.verdict)}>
+                            <span className={`pill ${item.score?.verdict || "mixed"}`}>
+                              {verdictLabel(item.score?.verdict)}
+                            </span>
+                          </ExplainTip>
                         ) : (
-                          <span className="pill none">List only</span>
+                          <ExplainTip text={TIPS.listOnly}>
+                            <span className="pill none">List only</span>
+                          </ExplainTip>
                         )}
                       </span>
                     </button>
-                    </ExplainTip>
                   </li>
                 ))}
               </ol>
@@ -252,11 +335,22 @@ export default function App() {
       <Panel
         id="pulse"
         title="Market pulse"
+        titleTip={TIPS.panelPulse}
         subtitle={loading ? "Loading" : overview ? `as of ${overview.as_of}` : ""}
       >
         <div className="kpis">
-          <Kpi label="Technologies" value={fmtNum(overview?.n_technologies)} hint="in the archive" />
-          <Kpi label="Mapped" value={fmtNum(overview?.n_mapped_technologies)} hint="have a cohort" />
+          <Kpi
+            label="Technologies"
+            value={fmtNum(overview?.n_technologies)}
+            hint="in the archive"
+            explain={TIPS.kpiTechnologies}
+          />
+          <Kpi
+            label="Mapped"
+            value={fmtNum(overview?.n_mapped_technologies)}
+            hint="have a cohort"
+            explain={TIPS.kpiMapped}
+          />
           <Kpi
             label="Beat SPY"
             value={
@@ -266,6 +360,7 @@ export default function App() {
             }
             hint={fmtPct(overview?.beat_rate, 0) + " of scored"}
             tone={overview && overview.beat_count > (overview.lag_count || 0) ? "up" : "down"}
+            explain={TIPS.kpiBeatSpy}
           />
           <Kpi
             label="Median excess"
@@ -278,62 +373,99 @@ export default function App() {
                   ? "down"
                   : ""
             }
+            explain={TIPS.kpiMedianExcess}
           />
-          <Kpi label="Listed names" value={fmtNum(overview?.n_companies)} hint="in MySQL" />
+          <Kpi
+            label="Listed names"
+            value={fmtNum(overview?.n_companies)}
+            hint="in MySQL"
+            explain={TIPS.kpiListed}
+          />
         </div>
       </Panel>
 
       <Panel
         id="ledger"
         title="Technology ledger"
-        subtitle={`${techs.length} rows · click a name`}
+        titleTip={TIPS.panelLedger}
+        subtitle={`${sortedTechs.length} rows · click a name · click a column to sort`}
       >
         <div className="table-wrap">
           <table>
             <thead>
               <tr>
-                <th>Year</th>
+                <ColHead
+                  label="Year"
+                  explain={TIPS.colYear}
+                  sortKey="year"
+                  sort={ledgerSort}
+                  onSort={(key) => setLedgerSort((s) => nextSort(s, key, "desc"))}
+                />
                 <ColHead
                   label="Technology"
-                  explain="MIT’s TR10 name — a technology, not a ticker. Hover the name for the description."
+                  explain={TIPS.colTechnology}
+                  sortKey="name"
+                  sort={ledgerSort}
+                  onSort={(key) => setLedgerSort((s) => nextSort(s, key, "asc"))}
                 />
                 <ColHead
                   label="Cat."
-                  explain="Our editorial bucket. It chooses the sector ETF on the chart, not a GICS code from MIT."
+                  explain={TIPS.colCategory}
+                  sortKey="category"
+                  sort={ledgerSort}
+                  onSort={(key) => setLedgerSort((s) => nextSort(s, key, "asc"))}
                 />
                 <ColHead
                   label="Names"
                   align="r"
-                  explain="How many mapped companies have a usable price history for this score."
+                  explain={TIPS.colNames}
+                  sortKey="names"
+                  sort={ledgerSort}
+                  onSort={(key) => setLedgerSort((s) => nextSort(s, key))}
                 />
                 <ColHead
                   label="Cohort"
                   align="r"
-                  explain="Equal-weight average total return of the mapped companies from the list date (or IPO) to the last price or delisting."
+                  explain={TIPS.colCohort}
+                  sortKey="cohort"
+                  sort={ledgerSort}
+                  onSort={(key) => setLedgerSort((s) => nextSort(s, key))}
                 />
                 <ColHead
                   label="Excess vs SPY"
                   align="r"
-                  explain="Average of (company return − SPY) over the same dates, in percentage points. This is what the prediction score is based on."
+                  explain={TIPS.colExcess}
+                  sortKey="excess"
+                  sort={ledgerSort}
+                  onSort={(key) => setLedgerSort((s) => nextSort(s, key))}
                 />
                 <ColHead
                   label="Hit"
                   align="r"
-                  explain="Share of mapped companies that beat SPY. A high excess with a low hit rate usually means one name carried the average."
+                  explain={TIPS.colHit}
+                  sortKey="hit"
+                  sort={ledgerSort}
+                  onSort={(key) => setLedgerSort((s) => nextSort(s, key))}
                 />
                 <ColHead
                   label="Score"
                   align="r"
-                  explain="50 = in line with SPY. Higher beat the market after shrinking for small samples and disagreement among names. Lower lagged."
+                  explain={TIPS.colScore}
+                  sortKey="score"
+                  sort={ledgerSort}
+                  onSort={(key) => setLedgerSort((s) => nextSort(s, key))}
                 />
                 <ColHead
                   label="Verdict"
-                  explain="Beat market: excess above +5pp and hit rate at least 50%. Lagged: excess below −5pp. Mixed: in between. Thin sample or too early if there is not enough history."
+                  explain={TIPS.colVerdict}
+                  sortKey="verdict"
+                  sort={ledgerSort}
+                  onSort={(key) => setLedgerSort((s) => nextSort(s, key))}
                 />
               </tr>
             </thead>
             <tbody>
-              {techs.map((t) => {
+              {sortedTechs.map((t) => {
                 const s = t.score;
                 return (
                   <tr
@@ -346,9 +478,17 @@ export default function App() {
                       <ExplainTip text={t.description}>
                         <div className="name">{t.name}</div>
                       </ExplainTip>
-                      {s?.window_short ? <div className="hint">short window</div> : null}
+                      {s?.window_short ? (
+                        <ExplainTip text={TIPS.shortWindow}>
+                          <div className="hint">short window</div>
+                        </ExplainTip>
+                      ) : null}
                     </td>
-                    <td className="muted">{categoryLabel(t.category)}</td>
+                    <td className="muted">
+                      <ExplainTip text={categoryTip(t.category)}>
+                        <span>{categoryLabel(t.category)}</span>
+                      </ExplainTip>
+                    </td>
                     <td className="r mono">{s?.n_with_prices ?? 0}</td>
                     <td className={`r ${signedClass(s?.cohort_mean_return)}`}>
                       {fmtPct(s?.cohort_mean_return)}
@@ -359,14 +499,16 @@ export default function App() {
                     <td className="r mono">{fmtPct(s?.hit_rate, 0)}</td>
                     <td className="r mono gold">{fmtScore(s?.prediction_score)}</td>
                     <td>
-                      <span className={`pill ${s?.verdict || "none"}`}>
-                        {verdictLabel(s?.verdict)}
-                      </span>
+                      <ExplainTip text={verdictTip(s?.verdict)}>
+                        <span className={`pill ${s?.verdict || "none"}`}>
+                          {verdictLabel(s?.verdict)}
+                        </span>
+                      </ExplainTip>
                     </td>
                   </tr>
                 );
               })}
-              {techs.length === 0 ? (
+              {sortedTechs.length === 0 ? (
                 <tr>
                   <td colSpan={9} className="empty">
                     No rows for these filters.
@@ -381,6 +523,7 @@ export default function App() {
       <Panel
         id="chart"
         title="Cohort vs market"
+        titleTip={TIPS.panelChart}
         subtitle={
           detail
             ? `${detail.year} ${detail.name} · equal-weight vs ${detail.chart.benchmark_ticker}`
@@ -400,29 +543,44 @@ export default function App() {
                 <p>{detail.description}</p>
               </div>
               <div className="score-box">
-                <span className="k">Prediction score</span>
+                <ExplainTip text={TIPS.predScore}>
+                  <span className="k tip-label">Prediction score</span>
+                </ExplainTip>
                 <span className="v">{fmtScore(selectedScore?.prediction_score)}</span>
-                <span className={`pill ${selectedScore?.verdict || "none"}`}>
-                  {verdictLabel(selectedScore?.verdict)}
-                </span>
+                <ExplainTip text={verdictTip(selectedScore?.verdict)}>
+                  <span className={`pill ${selectedScore?.verdict || "none"}`}>
+                    {verdictLabel(selectedScore?.verdict)}
+                  </span>
+                </ExplainTip>
               </div>
             </div>
             <div className="chart-meta">
-              <span>
-                Excess {fmtPp(selectedScore?.mean_excess_return)} vs SPY over{" "}
-                {fmtNum(selectedScore?.window_years, 1)}y
-              </span>
-              <span>Dispersion {fmtPct(selectedScore?.dispersion)}</span>
-              <span>
-                {selectedScore?.n_with_prices}/{selectedScore?.n_companies} with prices
-              </span>
+              <ExplainTip text={TIPS.chartExcess}>
+                <span className="tip-label">
+                  Excess {fmtPp(selectedScore?.mean_excess_return)} vs SPY over{" "}
+                  {fmtNum(selectedScore?.window_years, 1)}y
+                </span>
+              </ExplainTip>
+              <ExplainTip text={TIPS.dispersion}>
+                <span className="tip-label">Dispersion {fmtPct(selectedScore?.dispersion)}</span>
+              </ExplainTip>
+              <ExplainTip text={TIPS.withPrices}>
+                <span className="tip-label">
+                  {selectedScore?.n_with_prices}/{selectedScore?.n_companies} with prices
+                </span>
+              </ExplainTip>
               {detail.mit_source_url ? (
-                <a href={detail.mit_source_url} target="_blank" rel="noreferrer">
-                  MIT source
-                </a>
+                <ExplainTip text={TIPS.mitSource}>
+                  <a href={detail.mit_source_url} target="_blank" rel="noreferrer">
+                    MIT source
+                  </a>
+                </ExplainTip>
               ) : null}
             </div>
             <p className="chart-note">
+              <ExplainTip text={TIPS.indexBase}>
+                <span className="tip-label">Indexed to 100 at the list date.</span>
+              </ExplainTip>{" "}
               The score is always versus the S&P 500. Toggle extra lines for context
               — sector ETF, Nasdaq, gold, and oil.
             </p>
@@ -431,19 +589,20 @@ export default function App() {
                 (s) => {
                   const on = s.key === "cohort" ? true : compareOn[s.key] !== false;
                   return (
-                    <button
-                      key={s.key}
-                      type="button"
-                      className={`compare-chip ${on ? "on" : ""}`}
-                      style={{ "--chip": LINE_COLORS[s.key] || "#8b93a7" } as CSSProperties}
-                      disabled={s.key === "cohort"}
-                      onClick={() =>
-                        setCompareOn((prev) => ({ ...prev, [s.key]: !on }))
-                      }
-                    >
-                      {s.label}
-                      {s.ticker ? ` (${s.ticker})` : ""}
-                    </button>
+                    <ExplainTip key={s.key} text={indexTip(s.key, detail.chart.sector_ticker)}>
+                      <button
+                        type="button"
+                        className={`compare-chip ${on ? "on" : ""}`}
+                        style={{ "--chip": LINE_COLORS[s.key] || "#8b93a7" } as CSSProperties}
+                        disabled={s.key === "cohort"}
+                        onClick={() =>
+                          setCompareOn((prev) => ({ ...prev, [s.key]: !on }))
+                        }
+                      >
+                        {s.label}
+                        {s.ticker ? ` (${s.ticker})` : ""}
+                      </button>
+                    </ExplainTip>
                   );
                 },
               )}
@@ -507,9 +666,10 @@ export default function App() {
       <Panel
         id="names"
         title="Mapped companies"
+        titleTip={TIPS.panelNames}
         subtitle={
           detail
-            ? `${detail.companies.length} names · mappings dated ${detail.companies[0]?.added_at?.slice(0, 10) ?? "—"}`
+            ? `${detail.companies.length} names · mappings dated ${detail.companies[0]?.added_at?.slice(0, 10) ?? "—"} · click a column to sort`
             : ""
         }
       >
@@ -518,16 +678,54 @@ export default function App() {
             <table>
               <thead>
                 <tr>
-                  <th>Ticker</th>
-                  <th>Company</th>
-                  <th>Map</th>
-                  <th className="r">Return</th>
-                  <th className="r">vs SPY</th>
-                  <th>Why it is here</th>
+                  <ColHead
+                    label="Ticker"
+                    explain={TIPS.colTicker}
+                    sortKey="ticker"
+                    sort={namesSort}
+                    onSort={(key) => setNamesSort((s) => nextSort(s, key, "asc"))}
+                  />
+                  <ColHead
+                    label="Company"
+                    explain={TIPS.colCompany}
+                    sortKey="name"
+                    sort={namesSort}
+                    onSort={(key) => setNamesSort((s) => nextSort(s, key, "asc"))}
+                  />
+                  <ColHead
+                    label="Map"
+                    explain={TIPS.colMap}
+                    sortKey="map"
+                    sort={namesSort}
+                    onSort={(key) => setNamesSort((s) => nextSort(s, key))}
+                  />
+                  <ColHead
+                    label="Return"
+                    align="r"
+                    explain={TIPS.colReturn}
+                    sortKey="return"
+                    sort={namesSort}
+                    onSort={(key) => setNamesSort((s) => nextSort(s, key))}
+                  />
+                  <ColHead
+                    label="vs SPY"
+                    align="r"
+                    explain={TIPS.colVsSpy}
+                    sortKey="excess"
+                    sort={namesSort}
+                    onSort={(key) => setNamesSort((s) => nextSort(s, key))}
+                  />
+                  <ColHead
+                    label="Why it is here"
+                    explain={TIPS.colWhy}
+                    sortKey="why"
+                    sort={namesSort}
+                    onSort={(key) => setNamesSort((s) => nextSort(s, key, "asc"))}
+                  />
                 </tr>
               </thead>
               <tbody>
-                {detail.companies.map((c) => (
+                {sortedCompanies.map((c) => (
                   <tr key={c.ticker}>
                     <td className="mono">{c.ticker}</td>
                     <td>
@@ -540,7 +738,9 @@ export default function App() {
                       ) : null}
                     </td>
                     <td>
-                      <span className={`pill ${c.confidence}`}>{c.confidence}</span>
+                      <ExplainTip text={confidenceTip(c.confidence)}>
+                        <span className={`pill ${c.confidence}`}>{c.confidence}</span>
+                      </ExplainTip>
                     </td>
                     <td className={`r ${signedClass(c.total_return)}`}>
                       {fmtPct(c.total_return)}
@@ -562,50 +762,78 @@ export default function App() {
       <Panel
         id="ranking"
         title="Prediction ranking"
-        subtitle="Sorted by score · 50 means the mapped names matched SPY · hover a column title"
+        titleTip={TIPS.panelRank}
+        subtitle="Click a column to sort · 50 means the mapped names matched SPY"
         defaultOpen={false}
       >
         <div className="table-wrap">
           <table>
             <thead>
               <tr>
-                <ColHead label="#" explain="Rank by prediction score, highest first." />
+                <ColHead
+                  label="#"
+                  explain={TIPS.colRank}
+                  sortKey="rank"
+                  sort={rankSort}
+                  onSort={(key) => setRankSort((s) => nextSort(s, key, "asc"))}
+                />
                 <ColHead
                   label="Technology"
-                  explain="MIT’s TR10 name and year — a technology, not a ticker. Hover the name for the description."
+                  explain={TIPS.colTechnology}
+                  sortKey="name"
+                  sort={rankSort}
+                  onSort={(key) => setRankSort((s) => nextSort(s, key, "asc"))}
                 />
                 <ColHead
                   label="Cat."
-                  explain="Our editorial bucket (AI, biotech, energy, hardware, and so on). It chooses the sector ETF on the chart. It is not MIT’s taxonomy."
+                  explain={TIPS.colCategory}
+                  sortKey="category"
+                  sort={rankSort}
+                  onSort={(key) => setRankSort((s) => nextSort(s, key, "asc"))}
                 />
                 <ColHead
                   label="Score"
                   align="r"
-                  explain="Prediction score. 50 = mapped companies matched SPY over the same dates. Higher beat SPY; lower lagged. Small samples, disagreement among names (σ), and a low hit rate all pull the score toward 50 so one winner cannot dominate."
+                  explain={TIPS.colScore}
+                  sortKey="score"
+                  sort={rankSort}
+                  onSort={(key) => setRankSort((s) => nextSort(s, key))}
                 />
                 <ColHead
                   label="Excess"
                   align="r"
-                  explain="Average excess vs SPY, in percentage points. For each mapped company: its total return from the list date (or IPO) to the last price or delisting, minus SPY on those same dates. Then the mean. +20pp means twenty points more than SPY, not a 20% return."
+                  explain={TIPS.colExcess}
+                  sortKey="excess"
+                  sort={rankSort}
+                  onSort={(key) => setRankSort((s) => nextSort(s, key))}
                 />
                 <ColHead
                   label="Hit"
                   align="r"
-                  explain="Share of mapped companies that beat SPY. 50% means half the names outperformed. A high score with a low hit rate usually means one name (often a later winner) carried the average."
+                  explain={TIPS.colHit}
+                  sortKey="hit"
+                  sort={rankSort}
+                  onSort={(key) => setRankSort((s) => nextSort(s, key))}
                 />
                 <ColHead
                   label="σ"
                   align="r"
-                  explain="Dispersion: standard deviation of the companies’ total returns. High σ means the names disagreed, so the average is less trustworthy and the score is pulled toward 50."
+                  explain={TIPS.colSigma}
+                  sortKey="sigma"
+                  sort={rankSort}
+                  onSort={(key) => setRankSort((s) => nextSort(s, key))}
                 />
                 <ColHead
                   label="Verdict"
-                  explain="Beat market: average excess above +5pp and at least half the names beat SPY. Lagged: average excess below −5pp. Mixed: in between. Thin sample: fewer than two names with prices. Too early: the list is too recent."
+                  explain={TIPS.colVerdict}
+                  sortKey="verdict"
+                  sort={rankSort}
+                  onSort={(key) => setRankSort((s) => nextSort(s, key))}
                 />
               </tr>
             </thead>
             <tbody>
-              {ranking.map((r) => (
+              {sortedRanking.map((r) => (
                 <tr
                   key={r.technology_id}
                   className={r.technology_id === selectedId ? "selected" : ""}
@@ -619,7 +847,11 @@ export default function App() {
                       </div>
                     </ExplainTip>
                   </td>
-                  <td className="muted">{categoryLabel(r.category)}</td>
+                  <td className="muted">
+                    <ExplainTip text={categoryTip(r.category)}>
+                      <span>{categoryLabel(r.category)}</span>
+                    </ExplainTip>
+                  </td>
                   <td className="r mono gold">{fmtScore(r.prediction_score)}</td>
                   <td className={`r ${signedClass(r.mean_excess_return)}`}>
                     {fmtPp(r.mean_excess_return)}
@@ -627,7 +859,9 @@ export default function App() {
                   <td className="r mono">{fmtPct(r.hit_rate, 0)}</td>
                   <td className="r mono">{fmtPct(r.dispersion)}</td>
                   <td>
-                    <span className={`pill ${r.verdict}`}>{verdictLabel(r.verdict)}</span>
+                    <ExplainTip text={verdictTip(r.verdict)}>
+                      <span className={`pill ${r.verdict}`}>{verdictLabel(r.verdict)}</span>
+                    </ExplainTip>
                   </td>
                 </tr>
               ))}
@@ -636,7 +870,7 @@ export default function App() {
         </div>
       </Panel>
 
-      <Panel id="watch" title="2026 watchlist" subtitle="Live book · analog history, not a forecast">
+      <Panel id="watch" title="2026 watchlist" titleTip={TIPS.panelWatch} subtitle="Live book · analog history, not a forecast">
         {watch ? (
           <>
             <p className="note-block">{watch.note}</p>
@@ -649,10 +883,14 @@ export default function App() {
                   onClick={() => setSelectedId(item.id)}
                 >
                   <div className="watch-top">
-                    <span className="muted">{categoryLabel(item.category)}</span>
-                    <span className={`pill ${item.verification_status}`}>
-                      {item.verification_status}
-                    </span>
+                    <ExplainTip text={categoryTip(item.category)}>
+                      <span className="muted">{categoryLabel(item.category)}</span>
+                    </ExplainTip>
+                    <ExplainTip text={verifyTip(item.verification_status)}>
+                      <span className={`pill ${item.verification_status}`}>
+                        {item.verification_status}
+                      </span>
+                    </ExplainTip>
                   </div>
                   <h3>{item.name}</h3>
                   <p>{item.description}</p>
@@ -664,7 +902,9 @@ export default function App() {
                     ))}
                   </div>
                   <div className="watch-analog">
-                    Analog excess{" "}
+                    <ExplainTip text={TIPS.analogExcess}>
+                      <span className="tip-label">Analog excess</span>
+                    </ExplainTip>{" "}
                     <span className={signedClass(item.historical_analog_excess)}>
                       {fmtPp(item.historical_analog_excess)}
                     </span>
@@ -756,15 +996,31 @@ function ColHead({
   label,
   explain,
   align,
+  sortKey,
+  sort,
+  onSort,
 }: {
   label: string;
   explain: string;
   align?: "r";
+  sortKey: string;
+  sort: SortSpec;
+  onSort: (key: string) => void;
 }) {
   return (
     <th className={align === "r" ? "r" : undefined}>
-      <ExplainTip text={explain}>
-        <span className="col-head">{label}</span>
+      <ExplainTip text={`${explain} Click to sort.`}>
+        <button
+          type="button"
+          className={`col-head sortable ${sort.key === sortKey ? "on" : ""}`}
+          onClick={(event) => {
+            event.stopPropagation();
+            onSort(sortKey);
+          }}
+        >
+          {label}
+          {sortMark(sort, sortKey)}
+        </button>
       </ExplainTip>
     </th>
   );
@@ -775,18 +1031,22 @@ function Kpi({
   value,
   hint,
   tone,
+  explain,
 }: {
   label: string;
   value: string;
   hint: string;
   tone?: string;
+  explain: string;
 }) {
   return (
-    <div className="kpi">
-      <span className="k">{label}</span>
-      <span className={`v ${tone || ""}`}>{value}</span>
-      <span className="h">{hint}</span>
-    </div>
+    <ExplainTip text={explain} className="kpi-wrap">
+      <div className="kpi">
+        <span className="k tip-label">{label}</span>
+        <span className={`v ${tone || ""}`}>{value}</span>
+        <span className="h">{hint}</span>
+      </div>
+    </ExplainTip>
   );
 }
 
