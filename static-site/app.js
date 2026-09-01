@@ -435,6 +435,42 @@ function chartHostWidth(host) {
   return Math.max(260, window.innerWidth - gutter);
 }
 
+function chartGeometry(points, keys, width) {
+  if (!points || points.length < 2) {
+    return {
+      empty: true,
+      html: `<p class="empty">No overlapping price history for this cohort.</p>`,
+    };
+  }
+  const { w, h, pad } = chartBox(width);
+  const vals = [];
+  for (const p of points) {
+    for (const k of keys) {
+      if (p[k] != null) vals.push(p[k]);
+    }
+  }
+  if (!vals.length) {
+    return {
+      empty: true,
+      html: `<p class="empty">No overlapping price history for this cohort.</p>`,
+    };
+  }
+  const min = Math.min(...vals);
+  const max = Math.max(...vals);
+  const span = max - min || 1;
+  return {
+    empty: false,
+    w,
+    h,
+    pad,
+    min,
+    max,
+    span,
+    xAt: (i) => pad.l + (i / (points.length - 1)) * (w - pad.l - pad.r),
+    yAt: (v) => pad.t + (1 - (v - min) / span) * (h - pad.t - pad.b),
+  };
+}
+
 function yearTicks(years, x, minGap) {
   if (years.length <= 2) return years;
   const last = years[years.length - 1];
@@ -449,23 +485,55 @@ function yearTicks(years, x, minGap) {
   return picked;
 }
 
+function seriesHoverLabel(key, detail) {
+  if (key === "cohort") return "MIT cohort";
+  if (key === "spy") return "S&P 500 (SPY)";
+  if (key === "nasdaq") return "Nasdaq-100 (QQQ)";
+  if (key === "gold") return "Gold (GLD)";
+  if (key === "oil") return "Oil (USO)";
+  if (key === "sector") {
+    const ticker = detail?.tech?.benchmark_ticker;
+    return ticker ? `Sector (${ticker})` : "Sector";
+  }
+  return key;
+}
+
+function fmtChartVal(v) {
+  return v == null || Number.isNaN(v) ? "—" : Number(v).toFixed(1);
+}
+
+function chartTipHtml(point, keys, detail) {
+  const rows = keys
+    .map(
+      (k) => `<div class="chart-tip-row">
+        <span class="chart-tip-name"><i style="background:${LINE[k]}"></i>${esc(seriesHoverLabel(k, detail))}</span>
+        <span class="chart-tip-val">${fmtChartVal(point[k])}</span>
+      </div>`,
+    )
+    .join("");
+  return `<div class="chart-tip-date">${esc(point.date)}</div>${rows}`;
+}
+
+function placeChartTip(host, tip, event) {
+  const rect = host.getBoundingClientRect();
+  const x = event.clientX - rect.left;
+  const y = event.clientY - rect.top;
+  const tw = tip.offsetWidth;
+  const th = tip.offsetHeight;
+  let left = x + 16;
+  let top = y - th - 10;
+  if (left + tw > rect.width - 4) left = x - tw - 16;
+  if (left < 4) left = 4;
+  if (top < 4) top = y + 16;
+  if (top + th > rect.height - 4) top = Math.max(4, rect.height - th - 4);
+  tip.style.left = `${left}px`;
+  tip.style.top = `${top}px`;
+}
+
 function drawChart(points, keys, width) {
-  if (!points || points.length < 2) {
-    return `<p class="empty">No overlapping price history for this cohort.</p>`;
-  }
-  const { w, h, pad } = chartBox(width);
-  const vals = [];
-  for (const p of points) {
-    for (const k of keys) {
-      if (p[k] != null) vals.push(p[k]);
-    }
-  }
-  if (!vals.length) return `<p class="empty">No overlapping price history for this cohort.</p>`;
-  const min = Math.min(...vals);
-  const max = Math.max(...vals);
-  const span = max - min || 1;
-  const x = (i) => pad.l + (i / (points.length - 1)) * (w - pad.l - pad.r);
-  const y = (v) => pad.t + (1 - (v - min) / span) * (h - pad.t - pad.b);
+  const geo = chartGeometry(points, keys, width);
+  if (geo.empty) return geo.html;
+  const { w, h, pad, xAt, yAt } = geo;
   const stroke = w < 480 ? { cohort: 1.8, other: 1.3 } : { cohort: 2.2, other: 1.5 };
   const paths = keys
     .map((k) => {
@@ -476,17 +544,17 @@ function drawChart(points, keys, width) {
           drawing = false;
           return;
         }
-        d += `${drawing ? "L" : "M"}${x(i).toFixed(1)},${y(p[k]).toFixed(1)} `;
+        d += `${drawing ? "L" : "M"}${xAt(i).toFixed(1)},${yAt(p[k]).toFixed(1)} `;
         drawing = true;
       });
       const sw = k === "cohort" ? stroke.cohort : stroke.other;
       return `<path d="${d}" fill="none" stroke="${LINE[k]}" stroke-width="${sw}" />`;
     })
     .join("");
-  const ticks = [min, min + span / 2, max];
+  const ticks = [geo.min, geo.min + geo.span / 2, geo.max];
   const axis = ticks
     .map((v) => {
-      const yy = y(v);
+      const yy = yAt(v);
       return `<text class="chart-axis" x="2" y="${yy + 3}">${v.toFixed(0)}</text>
         <line x1="${pad.l}" x2="${w - pad.r}" y1="${yy}" y2="${yy}" stroke="#1c2430" />`;
     })
@@ -496,23 +564,58 @@ function drawChart(points, keys, width) {
     const yr = p.date.slice(0, 4);
     if (years.length === 0 || years[years.length - 1].yr !== yr) years.push({ yr, i });
   });
-  const labeled = yearTicks(years, x, w < 480 ? 56 : 48);
+  const labeled = yearTicks(years, xAt, w < 480 ? 56 : 48);
   const xlabels = labeled
     .map(({ yr, i }, idx) => {
       const anchor = idx === 0 ? "start" : idx === labeled.length - 1 ? "end" : "middle";
-      return `<text class="chart-axis" text-anchor="${anchor}" x="${x(i)}" y="${h - 6}">${yr}</text>`;
+      return `<text class="chart-axis" text-anchor="${anchor}" x="${xAt(i)}" y="${h - 6}">${yr}</text>`;
     })
     .join("");
-  return `<svg class="chart-svg" viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Cohort versus market">${axis}${paths}${xlabels}</svg>`;
+  return `<svg class="chart-svg" viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Cohort versus market">${axis}${paths}${xlabels}<g class="chart-hover"></g><rect class="chart-hit" x="0" y="0" width="${w}" height="${h}" fill="transparent" /></svg>`;
 }
 
-let chartObserver = null;
-let lastChartWidth = -1;
+function bindChartHover(host, detail, width) {
+  const svg = host.querySelector(".chart-svg");
+  if (!svg || !detail) return;
+  const points = detail.points;
+  const keys = chartKeys();
+  const geo = chartGeometry(points, keys, width);
+  if (geo.empty) return;
+  const hover = svg.querySelector(".chart-hover");
+  const tip = document.createElement("div");
+  tip.className = "chart-tip";
+  tip.hidden = true;
+  host.appendChild(tip);
 
-function chartKeys() {
-  return ["cohort", "spy", "sector", "nasdaq", "gold", "oil"].filter((k) =>
-    k === "cohort" ? true : state.compareOn[k],
-  );
+  const show = (event) => {
+    const rect = svg.getBoundingClientRect();
+    if (!rect.width || points.length < 2) return;
+    const px = ((event.clientX - rect.left) / rect.width) * geo.w;
+    const inner = geo.w - geo.pad.l - geo.pad.r;
+    const t = inner <= 0 ? 0 : (px - geo.pad.l) / inner;
+    const i = Math.max(0, Math.min(points.length - 1, Math.round(t * (points.length - 1))));
+    const point = points[i];
+    const xx = geo.xAt(i).toFixed(1);
+    const dots = keys
+      .filter((k) => point[k] != null)
+      .map(
+        (k) =>
+          `<circle cx="${xx}" cy="${geo.yAt(point[k]).toFixed(1)}" r="4" fill="${LINE[k]}" stroke="#080a0e" stroke-width="1.5" />`,
+      )
+      .join("");
+    hover.innerHTML = `<line x1="${xx}" x2="${xx}" y1="${geo.pad.t}" y2="${geo.h - geo.pad.b}" stroke="#8b93a7" stroke-width="1" stroke-dasharray="3 3" opacity="0.75" />${dots}`;
+    hover.classList.add("on");
+    tip.hidden = false;
+    tip.innerHTML = chartTipHtml(point, keys, detail);
+    placeChartTip(host, tip, event);
+  };
+  const hide = () => {
+    tip.hidden = true;
+    hover.classList.remove("on");
+    hover.innerHTML = "";
+  };
+  svg.addEventListener("pointermove", show);
+  svg.addEventListener("pointerleave", hide);
 }
 
 function paintResponsiveChart() {
@@ -524,6 +627,16 @@ function paintResponsiveChart() {
   if (width === lastChartWidth && host.querySelector("svg, .empty")) return;
   lastChartWidth = width;
   host.innerHTML = drawChart(detail.points, chartKeys(), width);
+  bindChartHover(host, detail, width);
+}
+
+let chartObserver = null;
+let lastChartWidth = -1;
+
+function chartKeys() {
+  return ["cohort", "spy", "sector", "nasdaq", "gold", "oil"].filter((k) =>
+    k === "cohort" ? true : state.compareOn[k],
+  );
 }
 
 function observeChart() {
