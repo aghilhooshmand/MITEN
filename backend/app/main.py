@@ -15,7 +15,7 @@ from app.models import (
 )
 from app.scoring import cohort_chart_payload
 
-app = FastAPI(title="Breakthrough Ledger", version="1.0.0")
+app = FastAPI(title="MITEN", version="1.0.0")
 
 ensure_schema()
 

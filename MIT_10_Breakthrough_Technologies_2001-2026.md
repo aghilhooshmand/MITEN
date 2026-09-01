@@ -1,7 +1,7 @@
 # MIT Technology Review — "10 Breakthrough Technologies," 2001–2026
 
 MIT Technology Review has published this annual list since 2001. Names and order below
-match the lists loaded into Breakthrough Ledger.
+match the lists loaded into MITEN.
 
 Archive: https://www.technologyreview.com/supertopic/tr10-archive/
 

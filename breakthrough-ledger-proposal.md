@@ -1,4 +1,5 @@
-# Project Proposal: The Breakthrough Ledger
+# Project Proposal: MITEN
+### Formerly “The Breakthrough Ledger”
 ### Tracking whether MIT Technology Review's annual predictions actually paid off for investors
 
 ---

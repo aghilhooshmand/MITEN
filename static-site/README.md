@@ -1,4 +1,4 @@
-# Breakthrough Ledger — static site
+# MITEN — static site
 
 A no-server copy of the dashboard. All tables, scores, mappings, and chart series
 are CSV files in `data/`. GitHub Pages can host this folder as-is.
@@ -31,7 +31,7 @@ Open http://localhost:8080
 If you prefer the built-in “branch /docs” option, copy this folder’s contents into `docs/` on `main`.
 
 Base paths are relative (`./data/…`), so the site also works at
-`https://<user>.github.io/<repo>/` after the Action runs.
+`https://aghilhooshmand.github.io/MITEN/` after the Action runs.
 
 ## CSV files
 

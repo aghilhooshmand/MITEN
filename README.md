@@ -1,14 +1,17 @@
-# Breakthrough Ledger
+# MITEN
 
-Single-page research dashboard: did MIT Technology Review's annual "10 Breakthrough Technologies" list mark categories that later beat the public market?
+MIT’s 10 Breakthrough Technologies versus mapped public companies. Did the named
+categories later beat SPY?
 
-Not a stock-picker. The unit of analysis is a **technology cohort versus SPY**, with company mappings stored in MySQL so they can be audited.
+Not a stock-picker. The unit of analysis is a **technology cohort versus SPY**, with
+company mappings stored so they can be audited.
 
 ## Stack
 
 - React (Vite) — one page, panels hide/show
 - FastAPI — scoring and read APIs
 - MySQL 8 — every entity and every daily price
+- `static-site/` — CSV snapshot for GitHub Pages (no server)
 
 ## Run
 

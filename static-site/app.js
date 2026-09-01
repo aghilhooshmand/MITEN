@@ -510,7 +510,7 @@ function render() {
     <header class="top">
       <div>
         <p class="eyebrow">MIT TR10 × public markets</p>
-        <h1>Breakthrough Ledger</h1>
+        <h1>MITEN</h1>
         <p class="static-tag">Static CSV snapshot · no server</p>
       </div>
       <p class="lede">
