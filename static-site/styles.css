@@ -377,6 +377,7 @@ h1 {
   margin-bottom: 12px;
   box-shadow: var(--shadow);
   min-width: 0;
+  scroll-margin-top: 16px;
 }
 
 .panel-head {
@@ -788,6 +789,56 @@ tbody tr:hover td {
 .method em {
   color: var(--text);
   font-style: normal;
+}
+
+.guide h3 {
+  margin: 22px 0 8px;
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.guide h3:first-child {
+  margin-top: 0;
+}
+
+.guide p {
+  margin: 0 0 10px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.guide em {
+  color: var(--text);
+  font-style: normal;
+}
+
+.guide dt {
+  margin-top: 12px;
+  color: var(--gold);
+  font-family: "IBM Plex Mono", monospace;
+  font-size: 12px;
+}
+
+.guide dt:first-child {
+  margin-top: 0;
+}
+
+.guide dd {
+  margin: 4px 0 0;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.guide-jump {
+  color: var(--gold);
+  text-decoration: none;
+}
+
+.guide-jump:hover {
+  text-decoration: underline;
 }
 
 .contact {

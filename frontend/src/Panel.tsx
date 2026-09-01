@@ -33,7 +33,7 @@ export function Panel({ id, title, subtitle, titleTip, defaultOpen = true, child
   }, [id, open]);
 
   return (
-    <section className={`panel ${open ? "open" : "closed"}`}>
+    <section id={`panel-${id}`} className={`panel ${open ? "open" : "closed"}`}>
       <button className="panel-head" onClick={() => setOpen((v) => !v)} type="button">
         <span className="panel-chevron">{open ? "▾" : "▸"}</span>
         <ExplainTip text={titleTip}>

@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { Guide } from "./Guide";
 import { ExplainTip } from "./ExplainTip";
 import {
   CartesianGrid,
@@ -192,7 +193,10 @@ export default function App() {
         </div>
         <p className="lede">
           MIT Technology Review’s annual 10 Breakthrough Technologies, then whether
-          mapped public companies beat SPY after the call.
+          mapped public companies beat SPY after the call.{" "}
+          <a className="guide-jump" href="#panel-guide">
+            How to read MITEN
+          </a>
         </p>
       </header>
 
@@ -950,6 +954,15 @@ export default function App() {
             model. This does not tell you which ticker to buy.
           </li>
         </ol>
+      </Panel>
+
+      <Panel
+        id="guide"
+        title="How to read MITEN"
+        titleTip={TIPS.panelGuide}
+        subtitle="Idea, keywords, measures · start here if a word is unclear"
+      >
+        <Guide />
       </Panel>
 
       <footer className="contact">

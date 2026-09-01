@@ -24,6 +24,8 @@ export const TIPS = {
     "Every scored technology in the archive, not just this year. Default order is prediction score. Click a column title to sort.",
   panelWatch:
     "2026 names and hand-picked historical analogs. Analog excess is history, not a forecast, and not a buy list.",
+  panelGuide:
+    "Plain-language tour of the project: the idea, the keywords (cohort, mapped only, all mappings, direct), and every measure on the page.",
   kpiTechnologies: "How many MIT TR10 names are in this archive across all years, including list-only items.",
   kpiMapped:
     "How many of those names have at least one mapped public company in the current universe (all mappings or direct only).",
