@@ -143,6 +143,7 @@ export type RankedScore = Score & {
   technology_id: number;
   year: number;
   name: string;
+  description?: string;
   category: string;
   rank: number;
 };

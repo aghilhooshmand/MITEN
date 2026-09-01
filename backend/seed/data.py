@@ -377,7 +377,8 @@ TECHNOLOGIES = [
     {"year": 2022, "name": "The End of Passwords", "category": "consumer", "status": "verified", "desc": "Passkeys and device-bound credentials replacing passwords."},
     {"year": 2022, "name": "COVID Variant Tracking", "category": "biotech", "status": "verified", "desc": "Genomic surveillance of viral evolution.", "benchmark": "XBI"},
     # 2023
-    {"year": 2023, "name": "CRISPR for High Cholesterol", "category": "biotech", "status": "verified", "desc": "In-body gene edits aimed at a common disease.", "benchmark": "XBI"},
+    {"year": 2023, "name": "CRISPR for High Cholesterol", "category": "biotech", "status": "verified", "benchmark": "XBI",
+     "desc": "Over the past decade, the gene-editing tool CRISPR has rapidly evolved from the lab to the clinic. It started with experimental treatments for rare genetic disorders and has recently expanded into clinical trials for common conditions, including high cholesterol. New forms of CRISPR could take things further still."},
     {"year": 2023, "name": "AI That Makes Images", "category": "ai", "status": "verified", "desc": "Diffusion models turning text into pictures.", "benchmark": "XLK"},
     {"year": 2023, "name": "A Chip Design That Changes Everything", "category": "hardware", "status": "verified", "desc": "A shift in how high-performance chips are architected.", "benchmark": "SOXX"},
     {"year": 2023, "name": "Mass-Market Military Drones", "category": "industrial", "status": "verified", "desc": "Cheap drones changing the economics of conflict.", "benchmark": "ITA"},

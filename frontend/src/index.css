@@ -94,7 +94,8 @@ h1 {
   color: var(--muted);
 }
 
-.filters .grow select {
+.filters .grow select,
+.filters .grow .break-select {
   min-width: 280px;
   width: 100%;
 }
@@ -237,6 +238,94 @@ h1 {
 .mit-item.selected {
   border-color: var(--gold-dim);
   background: rgba(212, 168, 75, 0.07);
+}
+
+.break-select {
+  position: relative;
+  width: 100%;
+}
+
+.break-trigger {
+  width: 100%;
+  text-align: left;
+  background: var(--card);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 8px 10px;
+  cursor: pointer;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 13px;
+}
+
+.break-trigger:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.break-menu {
+  position: absolute;
+  z-index: 30;
+  left: 0;
+  right: 0;
+  top: calc(100% + 4px);
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  box-shadow: var(--shadow);
+  max-height: 360px;
+  overflow: auto;
+}
+
+.break-option {
+  width: 100%;
+  display: flex;
+  gap: 8px;
+  align-items: baseline;
+  text-align: left;
+  background: transparent;
+  color: inherit;
+  border: 0;
+  border-radius: 4px;
+  padding: 8px 10px;
+  cursor: pointer;
+  text-transform: none;
+  letter-spacing: 0;
+  font-size: 13px;
+}
+
+.break-option:hover,
+.break-option.on {
+  background: var(--bg-2);
+}
+
+.break-option.on {
+  color: var(--gold);
+}
+
+.tip-fill {
+  display: block;
+  width: 100%;
+}
+
+.explain-tip {
+  position: fixed;
+  z-index: 80;
+  background: #10141c;
+  border: 1px solid var(--gold-dim);
+  border-radius: 8px;
+  padding: 10px 12px;
+  color: var(--text);
+  font-size: 13px;
+  line-height: 1.5;
+  letter-spacing: 0;
+  text-transform: none;
+  box-shadow: var(--shadow);
+  pointer-events: none;
 }
 
 .mit-num {

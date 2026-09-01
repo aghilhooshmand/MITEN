@@ -301,6 +301,7 @@ def scores(
                 "technology_id": s.technology_id,
                 "year": s.technology.year,
                 "name": s.technology.name,
+                "description": s.technology.description,
                 "category": s.technology.category,
                 **_score_dict(s),
             }

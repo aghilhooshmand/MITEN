@@ -1,4 +1,5 @@
-import { useEffect, useMemo, useState, type CSSProperties } from "react";
+import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
+import { ExplainTip } from "./ExplainTip";
 import {
   CartesianGrid,
   Legend,
@@ -29,6 +30,7 @@ import {
 } from "./format";
 import type {
   Archive,
+  ArchiveItem,
   ChartSeries,
   Overview,
   RankedScore,
@@ -141,23 +143,13 @@ export default function App() {
         </label>
         <label className="grow">
           MIT breakthrough
-          <select
-            value={selectedId ?? ""}
-            onChange={(e) => setSelectedId(e.target.value ? Number(e.target.value) : null)}
-            disabled={mitPicks.length === 0}
-          >
-            {mitPicks.length === 0 ? (
-              <option value="">
-                {year === "2002" ? "No list published" : "No verified list this year"}
-              </option>
-            ) : (
-              mitPicks.map((item) => (
-                <option key={item.id} value={item.id}>
-                  {String(item.list_index).padStart(2, "0")} · {item.name}
-                </option>
-              ))
-            )}
-          </select>
+          <BreakthroughSelect
+            key={year}
+            items={mitPicks}
+            selectedId={selectedId}
+            emptyLabel={year === "2002" ? "No list published" : "No verified list this year"}
+            onChange={setSelectedId}
+          />
         </label>
         <label className="check">
           <input
@@ -220,18 +212,18 @@ export default function App() {
               <ol className="mit-list">
                 {archiveEdition.technologies.map((item) => (
                   <li key={item.id}>
-                    <button
-                      type="button"
-                      className={`mit-item ${item.id === selectedId ? "selected" : ""}`}
-                      onClick={() => setSelectedId(item.id)}
-                    >
-                      <span className="mit-num mono">
-                        {String(item.list_index).padStart(2, "0")}
-                      </span>
-                      <span className="mit-body">
-                        <span className="name">{item.name}</span>
-                        <span className="hint">{item.description}</span>
-                      </span>
+                    <ExplainTip text={item.description} className="tip-fill">
+                      <button
+                        type="button"
+                        className={`mit-item ${item.id === selectedId ? "selected" : ""}`}
+                        onClick={() => setSelectedId(item.id)}
+                      >
+                        <span className="mit-num mono">
+                          {String(item.list_index).padStart(2, "0")}
+                        </span>
+                        <span className="mit-body">
+                          <span className="name">{item.name}</span>
+                        </span>
                       <span className="mit-side">
                         <span className="muted">{categoryLabel(item.category)}</span>
                         {item.mapped ? (
@@ -243,6 +235,7 @@ export default function App() {
                         )}
                       </span>
                     </button>
+                    </ExplainTip>
                   </li>
                 ))}
               </ol>
@@ -318,7 +311,9 @@ export default function App() {
                   >
                     <td className="mono">{t.year}</td>
                     <td>
-                      <div className="name">{t.name}</div>
+                      <ExplainTip text={t.description}>
+                        <div className="name">{t.name}</div>
+                      </ExplainTip>
                       {s?.window_short ? <div className="hint">short window</div> : null}
                     </td>
                     <td className="muted">{categoryLabel(t.category)}</td>
@@ -366,7 +361,9 @@ export default function App() {
             <div className="detail-head">
               <div>
                 <h2>
-                  {detail.year} {detail.name}
+                  <ExplainTip text={detail.description}>
+                    {detail.year} {detail.name}
+                  </ExplainTip>
                 </h2>
                 <p>{detail.description}</p>
               </div>
@@ -559,9 +556,11 @@ export default function App() {
                 >
                   <td className="mono muted">{r.rank}</td>
                   <td>
-                    <div className="name">
-                      {r.year} {r.name}
-                    </div>
+                    <ExplainTip text={r.description}>
+                      <div className="name">
+                        {r.year} {r.name}
+                      </div>
+                    </ExplainTip>
                   </td>
                   <td className="muted">{categoryLabel(r.category)}</td>
                   <td className="r mono gold">{fmtScore(r.prediction_score)}</td>
@@ -704,6 +703,77 @@ function Kpi({
       <span className="k">{label}</span>
       <span className={`v ${tone || ""}`}>{value}</span>
       <span className="h">{hint}</span>
+    </div>
+  );
+}
+
+function BreakthroughSelect({
+  items,
+  selectedId,
+  emptyLabel,
+  onChange,
+}: {
+  items: ArchiveItem[];
+  selectedId: number | null;
+  emptyLabel: string;
+  onChange: (id: number) => void;
+}) {
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement>(null);
+  const selected = items.find((item) => item.id === selectedId);
+
+  useEffect(() => {
+    if (!open) return;
+    const onDoc = (event: MouseEvent) => {
+      if (!rootRef.current?.contains(event.target as Node)) setOpen(false);
+    };
+    const onKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setOpen(false);
+    };
+    document.addEventListener("mousedown", onDoc);
+    document.addEventListener("keydown", onKey);
+    return () => {
+      document.removeEventListener("mousedown", onDoc);
+      document.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
+
+  return (
+    <div className="break-select" ref={rootRef}>
+      <button
+        type="button"
+        className="break-trigger"
+        disabled={items.length === 0}
+        aria-expanded={open}
+        onClick={() => setOpen((value) => !value)}
+      >
+        {selected
+          ? `${String(selected.list_index).padStart(2, "0")} · ${selected.name}`
+          : emptyLabel}
+      </button>
+      {open ? (
+        <ul className="break-menu">
+          {items.map((item) => (
+            <li key={item.id}>
+              <ExplainTip text={item.description} className="tip-fill" side="right">
+                <button
+                  type="button"
+                  className={`break-option ${item.id === selectedId ? "on" : ""}`}
+                  onClick={() => {
+                    onChange(item.id);
+                    setOpen(false);
+                  }}
+                >
+                  <span className="mono muted">
+                    {String(item.list_index).padStart(2, "0")}
+                  </span>
+                  {item.name}
+                </button>
+              </ExplainTip>
+            </li>
+          ))}
+        </ul>
+      ) : null}
     </div>
   );
 }
