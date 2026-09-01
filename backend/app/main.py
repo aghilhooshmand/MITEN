@@ -4,7 +4,7 @@ from fastapi import Depends, FastAPI, HTTPException, Query
 from fastapi.middleware.cors import CORSMiddleware
 from sqlalchemy.orm import Session, joinedload
 
-from app.database import get_db
+from app.database import get_db, ensure_schema
 from app.models import (
     Company,
     Technology,
@@ -16,6 +16,8 @@ from app.models import (
 from app.scoring import cohort_chart_payload
 
 app = FastAPI(title="Breakthrough Ledger", version="1.0.0")
+
+ensure_schema()
 
 app.add_middleware(
     CORSMiddleware,
@@ -97,6 +99,7 @@ def overview(
                 "year": y.year,
                 "verification_status": y.verification_status,
                 "note": y.note,
+                "source_url": y.source_url,
             }
             for y in years
         ],
@@ -128,7 +131,7 @@ def list_technologies(
     if q:
         like = f"%{q}%"
         query = query.filter(Technology.name.ilike(like))
-    rows = query.order_by(Technology.year.desc(), Technology.name.asc()).all()
+    rows = query.order_by(Technology.year.desc(), Technology.list_index.asc(), Technology.name.asc()).all()
     out = []
     for t in rows:
         score = _pick_score(t, universe)
@@ -141,6 +144,8 @@ def list_technologies(
                 "name": t.name,
                 "slug": t.slug,
                 "category": t.category,
+                "list_index": t.list_index,
+                "description": t.description,
                 "verification_status": t.verification_status,
                 "published_on": t.published_on.isoformat(),
                 "benchmark_ticker": t.benchmark.ticker if t.benchmark else "SPY",
@@ -148,6 +153,49 @@ def list_technologies(
             }
         )
     return out
+
+
+@app.get("/api/archive")
+def archive(
+    universe: str = Query("all", pattern="^(all|direct)$"),
+    db: Session = Depends(get_db),
+):
+    years = db.query(YearMeta).order_by(YearMeta.year.desc()).all()
+    techs = (
+        db.query(Technology)
+        .options(joinedload(Technology.scores))
+        .order_by(Technology.year.desc(), Technology.list_index.asc())
+        .all()
+    )
+    by_year: dict[int, list] = {}
+    for t in techs:
+        score = _pick_score(t, universe)
+        mapped = bool(score and score.n_companies > 0)
+        by_year.setdefault(t.year, []).append(
+            {
+                "id": t.id,
+                "list_index": t.list_index,
+                "name": t.name,
+                "description": t.description,
+                "category": t.category,
+                "verification_status": t.verification_status,
+                "mapped": mapped,
+                "score": _score_dict(score) if mapped else None,
+            }
+        )
+    return {
+        "source": "https://www.technologyreview.com/supertopic/tr10-archive/",
+        "years": [
+            {
+                "year": y.year,
+                "verification_status": y.verification_status,
+                "note": y.note,
+                "source_url": y.source_url,
+                "technologies": by_year.get(y.year, []),
+            }
+            for y in years
+        ],
+    }
 
 
 @app.get("/api/technologies/{tech_id}")
@@ -275,7 +323,7 @@ def watchlist(
             joinedload(Technology.mappings).joinedload(TechnologyCompanyMap.company),
         )
         .filter(Technology.year == 2026)
-        .order_by(Technology.name.asc())
+        .order_by(Technology.list_index.asc())
         .all()
     )
     items = []

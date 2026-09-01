@@ -68,6 +68,7 @@ class Technology(Base):
     published_on: Mapped[date] = mapped_column(Date, nullable=False)
     verification_status: Mapped[str] = mapped_column(String(20), nullable=False)
     category: Mapped[str] = mapped_column(String(40), nullable=False, default="other")
+    list_index: Mapped[int] = mapped_column(Integer, nullable=False, default=0)
     default_benchmark_id: Mapped[Optional[int]] = mapped_column(
         ForeignKey("benchmarks.id"), nullable=True
     )

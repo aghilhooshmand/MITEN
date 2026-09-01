@@ -24,10 +24,36 @@ export type TechListItem = {
   name: string;
   slug: string;
   category: string;
+  list_index?: number;
+  description?: string;
   verification_status: string;
   published_on: string;
   benchmark_ticker: string;
   score: Score | null;
+};
+
+export type ArchiveItem = {
+  id: number;
+  list_index: number;
+  name: string;
+  description: string;
+  category: string;
+  verification_status: string;
+  mapped: boolean;
+  score: Score | null;
+};
+
+export type ArchiveYear = {
+  year: number;
+  verification_status: string;
+  note: string;
+  source_url: string | null;
+  technologies: ArchiveItem[];
+};
+
+export type Archive = {
+  source: string;
+  years: ArchiveYear[];
 };
 
 export type CompanyRow = {
@@ -97,7 +123,7 @@ export type Overview = {
   beat_rate: number | null;
   median_excess_return: number | null;
   mean_excess_return: number | null;
-  years: { year: number; verification_status: string; note: string }[];
+  years: { year: number; verification_status: string; note: string; source_url?: string | null }[];
   disclaimer: string;
 };
 

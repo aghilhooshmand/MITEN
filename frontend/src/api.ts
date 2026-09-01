@@ -1,4 +1,5 @@
 import type {
+  Archive,
   Overview,
   RankedScore,
   TechDetail,
@@ -44,6 +45,10 @@ export function fetchScores(universe: Universe) {
 
 export function fetchWatchlist(universe: Universe) {
   return getJson<Watchlist>(`/api/watchlist?universe=${universe}`);
+}
+
+export function fetchArchive(universe: Universe) {
+  return getJson<Archive>(`/api/archive?universe=${universe}`);
 }
 
 export function fetchCategories() {

@@ -12,7 +12,7 @@ from sqlalchemy.orm import Session
 ROOT = Path(__file__).resolve().parents[1]
 sys.path.insert(0, str(ROOT))
 
-from app.database import Base, SessionLocal, engine  # noqa: E402
+from app.database import Base, SessionLocal, engine, ensure_schema  # noqa: E402
 from app.models import (  # noqa: E402
     Benchmark,
     BenchmarkPrice,
@@ -62,17 +62,20 @@ def upsert_static(db: Session) -> None:
         bench_by_ticker[row.ticker] = row
 
     spy = bench_by_ticker["SPY"]
+    index_by_year: dict[int, int] = {}
     for item in TECHNOLOGIES:
         slug = slug_for(item["year"], item["name"])
         row = db.query(Technology).filter(Technology.slug == slug).one_or_none()
         if row is None:
             row = Technology(slug=slug)
             db.add(row)
+        index_by_year[item["year"]] = index_by_year.get(item["year"], 0) + 1
         row.year = item["year"]
         row.name = item["name"]
         row.description = item["desc"]
         row.verification_status = item["status"]
         row.category = item["category"]
+        row.list_index = index_by_year[item["year"]]
         row.mit_source_url = item.get("url", ARCHIVE)
         published = item.get("published_on") or f"{item['year']}-02-01"
         row.published_on = date.fromisoformat(published)
@@ -312,9 +315,13 @@ def resolve_aliases(frames: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]:
 def main() -> None:
     print("Creating tables…")
     Base.metadata.create_all(bind=engine)
+    ensure_schema()
     db = SessionLocal()
     try:
         upsert_static(db)
+        if "--static-only" in sys.argv:
+            print("Static-only seed complete.")
+            return
         equity_tickers = [c.ticker for c in db.query(Company).all()]
         bench_tickers = [b.ticker for b in db.query(Benchmark).all()]
         extra_aliases = [a for aliases in TICKER_ALIASES.values() for a in aliases]

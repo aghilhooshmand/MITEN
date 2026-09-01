@@ -10,6 +10,7 @@ import {
   YAxis,
 } from "recharts";
 import {
+  fetchArchive,
   fetchCategories,
   fetchOverview,
   fetchScores,
@@ -28,6 +29,7 @@ import {
   verdictLabel,
 } from "./format";
 import type {
+  Archive,
   Overview,
   RankedScore,
   TechDetail,
@@ -49,6 +51,8 @@ export default function App() {
   const [detail, setDetail] = useState<TechDetail | null>(null);
   const [ranking, setRanking] = useState<RankedScore[]>([]);
   const [watch, setWatch] = useState<Watchlist | null>(null);
+  const [archive, setArchive] = useState<Archive | null>(null);
+  const [archiveYear, setArchiveYear] = useState<number>(2026);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
 
@@ -69,13 +73,22 @@ export default function App() {
       }),
       fetchScores(universe),
       fetchWatchlist(universe),
+      fetchArchive(universe),
     ])
-      .then(([ov, list, scores, wl]) => {
+      .then(([ov, list, scores, wl, arch]) => {
         setOverview(ov);
         setTechs(list);
         setRanking(scores);
         setWatch(wl);
+        setArchive(arch);
         setError(null);
+        setArchiveYear((current) => {
+          if (arch.years.some((y) => y.year === current && y.technologies.length > 0)) {
+            return current;
+          }
+          const withItems = arch.years.find((y) => y.technologies.length > 0);
+          return withItems?.year ?? current;
+        });
         setSelectedId((current) => {
           if (current && list.some((t) => t.id === current)) return current;
           const ranked = [...list]
@@ -106,6 +119,7 @@ export default function App() {
     return Array.from(new Set(fromMeta)).sort((a, b) => b - a);
   }, [overview]);
 
+  const archiveEdition = archive?.years.find((y) => y.year === archiveYear) ?? null;
   const selectedScore = detail?.score;
 
   return (
@@ -116,8 +130,8 @@ export default function App() {
           <h1>Breakthrough Ledger</h1>
         </div>
         <p className="lede">
-          Did a named technology beat the market after MIT called it? Equal-weight
-          mapped names versus SPY, including delistings at exit.
+          MIT Technology Review’s annual 10 Breakthrough Technologies, then whether
+          mapped public companies beat SPY after the call.
         </p>
       </header>
 
@@ -180,6 +194,87 @@ export default function App() {
 
       {error ? <div className="banner error">{error}</div> : null}
       {overview ? <div className="banner">{overview.disclaimer}</div> : null}
+
+      <Panel
+        id="mit-list"
+        title="MIT 10 Breakthrough Technologies"
+        subtitle={
+          archiveEdition
+            ? `${archiveEdition.year} · ${archiveEdition.technologies.length} named`
+            : "Year-by-year TR10 lists"
+        }
+      >
+        {archive ? (
+          <>
+            <div className="year-chips">
+              {archive.years.map((y) => (
+                <button
+                  key={y.year}
+                  type="button"
+                  className={`year-chip ${y.year === archiveYear ? "on" : ""} ${y.technologies.length === 0 ? "gap" : ""}`}
+                  onClick={() => setArchiveYear(y.year)}
+                >
+                  {y.year}
+                </button>
+              ))}
+            </div>
+            {archiveEdition ? (
+              <>
+                <div className="edition-meta">
+                  <span className={`pill ${archiveEdition.verification_status}`}>
+                    {archiveEdition.verification_status}
+                  </span>
+                  <p>{archiveEdition.note}</p>
+                  {archiveEdition.source_url ? (
+                    <a href={archiveEdition.source_url} target="_blank" rel="noreferrer">
+                      MIT archive
+                    </a>
+                  ) : null}
+                </div>
+                {archiveEdition.technologies.length === 0 ? (
+                  <p className="empty">
+                    MIT published a list this year, but the ten names were not
+                    independently verified in our source compilation — so they are
+                    not shown here.
+                  </p>
+                ) : (
+                  <ol className="mit-list">
+                    {archiveEdition.technologies.map((item) => (
+                      <li key={item.id}>
+                        <button
+                          type="button"
+                          className={`mit-item ${item.id === selectedId ? "selected" : ""}`}
+                          onClick={() => setSelectedId(item.id)}
+                        >
+                          <span className="mit-num mono">
+                            {String(item.list_index).padStart(2, "0")}
+                          </span>
+                          <span className="mit-body">
+                            <span className="name">{item.name}</span>
+                            <span className="hint">{item.description}</span>
+                          </span>
+                          <span className="mit-side">
+                            <span className="muted">{categoryLabel(item.category)}</span>
+                            {item.mapped ? (
+                              <span className={`pill ${item.score?.verdict || "mixed"}`}>
+                                {verdictLabel(item.score?.verdict)}
+                              </span>
+                            ) : (
+                              <span className="pill none">List only</span>
+                            )}
+                          </span>
+                        </button>
+                      </li>
+                    ))}
+                  </ol>
+                )}
+              </>
+            ) : null}
+          </>
+        ) : (
+          <p className="empty">Loading MIT lists…</p>
+        )}
+      </Panel>
 
       <Panel
         id="pulse"
