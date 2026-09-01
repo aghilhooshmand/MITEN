@@ -290,14 +290,43 @@ export default function App() {
             <thead>
               <tr>
                 <th>Year</th>
-                <th>Technology</th>
-                <th>Cat.</th>
-                <th className="r">Names</th>
-                <th className="r">Cohort</th>
-                <th className="r">Excess vs SPY</th>
-                <th className="r">Hit</th>
-                <th className="r">Score</th>
-                <th>Verdict</th>
+                <ColHead
+                  label="Technology"
+                  explain="MIT’s TR10 name — a technology, not a ticker. Hover the name for the description."
+                />
+                <ColHead
+                  label="Cat."
+                  explain="Our editorial bucket. It chooses the sector ETF on the chart, not a GICS code from MIT."
+                />
+                <ColHead
+                  label="Names"
+                  align="r"
+                  explain="How many mapped companies have a usable price history for this score."
+                />
+                <ColHead
+                  label="Cohort"
+                  align="r"
+                  explain="Equal-weight average total return of the mapped companies from the list date (or IPO) to the last price or delisting."
+                />
+                <ColHead
+                  label="Excess vs SPY"
+                  align="r"
+                  explain="Average of (company return − SPY) over the same dates, in percentage points. This is what the prediction score is based on."
+                />
+                <ColHead
+                  label="Hit"
+                  align="r"
+                  explain="Share of mapped companies that beat SPY. A high excess with a low hit rate usually means one name carried the average."
+                />
+                <ColHead
+                  label="Score"
+                  align="r"
+                  explain="50 = in line with SPY. Higher beat the market after shrinking for small samples and disagreement among names. Lower lagged."
+                />
+                <ColHead
+                  label="Verdict"
+                  explain="Beat market: excess above +5pp and hit rate at least 50%. Lagged: excess below −5pp. Mixed: in between. Thin sample or too early if there is not enough history."
+                />
               </tr>
             </thead>
             <tbody>
@@ -530,21 +559,46 @@ export default function App() {
       <Panel
         id="ranking"
         title="Prediction ranking"
-        subtitle="Highest signal first · 50 is in line with SPY"
+        subtitle="Sorted by score · 50 means the mapped names matched SPY · hover a column title"
         defaultOpen={false}
       >
         <div className="table-wrap">
           <table>
             <thead>
               <tr>
-                <th>#</th>
-                <th>Technology</th>
-                <th>Cat.</th>
-                <th className="r">Score</th>
-                <th className="r">Excess</th>
-                <th className="r">Hit</th>
-                <th className="r">σ</th>
-                <th>Verdict</th>
+                <ColHead label="#" explain="Rank by prediction score, highest first." />
+                <ColHead
+                  label="Technology"
+                  explain="MIT’s TR10 name and year — a technology, not a ticker. Hover the name for the description."
+                />
+                <ColHead
+                  label="Cat."
+                  explain="Our editorial bucket (AI, biotech, energy, hardware, and so on). It chooses the sector ETF on the chart. It is not MIT’s taxonomy."
+                />
+                <ColHead
+                  label="Score"
+                  align="r"
+                  explain="Prediction score. 50 = mapped companies matched SPY over the same dates. Higher beat SPY; lower lagged. Small samples, disagreement among names (σ), and a low hit rate all pull the score toward 50 so one winner cannot dominate."
+                />
+                <ColHead
+                  label="Excess"
+                  align="r"
+                  explain="Average excess vs SPY, in percentage points. For each mapped company: its total return from the list date (or IPO) to the last price or delisting, minus SPY on those same dates. Then the mean. +20pp means twenty points more than SPY, not a 20% return."
+                />
+                <ColHead
+                  label="Hit"
+                  align="r"
+                  explain="Share of mapped companies that beat SPY. 50% means half the names outperformed. A high score with a low hit rate usually means one name (often a later winner) carried the average."
+                />
+                <ColHead
+                  label="σ"
+                  align="r"
+                  explain="Dispersion: standard deviation of the companies’ total returns. High σ means the names disagreed, so the average is less trustworthy and the score is pulled toward 50."
+                />
+                <ColHead
+                  label="Verdict"
+                  explain="Beat market: average excess above +5pp and at least half the names beat SPY. Lagged: average excess below −5pp. Mixed: in between. Thin sample: fewer than two names with prices. Too early: the list is too recent."
+                />
               </tr>
             </thead>
             <tbody>
@@ -685,6 +739,24 @@ function defaultChartSeries(sectorTicker: string | null): ChartSeries[] {
     { key: "oil", label: "Oil", ticker: "USO" },
   );
   return rows;
+}
+
+function ColHead({
+  label,
+  explain,
+  align,
+}: {
+  label: string;
+  explain: string;
+  align?: "r";
+}) {
+  return (
+    <th className={align === "r" ? "r" : undefined}>
+      <ExplainTip text={explain}>
+        <span className="col-head">{label}</span>
+      </ExplainTip>
+    </th>
+  );
 }
 
 function Kpi({

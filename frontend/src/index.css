@@ -464,6 +464,11 @@ th {
   background: var(--card);
 }
 
+.col-head {
+  border-bottom: 1px dotted #5c6578;
+  cursor: help;
+}
+
 td {
   padding: 9px 8px;
   border-bottom: 1px solid #151b24;
