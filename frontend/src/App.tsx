@@ -1,0 +1,582 @@
+import { useEffect, useMemo, useState } from "react";
+import {
+  CartesianGrid,
+  Legend,
+  Line,
+  LineChart,
+  ResponsiveContainer,
+  Tooltip,
+  XAxis,
+  YAxis,
+} from "recharts";
+import {
+  fetchCategories,
+  fetchOverview,
+  fetchScores,
+  fetchTechnologies,
+  fetchTechnology,
+  fetchWatchlist,
+} from "./api";
+import { Panel } from "./Panel";
+import {
+  categoryLabel,
+  fmtNum,
+  fmtPct,
+  fmtPp,
+  fmtScore,
+  signedClass,
+  verdictLabel,
+} from "./format";
+import type {
+  Overview,
+  RankedScore,
+  TechDetail,
+  TechListItem,
+  Universe,
+  Watchlist,
+} from "./types";
+
+export default function App() {
+  const [universe, setUniverse] = useState<Universe>("all");
+  const [year, setYear] = useState("");
+  const [category, setCategory] = useState("");
+  const [query, setQuery] = useState("");
+  const [mappedOnly, setMappedOnly] = useState(true);
+  const [categories, setCategories] = useState<string[]>([]);
+  const [overview, setOverview] = useState<Overview | null>(null);
+  const [techs, setTechs] = useState<TechListItem[]>([]);
+  const [selectedId, setSelectedId] = useState<number | null>(null);
+  const [detail, setDetail] = useState<TechDetail | null>(null);
+  const [ranking, setRanking] = useState<RankedScore[]>([]);
+  const [watch, setWatch] = useState<Watchlist | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchCategories().then(setCategories).catch(() => setCategories([]));
+  }, []);
+
+  useEffect(() => {
+    setLoading(true);
+    Promise.all([
+      fetchOverview(universe),
+      fetchTechnologies({
+        universe,
+        year,
+        q: query.trim() || undefined,
+        category: category || undefined,
+        mappedOnly,
+      }),
+      fetchScores(universe),
+      fetchWatchlist(universe),
+    ])
+      .then(([ov, list, scores, wl]) => {
+        setOverview(ov);
+        setTechs(list);
+        setRanking(scores);
+        setWatch(wl);
+        setError(null);
+        setSelectedId((current) => {
+          if (current && list.some((t) => t.id === current)) return current;
+          const ranked = [...list]
+            .filter((t) => t.score?.prediction_score != null && !t.score.window_short)
+            .sort(
+              (a, b) =>
+                (b.score?.prediction_score ?? 0) - (a.score?.prediction_score ?? 0),
+            );
+          return ranked[0]?.id ?? list[0]?.id ?? null;
+        });
+      })
+      .catch((err: Error) => setError(err.message))
+      .finally(() => setLoading(false));
+  }, [universe, year, category, query, mappedOnly]);
+
+  useEffect(() => {
+    if (!selectedId) {
+      setDetail(null);
+      return;
+    }
+    fetchTechnology(selectedId, universe)
+      .then(setDetail)
+      .catch((err: Error) => setError(err.message));
+  }, [selectedId, universe]);
+
+  const years = useMemo(() => {
+    const fromMeta = overview?.years.map((y) => y.year) ?? [];
+    return Array.from(new Set(fromMeta)).sort((a, b) => b - a);
+  }, [overview]);
+
+  const selectedScore = detail?.score;
+
+  return (
+    <div className="app">
+      <header className="top">
+        <div>
+          <p className="eyebrow">MIT TR10 × public markets</p>
+          <h1>Breakthrough Ledger</h1>
+        </div>
+        <p className="lede">
+          Did a named technology beat the market after MIT called it? Equal-weight
+          mapped names versus SPY, including delistings at exit.
+        </p>
+      </header>
+
+      <div className="filters">
+        <label>
+          Year
+          <select value={year} onChange={(e) => setYear(e.target.value)}>
+            <option value="">All years</option>
+            {years.map((y) => (
+              <option key={y} value={y}>
+                {y}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label>
+          Category
+          <select value={category} onChange={(e) => setCategory(e.target.value)}>
+            <option value="">All</option>
+            {categories.map((c) => (
+              <option key={c} value={c}>
+                {categoryLabel(c)}
+              </option>
+            ))}
+          </select>
+        </label>
+        <label className="grow">
+          Search
+          <input
+            value={query}
+            placeholder="Deep learning, mRNA, nuclear…"
+            onChange={(e) => setQuery(e.target.value)}
+          />
+        </label>
+        <label className="check">
+          <input
+            type="checkbox"
+            checked={mappedOnly}
+            onChange={(e) => setMappedOnly(e.target.checked)}
+          />
+          Mapped only
+        </label>
+        <div className="segment">
+          <button
+            className={universe === "all" ? "on" : ""}
+            type="button"
+            onClick={() => setUniverse("all")}
+          >
+            All mappings
+          </button>
+          <button
+            className={universe === "direct" ? "on" : ""}
+            type="button"
+            onClick={() => setUniverse("direct")}
+          >
+            Direct only
+          </button>
+        </div>
+      </div>
+
+      {error ? <div className="banner error">{error}</div> : null}
+      {overview ? <div className="banner">{overview.disclaimer}</div> : null}
+
+      <Panel
+        id="pulse"
+        title="Market pulse"
+        subtitle={loading ? "Loading" : overview ? `as of ${overview.as_of}` : ""}
+      >
+        <div className="kpis">
+          <Kpi label="Technologies" value={fmtNum(overview?.n_technologies)} hint="in the archive" />
+          <Kpi label="Mapped" value={fmtNum(overview?.n_mapped_technologies)} hint="have a cohort" />
+          <Kpi
+            label="Beat SPY"
+            value={
+              overview?.beat_rate == null
+                ? "—"
+                : `${overview.beat_count}/${overview.n_scored}`
+            }
+            hint={fmtPct(overview?.beat_rate, 0) + " of scored"}
+            tone={overview && overview.beat_count > (overview.lag_count || 0) ? "up" : "down"}
+          />
+          <Kpi
+            label="Median excess"
+            value={fmtPp(overview?.median_excess_return)}
+            hint="vs SPY, scored categories"
+            tone={
+              (overview?.median_excess_return || 0) > 0
+                ? "up"
+                : (overview?.median_excess_return || 0) < 0
+                  ? "down"
+                  : ""
+            }
+          />
+          <Kpi label="Listed names" value={fmtNum(overview?.n_companies)} hint="in MySQL" />
+        </div>
+      </Panel>
+
+      <Panel
+        id="ledger"
+        title="Technology ledger"
+        subtitle={`${techs.length} rows · click a name`}
+      >
+        <div className="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Year</th>
+                <th>Technology</th>
+                <th>Cat.</th>
+                <th className="r">Names</th>
+                <th className="r">Cohort</th>
+                <th className="r">Excess vs SPY</th>
+                <th className="r">Hit</th>
+                <th className="r">Score</th>
+                <th>Verdict</th>
+              </tr>
+            </thead>
+            <tbody>
+              {techs.map((t) => {
+                const s = t.score;
+                return (
+                  <tr
+                    key={t.id}
+                    className={t.id === selectedId ? "selected" : ""}
+                    onClick={() => setSelectedId(t.id)}
+                  >
+                    <td className="mono">{t.year}</td>
+                    <td>
+                      <div className="name">{t.name}</div>
+                      {s?.window_short ? <div className="hint">short window</div> : null}
+                    </td>
+                    <td className="muted">{categoryLabel(t.category)}</td>
+                    <td className="r mono">{s?.n_with_prices ?? 0}</td>
+                    <td className={`r ${signedClass(s?.cohort_mean_return)}`}>
+                      {fmtPct(s?.cohort_mean_return)}
+                    </td>
+                    <td className={`r ${signedClass(s?.mean_excess_return)}`}>
+                      {fmtPp(s?.mean_excess_return)}
+                    </td>
+                    <td className="r mono">{fmtPct(s?.hit_rate, 0)}</td>
+                    <td className="r mono gold">{fmtScore(s?.prediction_score)}</td>
+                    <td>
+                      <span className={`pill ${s?.verdict || "none"}`}>
+                        {verdictLabel(s?.verdict)}
+                      </span>
+                    </td>
+                  </tr>
+                );
+              })}
+              {techs.length === 0 ? (
+                <tr>
+                  <td colSpan={9} className="empty">
+                    No rows for these filters.
+                  </td>
+                </tr>
+              ) : null}
+            </tbody>
+          </table>
+        </div>
+      </Panel>
+
+      <Panel
+        id="chart"
+        title="Cohort vs market"
+        subtitle={
+          detail
+            ? `${detail.year} ${detail.name} · equal-weight vs ${detail.chart.benchmark_ticker}`
+            : "Select a technology"
+        }
+        defaultOpen
+      >
+        {detail ? (
+          <>
+            <div className="detail-head">
+              <div>
+                <h2>
+                  {detail.year} {detail.name}
+                </h2>
+                <p>{detail.description}</p>
+              </div>
+              <div className="score-box">
+                <span className="k">Prediction score</span>
+                <span className="v">{fmtScore(selectedScore?.prediction_score)}</span>
+                <span className={`pill ${selectedScore?.verdict || "none"}`}>
+                  {verdictLabel(selectedScore?.verdict)}
+                </span>
+              </div>
+            </div>
+            <div className="chart-meta">
+              <span>
+                Excess {fmtPp(selectedScore?.mean_excess_return)} vs SPY over{" "}
+                {fmtNum(selectedScore?.window_years, 1)}y
+              </span>
+              <span>Dispersion {fmtPct(selectedScore?.dispersion)}</span>
+              <span>
+                {selectedScore?.n_with_prices}/{selectedScore?.n_companies} with prices
+              </span>
+              {detail.mit_source_url ? (
+                <a href={detail.mit_source_url} target="_blank" rel="noreferrer">
+                  MIT source
+                </a>
+              ) : null}
+            </div>
+            <div className="chart">
+              {detail.chart.points.length > 1 ? (
+                <ResponsiveContainer width="100%" height={320}>
+                  <LineChart data={detail.chart.points} margin={{ top: 8, right: 12, left: 0, bottom: 0 }}>
+                    <CartesianGrid stroke="#1c2430" vertical={false} />
+                    <XAxis
+                      dataKey="date"
+                      tickFormatter={(v) => String(v).slice(0, 4)}
+                      stroke="#8b93a7"
+                      tick={{ fontSize: 11, fontFamily: "IBM Plex Mono" }}
+                      minTickGap={40}
+                    />
+                    <YAxis
+                      stroke="#8b93a7"
+                      tick={{ fontSize: 11, fontFamily: "IBM Plex Mono" }}
+                      domain={["auto", "auto"]}
+                    />
+                    <Tooltip
+                      contentStyle={{
+                        background: "#10141c",
+                        border: "1px solid #1c2430",
+                        fontFamily: "IBM Plex Mono",
+                        fontSize: 12,
+                      }}
+                      formatter={(value: number | string, name: string) => [
+                        Number(value).toFixed(1),
+                        name,
+                      ]}
+                    />
+                    <Legend />
+                    <Line
+                      type="monotone"
+                      dataKey="cohort"
+                      name="Cohort (100 = start)"
+                      stroke="#d4a84b"
+                      dot={false}
+                      strokeWidth={2}
+                    />
+                    <Line
+                      type="monotone"
+                      dataKey="benchmark"
+                      name="SPY (100 = start)"
+                      stroke="#7f8ea3"
+                      dot={false}
+                      strokeWidth={1.5}
+                    />
+                  </LineChart>
+                </ResponsiveContainer>
+              ) : (
+                <p className="empty">No overlapping price history for this cohort.</p>
+              )}
+            </div>
+          </>
+        ) : (
+          <p className="empty">Pick a row in the ledger.</p>
+        )}
+      </Panel>
+
+      <Panel
+        id="names"
+        title="Mapped companies"
+        subtitle={
+          detail
+            ? `${detail.companies.length} names · mappings dated ${detail.companies[0]?.added_at?.slice(0, 10) ?? "—"}`
+            : ""
+        }
+      >
+        {detail ? (
+          <div className="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Ticker</th>
+                  <th>Company</th>
+                  <th>Map</th>
+                  <th className="r">Return</th>
+                  <th className="r">vs SPY</th>
+                  <th>Why it is here</th>
+                </tr>
+              </thead>
+              <tbody>
+                {detail.companies.map((c) => (
+                  <tr key={c.ticker}>
+                    <td className="mono">{c.ticker}</td>
+                    <td>
+                      <div className="name">{c.name}</div>
+                      {c.delisted_date ? (
+                        <div className="hint">
+                          Delisted {c.delisted_date}
+                          {c.delisted_reason ? ` · ${c.delisted_reason}` : ""}
+                        </div>
+                      ) : null}
+                    </td>
+                    <td>
+                      <span className={`pill ${c.confidence}`}>{c.confidence}</span>
+                    </td>
+                    <td className={`r ${signedClass(c.total_return)}`}>
+                      {fmtPct(c.total_return)}
+                    </td>
+                    <td className={`r ${signedClass(c.excess_return)}`}>
+                      {fmtPp(c.excess_return)}
+                    </td>
+                    <td className="note">{c.role_note}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        ) : (
+          <p className="empty">Pick a technology to see the mapping audit trail.</p>
+        )}
+      </Panel>
+
+      <Panel
+        id="ranking"
+        title="Prediction ranking"
+        subtitle="Highest signal first · 50 is in line with SPY"
+        defaultOpen={false}
+      >
+        <div className="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Technology</th>
+                <th>Cat.</th>
+                <th className="r">Score</th>
+                <th className="r">Excess</th>
+                <th className="r">Hit</th>
+                <th className="r">σ</th>
+                <th>Verdict</th>
+              </tr>
+            </thead>
+            <tbody>
+              {ranking.map((r) => (
+                <tr
+                  key={r.technology_id}
+                  className={r.technology_id === selectedId ? "selected" : ""}
+                  onClick={() => setSelectedId(r.technology_id)}
+                >
+                  <td className="mono muted">{r.rank}</td>
+                  <td>
+                    <div className="name">
+                      {r.year} {r.name}
+                    </div>
+                  </td>
+                  <td className="muted">{categoryLabel(r.category)}</td>
+                  <td className="r mono gold">{fmtScore(r.prediction_score)}</td>
+                  <td className={`r ${signedClass(r.mean_excess_return)}`}>
+                    {fmtPp(r.mean_excess_return)}
+                  </td>
+                  <td className="r mono">{fmtPct(r.hit_rate, 0)}</td>
+                  <td className="r mono">{fmtPct(r.dispersion)}</td>
+                  <td>
+                    <span className={`pill ${r.verdict}`}>{verdictLabel(r.verdict)}</span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </Panel>
+
+      <Panel id="watch" title="2026 watchlist" subtitle="Live book · analog history, not a forecast">
+        {watch ? (
+          <>
+            <p className="note-block">{watch.note}</p>
+            <div className="watch-grid">
+              {watch.items.map((item) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  className={`watch-card ${item.id === selectedId ? "selected" : ""}`}
+                  onClick={() => setSelectedId(item.id)}
+                >
+                  <div className="watch-top">
+                    <span className="muted">{categoryLabel(item.category)}</span>
+                    <span className={`pill ${item.verification_status}`}>
+                      {item.verification_status}
+                    </span>
+                  </div>
+                  <h3>{item.name}</h3>
+                  <p>{item.description}</p>
+                  <div className="tickers">
+                    {item.companies.map((c) => (
+                      <span key={c.ticker} className="mono">
+                        {c.ticker}
+                      </span>
+                    ))}
+                  </div>
+                  <div className="watch-analog">
+                    Analog excess{" "}
+                    <span className={signedClass(item.historical_analog_excess)}>
+                      {fmtPp(item.historical_analog_excess)}
+                    </span>
+                  </div>
+                  {item.analogies.slice(0, 2).map((a) => (
+                    <div key={a.id} className="hint">
+                      {a.year} {a.name}
+                    </div>
+                  ))}
+                </button>
+              ))}
+            </div>
+          </>
+        ) : (
+          <p className="empty">No 2026 items seeded.</p>
+        )}
+      </Panel>
+
+      <Panel id="method" title="How the score is computed" defaultOpen={false}>
+        <ol className="method">
+          <li>
+            MIT names a <em>technology</em>, not a ticker. Mappings are editorial, stored with
+            confidence (<code>direct</code> vs <code>exposed</code>), author, and timestamp so
+            they cannot be silently rewritten after looking at the chart.
+          </li>
+          <li>
+            Each mapped company is held from the list date (or IPO if later) to the latest
+            price, or to delisting. Slack and Fitbit stay in at their acquisition exits.
+          </li>
+          <li>
+            Excess return is company total return minus SPY over the <em>same dates</em>. The
+            category number is the average of those excesses — not “NVIDIA went up.”
+          </li>
+          <li>
+            Dispersion (σ of company returns) and hit rate (% that beat SPY) punish one-name
+            miracles. Prediction score is 50 when in line with SPY, then squeezed by sample
+            size and dispersion.
+          </li>
+          <li>
+            2026 is a watchlist. Analog rows are hand-picked resemblances, not a similarity
+            model. This does not tell you which ticker to buy.
+          </li>
+        </ol>
+      </Panel>
+    </div>
+  );
+}
+
+function Kpi({
+  label,
+  value,
+  hint,
+  tone,
+}: {
+  label: string;
+  value: string;
+  hint: string;
+  tone?: string;
+}) {
+  return (
+    <div className="kpi">
+      <span className="k">{label}</span>
+      <span className={`v ${tone || ""}`}>{value}</span>
+      <span className="h">{hint}</span>
+    </div>
+  );
+}

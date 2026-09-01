@@ -1,0 +1,12 @@
+.env
+.venv/
+venv/
+__pycache__/
+*.pyc
+node_modules/
+dist/
+.mysql-data/
+*.log
+.DS_Store
+frontend/dist/
+backend/.venv/
