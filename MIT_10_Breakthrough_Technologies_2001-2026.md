@@ -1,31 +1,28 @@
 # MIT Technology Review — "10 Breakthrough Technologies," 2001–2026
 
-MIT Technology Review has published this annual list since 2001. Below is a year-by-year
-compilation. Years marked ✅ were verified directly against MIT Technology Review's own
-archive pages; years marked ⚠️ are compiled from secondary/aggregator sources and may be
-incomplete or slightly reordered — check the linked archive if you need certainty.
+MIT Technology Review has published this annual list since 2001. Names and order below
+match the lists loaded into Breakthrough Ledger.
 
 Archive: https://www.technologyreview.com/supertopic/tr10-archive/
 
 ---
 
-## 2001 ⚠️
-1. Brain-Machine Interfaces
+## 2001
+1. Brain-Machine Interface
 2. Flexible Transistors
 3. Data Mining
 4. Digital Rights Management
 5. Biometrics
 6. Natural Language Processing
 7. Microphotonics
-8. Combinatorial Chemistry
+8. Untangling Code
 9. Robot Design
 10. Microfluidics
 
-*(2001 was published as a standalone PDF, not a web archive page — MIT's own archive
-listing jumps from 2001 straight to 2003, so a 2002 edition may not have been produced
-under this name.)*
+## 2002
+No list published.
 
-## 2003 ✅
+## 2003
 1. Wireless Sensor Networks
 2. Injectable Tissue Engineering
 3. Nano Solar Cells
@@ -37,36 +34,127 @@ under this name.)*
 9. Glycomics
 10. Quantum Cryptography
 
-## 2004 ✅
+## 2004
 1. Universal Translation
 2. Synthetic Biology
 3. Nanowires
-4. Bayesian Machine Learning
-5. T-Rays
-6. Distributed Storage
-7. RNAi Therapy
-8. Power Grid Control
-9. Microfluidic Optical Fibers
+4. T-Rays
+5. Distributed Storage
+6. RNAi Interference
+7. Power Grid Control
+8. Microfluidic Optical Fibers
+9. Bayesian Machine Learning
 10. Personal Genomics
 
-## 2005–2012 ⚠️
-MIT's archive confirms these years exist (themes included things like universal memory,
-stretchable silicon, nanocharging solar, engineered stem cells, gestural interfaces,
-crowdfunding, and green concrete — cited in MIT's own retrospectives), but I could not
-pull a clean, fully-verified 10-item list for each of these years without risking
-inaccuracy. Rather than guess and give you wrong technology names, I'd rather flag this
-gap plainly. If you want these years specifically, I can dig into each one individually —
-just say which years matter most to you.
+## 2005
+1. Airborne Networks
+2. Quantum Wires
+3. Silicon Photonics
+4. Metabolomics
+5. Magnetic-Resonance Force Microscopy
+6. Universal Memory
+7. Bacterial Factories
+8. Enviromatics
+9. Cell-Phone Viruses
+10. Biomechatronics
 
-## 2013 ⚠️ (partial — verified items only)
+## 2006
+1. Nanomedicine
+2. Nanobiomechanics
+3. Epigenetics
+4. Comparative Interactomics
+5. Diffusion Tensor Imaging
+6. Cognitive Radio
+7. Pervasive Wireless
+8. Universal Authentication
+9. Nuclear Reprogramming
+10. Stretchable Silicon
+
+## 2007
+1. Peering into Video's Future
+2. Nanocharging Solar
+3. Invisible Revolution
+4. Personalized Medical Monitors
+5. Single-Cell Analysis
+6. A New Focus for Light
+7. Neuron Control
+8. Nanohealing
+9. Digital Imaging, Reimagined
+10. Augmented Reality
+
+## 2008
+1. Modeling Surprise
+2. Probabilistic Chips
+3. NanoRadio
+4. Wireless Power
+5. Atomic Magnetometers
+6. Offline Web Applications
+7. Graphene Transistors
+8. Connectomics
+9. Reality Mining
+10. Cellulolytic Enzymes
+
+## 2009
+1. Intelligent Software Assistant
+2. $100 Genome
+3. Racetrack Memory
+4. Biological Machines
+5. Paper Diagnostics
+6. Liquid Battery
+7. Traveling-Wave Reactor
+8. Nanopiezoelectronics
+9. HashCache
+10. Software-Defined Networking
+
+## 2010
+1. Real-Time Search
+2. Mobile 3-D
+3. Engineered Stem Cells
+4. Solar Fuel
+5. Light-Trapping Photovoltaics
+6. Social TV
+7. Green Concrete
+8. Implantable Electronics
+9. Dual-Action Antibodies
+10. Cloud Programming
+
+## 2011
+1. Social Indexing
+2. Smart Transformers
+3. Gestural Interfaces
+4. Cancer Genomics
+5. Solid-State Batteries
+6. Homomorphic Encryption
+7. Cloud Streaming
+8. Crash-Proof Code
+9. Separating Chromosomes
+10. Synthetic Cells
+
+## 2012
+1. Egg Stem Cells
+2. Ultra-Efficient Solar
+3. Light-Field Photography
+4. Solar Microgrids
+5. 3-D Transistors
+6. A Faster Fourier Transform
+7. Nanopore Sequencing
+8. Crowdfunding
+9. High-Speed Materials Discovery
+10. Facebook's Timeline
+
+## 2013
 1. Deep Learning
 2. Ultra-Efficient Solar Power
 3. Big Data from Cheap Phones
 4. Temporary Social Media
 5. Smart Watches
-*(remaining 5 not fully verified)*
+6. Memory Implants
+7. Baxter: The Blue-Collar Robot
+8. Additive Manufacturing
+9. Prenatal DNA Sequencing
+10. Supergrids
 
-## 2014 ✅
+## 2014
 1. Agricultural Drones
 2. Ultraprivate Smartphones
 3. Brain Mapping
@@ -78,7 +166,7 @@ just say which years matter most to you.
 9. Agile Robots
 10. Smart Wind and Solar Power
 
-## 2015 ✅
+## 2015
 1. Magic Leap
 2. Nano-Architecture
 3. Car-to-Car Communication
@@ -90,7 +178,7 @@ just say which years matter most to you.
 9. Supercharged Photosynthesis
 10. Internet of DNA
 
-## 2016 ✅
+## 2016
 1. Immune Engineering
 2. Precise Gene Editing in Plants
 3. Conversational Interfaces
@@ -100,9 +188,9 @@ just say which years matter most to you.
 7. SolarCity's Gigafactory
 8. Slack
 9. Tesla Autopilot
-10. (Reinforcement Learning appears in some listings for 2016; MIT's own materials place it in 2017 — see below)
+10. Power from the Air
 
-## 2017 ✅
+## 2017
 1. Reversing Paralysis
 2. Self-Driving Trucks
 3. Paying with Your Face
@@ -114,7 +202,7 @@ just say which years matter most to you.
 9. Botnets of Things
 10. Reinforcement Learning
 
-## 2018 ✅
+## 2018
 1. 3-D Metal Printing
 2. Artificial Embryos
 3. Sensing City
@@ -126,7 +214,9 @@ just say which years matter most to you.
 9. Genetic Fortune-Telling
 10. Materials' Quantum Leap
 
-## 2019 ✅ (Bill Gates guest-curated this year)
+## 2019
+Bill Gates guest-curated this year.
+
 1. Robot Dexterity
 2. New-Wave Nuclear Power
 3. Predicting Preemies
@@ -138,7 +228,7 @@ just say which years matter most to you.
 9. Sanitation Without Sewers
 10. Smooth-Talking AI Assistants
 
-## 2020 ✅
+## 2020
 1. Unhackable Internet
 2. Hyper-Personalized Medicine
 3. Digital Money
@@ -148,33 +238,35 @@ just say which years matter most to you.
 7. Quantum Supremacy
 8. Tiny AI
 9. Differential Privacy
-10. Climate Change Attribution
+10. Climate-Change Attribution
 
-## 2021 ✅ (20th anniversary of the list)
+## 2021
+20th anniversary of the list.
+
 1. Messenger RNA Vaccines
 2. GPT-3
-3. Data Trust
-4. TikTok Recommendation Algorithms
-5. Lithium-Metal Batteries
+3. TikTok Recommendation Algorithms
+4. Lithium-Metal Batteries
+5. Data Trusts
 6. Green Hydrogen
 7. Digital Contact Tracing
 8. Hyper-Accurate Positioning
 9. Remote Everything
 10. Multi-Skilled AI
 
-## 2022 ✅
-1. The End of Passwords
-2. COVID Variant Tracking
-3. A Long-Lasting Grid Battery
-4. AI for Protein Folding
-5. Malaria Vaccine
-6. Proof of Stake
-7. A Pill for COVID
-8. Practical Fusion Reactors
-9. Synthetic Data for AI
-10. A Carbon Removal Factory
+## 2022
+1. COVID Pill
+2. Practical Fusion Reactors
+3. A Proof of Stake
+4. Long-Lasting Grid Batteries
+5. AI for Protein Folding
+6. Malaria Vaccine
+7. Synthetic Data for AI
+8. Carbon Removal Factory
+9. The End of Passwords
+10. COVID Variant Tracking
 
-## 2023 ✅
+## 2023
 1. CRISPR for High Cholesterol
 2. AI That Makes Images
 3. A Chip Design That Changes Everything
@@ -186,8 +278,8 @@ just say which years matter most to you.
 9. Ancient DNA Analysis
 10. Battery Recycling
 
-## 2024 ✅
-1. AI for Everything (Generative AI/agents)
+## 2024
+1. AI for Everything
 2. Super-Efficient Solar Cells
 3. Apple Vision Pro
 4. Weight-Loss Drugs
@@ -198,29 +290,28 @@ just say which years matter most to you.
 9. Heat Pumps
 10. Twitter Killers
 
-## 2025 ✅
-1. Vera C. Rubin Observatory
-2. Generative AI Search
-3. Small Language Models
-4. Cattle Burping Remedies (methane-reducing cattle feed)
-5. Robotaxis
+## 2025
+1. Small Language Models
+2. Vera C. Rubin Observatory
+3. Long-Acting HIV Prevention
+4. Generative AI Search
+5. Cattle Burping Remedies
 6. Cleaner Jet Fuel
-7. Robots That Learn Fast
-8. Long-Acting HIV Prevention Medication
-9. Green Steel
-10. Effective Stem-Cell Therapies
+7. Fast-Learning Robots
+8. Stem-Cell Treatments That Work
+9. Robotaxis
+10. Green Steel
 
-## 2026 ⚠️ (partial — this is MIT's 25th edition of the list)
-1. New Reactors (novel/compact nuclear power designs)
-2. Hyperscale AI Data Centers
-3. Sodium-Ion Batteries
-4. AI Coding Tools
-*(remaining items not fully confirmed — full list at technologyreview.com/2026/01/12/1130697)*
+## 2026
+25th edition. https://www.technologyreview.com/2026/01/12/1130697
 
----
-
-### Notes
-- Some early-2000s and mid-2000s years (2002, 2005–2012, parts of 2013) could not be
-  fully verified in this pass. If any specific year matters to you, I can look it up in
-  more depth.
-- Full official archive with article links: https://www.technologyreview.com/supertopic/tr10-archive/
+1. Hyperscale AI Data Centers
+2. Sodium-Ion Batteries
+3. Personalized Gene Editing
+4. AI Interpretability
+5. Advanced Nuclear Reactors
+6. Embryo Genetic Scoring
+7. AI Companion Agents
+8. Gene Restoration
+9. Generative Coding
+10. Commercial Space Stations

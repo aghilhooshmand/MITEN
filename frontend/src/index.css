@@ -484,7 +484,10 @@ tbody tr:hover td {
   border-color: #1e4a35;
 }
 
-.pill.none {
+.pill.too_early,
+.pill.insufficient,
+.pill.none,
+.pill.gap {
   color: var(--muted);
 }
 
