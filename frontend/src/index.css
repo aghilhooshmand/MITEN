@@ -94,9 +94,9 @@ h1 {
   color: var(--muted);
 }
 
-.filters .grow {
-  flex: 1;
-  min-width: 180px;
+.filters .grow select {
+  min-width: 280px;
+  width: 100%;
 }
 
 .filters input,

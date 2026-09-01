@@ -11,7 +11,6 @@ import {
 } from "recharts";
 import {
   fetchArchive,
-  fetchCategories,
   fetchOverview,
   fetchScores,
   fetchTechnologies,
@@ -40,11 +39,8 @@ import type {
 
 export default function App() {
   const [universe, setUniverse] = useState<Universe>("all");
-  const [year, setYear] = useState("");
-  const [category, setCategory] = useState("");
-  const [query, setQuery] = useState("");
+  const [year, setYear] = useState("2026");
   const [mappedOnly, setMappedOnly] = useState(true);
-  const [categories, setCategories] = useState<string[]>([]);
   const [overview, setOverview] = useState<Overview | null>(null);
   const [techs, setTechs] = useState<TechListItem[]>([]);
   const [selectedId, setSelectedId] = useState<number | null>(null);
@@ -52,13 +48,8 @@ export default function App() {
   const [ranking, setRanking] = useState<RankedScore[]>([]);
   const [watch, setWatch] = useState<Watchlist | null>(null);
   const [archive, setArchive] = useState<Archive | null>(null);
-  const [archiveYear, setArchiveYear] = useState<number>(2026);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
-
-  useEffect(() => {
-    fetchCategories().then(setCategories).catch(() => setCategories([]));
-  }, []);
 
   useEffect(() => {
     setLoading(true);
@@ -67,8 +58,6 @@ export default function App() {
       fetchTechnologies({
         universe,
         year,
-        q: query.trim() || undefined,
-        category: category || undefined,
         mappedOnly,
       }),
       fetchScores(universe),
@@ -82,27 +71,17 @@ export default function App() {
         setWatch(wl);
         setArchive(arch);
         setError(null);
-        setArchiveYear((current) => {
-          if (arch.years.some((y) => y.year === current && y.technologies.length > 0)) {
-            return current;
-          }
-          const withItems = arch.years.find((y) => y.technologies.length > 0);
-          return withItems?.year ?? current;
-        });
+        const edition = arch.years.find((y) => String(y.year) === year);
+        const picks = edition?.technologies ?? [];
         setSelectedId((current) => {
+          if (current && picks.some((t) => t.id === current)) return current;
           if (current && list.some((t) => t.id === current)) return current;
-          const ranked = [...list]
-            .filter((t) => t.score?.prediction_score != null && !t.score.window_short)
-            .sort(
-              (a, b) =>
-                (b.score?.prediction_score ?? 0) - (a.score?.prediction_score ?? 0),
-            );
-          return ranked[0]?.id ?? list[0]?.id ?? null;
+          return picks[0]?.id ?? list[0]?.id ?? null;
         });
       })
       .catch((err: Error) => setError(err.message))
       .finally(() => setLoading(false));
-  }, [universe, year, category, query, mappedOnly]);
+  }, [universe, year, mappedOnly]);
 
   useEffect(() => {
     if (!selectedId) {
@@ -119,7 +98,11 @@ export default function App() {
     return Array.from(new Set(fromMeta)).sort((a, b) => b - a);
   }, [overview]);
 
-  const archiveEdition = archive?.years.find((y) => y.year === archiveYear) ?? null;
+  const archiveEdition =
+    archive?.years.find((y) => String(y.year) === year) ??
+    archive?.years.find((y) => y.technologies.length > 0) ??
+    null;
+  const mitPicks = archiveEdition?.technologies ?? [];
   const selectedScore = detail?.score;
 
   return (
@@ -139,7 +122,7 @@ export default function App() {
         <label>
           Year
           <select value={year} onChange={(e) => setYear(e.target.value)}>
-            <option value="">All years</option>
+            {years.length === 0 ? <option value={year}>{year}</option> : null}
             {years.map((y) => (
               <option key={y} value={y}>
                 {y}
@@ -147,24 +130,23 @@ export default function App() {
             ))}
           </select>
         </label>
-        <label>
-          Category
-          <select value={category} onChange={(e) => setCategory(e.target.value)}>
-            <option value="">All</option>
-            {categories.map((c) => (
-              <option key={c} value={c}>
-                {categoryLabel(c)}
-              </option>
-            ))}
-          </select>
-        </label>
         <label className="grow">
-          Search
-          <input
-            value={query}
-            placeholder="Deep learning, mRNA, nuclear…"
-            onChange={(e) => setQuery(e.target.value)}
-          />
+          MIT breakthrough
+          <select
+            value={selectedId ?? ""}
+            onChange={(e) => setSelectedId(e.target.value ? Number(e.target.value) : null)}
+            disabled={mitPicks.length === 0}
+          >
+            {mitPicks.length === 0 ? (
+              <option value="">No verified list this year</option>
+            ) : (
+              mitPicks.map((item) => (
+                <option key={item.id} value={item.id}>
+                  {String(item.list_index).padStart(2, "0")} · {item.name}
+                </option>
+              ))
+            )}
+          </select>
         </label>
         <label className="check">
           <input
@@ -204,75 +186,59 @@ export default function App() {
             : "Year-by-year TR10 lists"
         }
       >
-        {archive ? (
+        {archiveEdition ? (
           <>
-            <div className="year-chips">
-              {archive.years.map((y) => (
-                <button
-                  key={y.year}
-                  type="button"
-                  className={`year-chip ${y.year === archiveYear ? "on" : ""} ${y.technologies.length === 0 ? "gap" : ""}`}
-                  onClick={() => setArchiveYear(y.year)}
-                >
-                  {y.year}
-                </button>
-              ))}
+            <div className="edition-meta">
+              <span className={`pill ${archiveEdition.verification_status}`}>
+                {archiveEdition.verification_status}
+              </span>
+              <p>{archiveEdition.note}</p>
+              {archiveEdition.source_url ? (
+                <a href={archiveEdition.source_url} target="_blank" rel="noreferrer">
+                  MIT archive
+                </a>
+              ) : null}
             </div>
-            {archiveEdition ? (
-              <>
-                <div className="edition-meta">
-                  <span className={`pill ${archiveEdition.verification_status}`}>
-                    {archiveEdition.verification_status}
-                  </span>
-                  <p>{archiveEdition.note}</p>
-                  {archiveEdition.source_url ? (
-                    <a href={archiveEdition.source_url} target="_blank" rel="noreferrer">
-                      MIT archive
-                    </a>
-                  ) : null}
-                </div>
-                {archiveEdition.technologies.length === 0 ? (
-                  <p className="empty">
-                    MIT published a list this year, but the ten names were not
-                    independently verified in our source compilation — so they are
-                    not shown here.
-                  </p>
-                ) : (
-                  <ol className="mit-list">
-                    {archiveEdition.technologies.map((item) => (
-                      <li key={item.id}>
-                        <button
-                          type="button"
-                          className={`mit-item ${item.id === selectedId ? "selected" : ""}`}
-                          onClick={() => setSelectedId(item.id)}
-                        >
-                          <span className="mit-num mono">
-                            {String(item.list_index).padStart(2, "0")}
+            {archiveEdition.technologies.length === 0 ? (
+              <p className="empty">
+                MIT published a list this year, but the ten names were not
+                independently verified in our source compilation — so they are
+                not shown here.
+              </p>
+            ) : (
+              <ol className="mit-list">
+                {archiveEdition.technologies.map((item) => (
+                  <li key={item.id}>
+                    <button
+                      type="button"
+                      className={`mit-item ${item.id === selectedId ? "selected" : ""}`}
+                      onClick={() => setSelectedId(item.id)}
+                    >
+                      <span className="mit-num mono">
+                        {String(item.list_index).padStart(2, "0")}
+                      </span>
+                      <span className="mit-body">
+                        <span className="name">{item.name}</span>
+                        <span className="hint">{item.description}</span>
+                      </span>
+                      <span className="mit-side">
+                        <span className="muted">{categoryLabel(item.category)}</span>
+                        {item.mapped ? (
+                          <span className={`pill ${item.score?.verdict || "mixed"}`}>
+                            {verdictLabel(item.score?.verdict)}
                           </span>
-                          <span className="mit-body">
-                            <span className="name">{item.name}</span>
-                            <span className="hint">{item.description}</span>
-                          </span>
-                          <span className="mit-side">
-                            <span className="muted">{categoryLabel(item.category)}</span>
-                            {item.mapped ? (
-                              <span className={`pill ${item.score?.verdict || "mixed"}`}>
-                                {verdictLabel(item.score?.verdict)}
-                              </span>
-                            ) : (
-                              <span className="pill none">List only</span>
-                            )}
-                          </span>
-                        </button>
-                      </li>
-                    ))}
-                  </ol>
-                )}
-              </>
-            ) : null}
+                        ) : (
+                          <span className="pill none">List only</span>
+                        )}
+                      </span>
+                    </button>
+                  </li>
+                ))}
+              </ol>
+            )}
           </>
         ) : (
-          <p className="empty">Loading MIT lists…</p>
+          <p className="empty">Pick a year to see MIT’s list.</p>
         )}
       </Panel>
 
