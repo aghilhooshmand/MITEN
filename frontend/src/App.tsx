@@ -121,7 +121,10 @@ export default function App() {
       <header className="top">
         <div>
           <p className="eyebrow">MIT TR10 × public markets</p>
-          <h1>MITEN</h1>
+          <div className="brand">
+            <img src="/miten-logo.png" alt="MITEN" width={48} height={48} />
+            <h1>MITEN</h1>
+          </div>
         </div>
         <p className="lede">
           MIT Technology Review’s annual 10 Breakthrough Technologies, then whether

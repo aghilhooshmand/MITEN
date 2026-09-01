@@ -510,7 +510,10 @@ function render() {
     <header class="top">
       <div>
         <p class="eyebrow">MIT TR10 × public markets</p>
-        <h1>MITEN</h1>
+        <div class="brand">
+          <img src="./miten-logo.png" alt="MITEN" width="48" height="48" />
+          <h1>MITEN</h1>
+        </div>
         <p class="static-tag">Static CSV snapshot · no server</p>
       </div>
       <p class="lede">
