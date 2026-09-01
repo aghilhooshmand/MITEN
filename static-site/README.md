@@ -1,5 +1,8 @@
 # MITEN — static site
 
+Public snapshot of MITEN (CSV files, no server). For the full app on your
+machine, see the [Docker tutorial](../docs/DOCKER.md) or the root README.
+
 A no-server copy of the dashboard. All tables, scores, mappings, and chart series
 are CSV files in `data/`. GitHub Pages can host this folder as-is.
 

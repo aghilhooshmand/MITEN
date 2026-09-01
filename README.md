@@ -6,47 +6,33 @@ categories later beat SPY?
 Not a stock-picker. The unit of analysis is a **technology cohort versus SPY**, with
 company mappings stored so they can be audited.
 
-## Stack
+## Use it in one of two ways
 
-- React (Vite) — one page, panels hide/show
-- FastAPI — scoring and read APIs
-- MySQL 8 — every entity and every daily price
-- `static-site/` — CSV snapshot for GitHub Pages (no server)
+**1. Public website — no install**
 
-## Run
+Open **https://aghilhooshmand.github.io/MITEN/**
 
-```bash
-# 1. MySQL
-docker compose up -d mysql
+This is the static snapshot (CSV files, no server). Anyone can use it in a
+browser. Scores and charts are whatever was last exported.
 
-# 2. Backend
-cd backend
-python3 -m venv .venv
-source .venv/bin/activate
-pip install -r requirements.txt
-PYTHONPATH=. python seed/seed.py          # archive + mappings + Yahoo prices + scores
-PYTHONPATH=. uvicorn app.main:app --reload --port 8000
+**2. Install on your computer with Docker**
 
-# 3. Frontend
-cd frontend
-npm install
-npm run dev
-```
+Run the full app (website + API + MySQL) locally. You control the data. Follow
+the step-by-step tutorial:
 
-Open http://localhost:5173
+**[Install with Docker](docs/DOCKER.md)**
 
-## Static copy (GitHub Pages, no server)
-
-`static-site/` is the same dashboard with **no FastAPI and no MySQL**. It reads CSV files in `static-site/data/`.
+Short version, if you already have Docker:
 
 ```bash
-cd static-site
-python3 -m http.server 8080
+git clone https://github.com/aghilhooshmand/MITEN.git
+cd MITEN
+docker compose up --build
 ```
 
-Open http://localhost:8080. See `static-site/README.md` to publish on GitHub Pages. Refresh CSVs from MySQL with `PYTHONPATH=. python seed/export_static.py` from `backend/`.
+Then open **http://localhost:8080**
 
-Re-fetch prices and recompute scores later with `PYTHONPATH=. python seed/seed.py`.
+---
 
 ## What the score means
 
@@ -63,3 +49,13 @@ Mappings in `backend/seed/data.py` are retrospective editorial judgments, timest
 ## Data limits
 
 US-listed Yahoo Finance history only. CATL, BYD, SpaceX, Magic Leap, Waymo-as-a-standalone, and most 2005–2012 MIT names are absent or unverified. Free price data is for this app, not for redistribution.
+
+## Stack (for developers)
+
+- React (Vite) — one page, panels hide/show
+- FastAPI — scoring and read APIs
+- MySQL 8 — every entity and every daily price
+- Docker Compose — `web` (nginx) + `backend` + `mysql`
+- `static-site/` — CSV snapshot for GitHub Pages
+
+Developer loop without Docker: MySQL via `docker compose up mysql`, then the venv/uvicorn and `npm run dev` flow. Prefer [Docker install](docs/DOCKER.md) unless you are changing code.
