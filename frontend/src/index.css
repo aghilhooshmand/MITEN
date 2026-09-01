@@ -755,6 +755,27 @@ tbody tr:hover td {
   font-style: normal;
 }
 
+.contact {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 16px;
+  margin-top: 28px;
+  padding-top: 18px;
+  border-top: 1px solid var(--line);
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.contact a {
+  color: var(--gold);
+  text-decoration: none;
+}
+
+.contact a:hover {
+  text-decoration: underline;
+}
+
 @media (max-width: 900px) {
   .top,
   .kpis,

@@ -2,9 +2,13 @@
 
 MIT’s 10 Breakthrough Technologies versus mapped public companies. Did the named
 categories later beat SPY?
-
+   
 Not a stock-picker. The unit of analysis is a **technology cohort versus SPY**, with
 company mappings stored so they can be audited.
+
+## Contact
+
+Aghil Hooshmand · [LinkedIn](https://www.linkedin.com/in/aghilhooshmand) · [aghil.hooshmand@gmail.com](mailto:aghil.hooshmand@gmail.com)
 
 ## Use it in one of two ways
 

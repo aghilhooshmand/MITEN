@@ -552,6 +552,11 @@ function render() {
     ${panel("ranking", "Prediction ranking", "Sorted by score · 50 means the mapped names matched SPY", rankTable(), false)}
     ${panel("watch", "2026 watchlist", "Live book · analog history, not a forecast", watchGrid())}
     ${panel("method", "How the score is computed", "", methodBody(), false)}
+    <footer class="contact">
+      <span>Aghil Hooshmand</span>
+      <a href="https://www.linkedin.com/in/aghilhooshmand" target="_blank" rel="noreferrer">LinkedIn</a>
+      <a href="mailto:aghil.hooshmand@gmail.com">aghil.hooshmand@gmail.com</a>
+    </footer>
   `;
 }
 

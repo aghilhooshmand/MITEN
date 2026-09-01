@@ -711,6 +711,14 @@ export default function App() {
           </li>
         </ol>
       </Panel>
+
+      <footer className="contact">
+        <span>Aghil Hooshmand</span>
+        <a href="https://www.linkedin.com/in/aghilhooshmand" target="_blank" rel="noreferrer">
+          LinkedIn
+        </a>
+        <a href="mailto:aghil.hooshmand@gmail.com">aghil.hooshmand@gmail.com</a>
+      </footer>
     </div>
   );
 }
