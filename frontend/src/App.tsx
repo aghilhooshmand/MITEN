@@ -147,7 +147,9 @@ export default function App() {
             disabled={mitPicks.length === 0}
           >
             {mitPicks.length === 0 ? (
-              <option value="">No verified list this year</option>
+              <option value="">
+                {year === "2002" ? "No list published" : "No verified list this year"}
+              </option>
             ) : (
               mitPicks.map((item) => (
                 <option key={item.id} value={item.id}>
@@ -208,13 +210,13 @@ export default function App() {
                 </a>
               ) : null}
             </div>
-            {archiveEdition.technologies.length === 0 ? (
-              <p className="empty">
-                MIT published a list this year, but the ten names were not
-                independently verified in our source compilation — so they are
-                not shown here.
-              </p>
-            ) : (
+                {archiveEdition.technologies.length === 0 ? (
+                  <p className="empty">
+                    {archiveEdition.verification_status === "none"
+                      ? "MIT Technology Review did not publish a list this year."
+                      : "MIT published a list this year, but the ten names were not independently verified in our source compilation — so they are not shown here."}
+                  </p>
+                ) : (
               <ol className="mit-list">
                 {archiveEdition.technologies.map((item) => (
                   <li key={item.id}>

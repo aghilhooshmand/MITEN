@@ -21,6 +21,7 @@ from app.models import (  # noqa: E402
     Technology,
     TechnologyAnalogy,
     TechnologyCompanyMap,
+    TechnologyScore,
     YearMeta,
 )
 from app.scoring import rescore_all  # noqa: E402
@@ -32,6 +33,7 @@ from seed.data import (  # noqa: E402
     COMPANIES,
     MAPPINGS,
     SEEDED_AT,
+    SLUG_ALIASES,
     TECHNOLOGIES,
     YEAR_META,
     slug_for,
@@ -62,14 +64,26 @@ def upsert_static(db: Session) -> None:
         bench_by_ticker[row.ticker] = row
 
     spy = bench_by_ticker["SPY"]
+    olds_for_new: dict[str, list[str]] = {}
+    for old, new in SLUG_ALIASES.items():
+        olds_for_new.setdefault(new, []).append(old)
+
+    keep_slugs: set[str] = set()
     index_by_year: dict[int, int] = {}
     for item in TECHNOLOGIES:
         slug = slug_for(item["year"], item["name"])
+        keep_slugs.add(slug)
         row = db.query(Technology).filter(Technology.slug == slug).one_or_none()
+        if row is None:
+            for old in olds_for_new.get(slug, []):
+                row = db.query(Technology).filter(Technology.slug == old).one_or_none()
+                if row is not None:
+                    break
         if row is None:
             row = Technology(slug=slug)
             db.add(row)
         index_by_year[item["year"]] = index_by_year.get(item["year"], 0) + 1
+        row.slug = slug
         row.year = item["year"]
         row.name = item["name"]
         row.description = item["desc"]
@@ -82,6 +96,19 @@ def upsert_static(db: Session) -> None:
         bench_ticker = item.get("benchmark", "SPY")
         row.default_benchmark_id = bench_by_ticker.get(bench_ticker, spy).id
 
+    db.flush()
+    orphans = db.query(Technology).filter(~Technology.slug.in_(keep_slugs)).all()
+    for tech in orphans:
+        print(f"  prune {tech.slug}")
+        db.query(TechnologyScore).filter(TechnologyScore.technology_id == tech.id).delete()
+        db.query(TechnologyCompanyMap).filter(
+            TechnologyCompanyMap.technology_id == tech.id
+        ).delete()
+        db.query(TechnologyAnalogy).filter(
+            (TechnologyAnalogy.technology_id == tech.id)
+            | (TechnologyAnalogy.analogous_technology_id == tech.id)
+        ).delete()
+        db.delete(tech)
     db.flush()
     for item in COMPANIES:
         row = db.query(Company).filter(Company.ticker == item["ticker"]).one_or_none()
@@ -320,7 +347,8 @@ def main() -> None:
     try:
         upsert_static(db)
         if "--static-only" in sys.argv:
-            print("Static-only seed complete.")
+            n_scores = rescore_all(db)
+            print(f"Static-only seed complete. {n_scores} score rows.")
             return
         if "--benchmarks" in sys.argv:
             tickers = [b.ticker for b in db.query(Benchmark).all()]

@@ -479,10 +479,12 @@ tbody tr:hover td {
   color: var(--muted);
 }
 
-.pill.too_early,
-.pill.insufficient,
-.pill.none,
-.pill.gap {
+.pill.verified {
+  color: var(--up);
+  border-color: #1e4a35;
+}
+
+.pill.none {
   color: var(--muted);
 }
 
