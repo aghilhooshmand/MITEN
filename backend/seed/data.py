@@ -12,6 +12,8 @@ BENCHMARKS = [
     {"ticker": "ITA", "name": "Aerospace & Defense", "description": "US aerospace and defense ETF."},
     {"ticker": "XLE", "name": "Energy", "description": "Energy select sector ETF."},
     {"ticker": "XLY", "name": "Consumer Discretionary", "description": "Consumer discretionary sector ETF."},
+    {"ticker": "GLD", "name": "Gold", "description": "SPDR Gold Shares — the usual listed gold proxy."},
+    {"ticker": "USO", "name": "Oil", "description": "United States Oil Fund — WTI crude oil proxy."},
 ]
 
 YEAR_META = [

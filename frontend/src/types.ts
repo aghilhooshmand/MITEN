@@ -86,7 +86,18 @@ export type Analogy = {
 export type ChartPoint = {
   date: string;
   cohort: number;
-  benchmark: number | null;
+  spy?: number | null;
+  sector?: number | null;
+  nasdaq?: number | null;
+  gold?: number | null;
+  oil?: number | null;
+  benchmark?: number | null;
+};
+
+export type ChartSeries = {
+  key: keyof ChartPoint | string;
+  label: string;
+  ticker: string | null;
 };
 
 export type TechDetail = {
@@ -104,9 +115,10 @@ export type TechDetail = {
   companies: CompanyRow[];
   chart: {
     points: ChartPoint[];
-    sector_points: ChartPoint[];
+    series: ChartSeries[];
     benchmark_ticker: string;
     sector_ticker: string | null;
+    score_vs?: string;
   };
   analogies: Analogy[];
 };

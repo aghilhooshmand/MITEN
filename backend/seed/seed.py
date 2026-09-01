@@ -322,6 +322,12 @@ def main() -> None:
         if "--static-only" in sys.argv:
             print("Static-only seed complete.")
             return
+        if "--benchmarks" in sys.argv:
+            tickers = [b.ticker for b in db.query(Benchmark).all()]
+            frames = download_prices(tickers)
+            n_bm = persist_benchmark_prices(db, frames)
+            print(f"Wrote {n_bm} benchmark rows.")
+            return
         equity_tickers = [c.ticker for c in db.query(Company).all()]
         bench_tickers = [b.ticker for b in db.query(Benchmark).all()]
         extra_aliases = [a for aliases in TICKER_ALIASES.values() for a in aliases]

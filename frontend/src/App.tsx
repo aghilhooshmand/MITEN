@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, type CSSProperties } from "react";
 import {
   CartesianGrid,
   Legend,
@@ -29,6 +29,7 @@ import {
 } from "./format";
 import type {
   Archive,
+  ChartSeries,
   Overview,
   RankedScore,
   TechDetail,
@@ -50,6 +51,14 @@ export default function App() {
   const [archive, setArchive] = useState<Archive | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [compareOn, setCompareOn] = useState<Record<string, boolean>>({
+    cohort: true,
+    spy: true,
+    sector: true,
+    nasdaq: false,
+    gold: false,
+    oil: false,
+  });
 
   useEffect(() => {
     setLoading(true);
@@ -382,6 +391,32 @@ export default function App() {
                 </a>
               ) : null}
             </div>
+            <p className="chart-note">
+              The score is always versus the S&P 500. Toggle extra lines for context
+              — sector ETF, Nasdaq, gold, and oil.
+            </p>
+            <div className="compare-toggles">
+              {(detail.chart.series ?? defaultChartSeries(detail.chart.sector_ticker)).map(
+                (s) => {
+                  const on = s.key === "cohort" ? true : compareOn[s.key] !== false;
+                  return (
+                    <button
+                      key={s.key}
+                      type="button"
+                      className={`compare-chip ${on ? "on" : ""}`}
+                      style={{ "--chip": LINE_COLORS[s.key] || "#8b93a7" } as CSSProperties}
+                      disabled={s.key === "cohort"}
+                      onClick={() =>
+                        setCompareOn((prev) => ({ ...prev, [s.key]: !on }))
+                      }
+                    >
+                      {s.label}
+                      {s.ticker ? ` (${s.ticker})` : ""}
+                    </button>
+                  );
+                },
+              )}
+            </div>
             <div className="chart">
               {detail.chart.points.length > 1 ? (
                 <ResponsiveContainer width="100%" height={320}>
@@ -407,27 +442,25 @@ export default function App() {
                         fontSize: 12,
                       }}
                       formatter={(value: number | string, name: string) => [
-                        Number(value).toFixed(1),
+                        value == null || value === "" ? "—" : Number(value).toFixed(1),
                         name,
                       ]}
                     />
                     <Legend />
-                    <Line
-                      type="monotone"
-                      dataKey="cohort"
-                      name="Cohort (100 = start)"
-                      stroke="#d4a84b"
-                      dot={false}
-                      strokeWidth={2}
-                    />
-                    <Line
-                      type="monotone"
-                      dataKey="benchmark"
-                      name="SPY (100 = start)"
-                      stroke="#7f8ea3"
-                      dot={false}
-                      strokeWidth={1.5}
-                    />
+                    {(detail.chart.series ?? defaultChartSeries(detail.chart.sector_ticker))
+                      .filter((s) => (s.key === "cohort" ? true : compareOn[s.key] !== false))
+                      .map((s) => (
+                        <Line
+                          key={s.key}
+                          type="monotone"
+                          dataKey={s.key}
+                          name={seriesLegend(s)}
+                          stroke={LINE_COLORS[s.key] || "#8b93a7"}
+                          dot={false}
+                          strokeWidth={s.key === "cohort" ? 2 : 1.5}
+                          connectNulls
+                        />
+                      ))}
                   </LineChart>
                 </ResponsiveContainer>
               ) : (
@@ -605,7 +638,9 @@ export default function App() {
           </li>
           <li>
             Excess return is company total return minus SPY over the <em>same dates</em>. The
-            category number is the average of those excesses — not “NVIDIA went up.”
+            category number is the average of those excesses — not “NVIDIA went up.” Gold,
+            oil, Nasdaq, and the sector ETF are extra chart lines for context; they do not
+            change the prediction score.
           </li>
           <li>
             Dispersion (σ of company returns) and hit rate (% that beat SPY) punish one-name
@@ -620,6 +655,35 @@ export default function App() {
       </Panel>
     </div>
   );
+}
+
+const LINE_COLORS: Record<string, string> = {
+  cohort: "#d4a84b",
+  spy: "#7f8ea3",
+  sector: "#6ea0ff",
+  nasdaq: "#a78bfa",
+  gold: "#e6c35c",
+  oil: "#ef8a5d",
+};
+
+function seriesLegend(s: ChartSeries): string {
+  return s.ticker ? `${s.label} (${s.ticker})` : s.label;
+}
+
+function defaultChartSeries(sectorTicker: string | null): ChartSeries[] {
+  const rows: ChartSeries[] = [
+    { key: "cohort", label: "MIT cohort", ticker: null },
+    { key: "spy", label: "S&P 500", ticker: "SPY" },
+  ];
+  if (sectorTicker && sectorTicker !== "SPY") {
+    rows.push({ key: "sector", label: sectorTicker, ticker: sectorTicker });
+  }
+  rows.push(
+    { key: "nasdaq", label: "Nasdaq-100", ticker: "QQQ" },
+    { key: "gold", label: "Gold", ticker: "GLD" },
+    { key: "oil", label: "Oil", ticker: "USO" },
+  );
+  return rows;
 }
 
 function Kpi({

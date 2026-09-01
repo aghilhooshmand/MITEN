@@ -107,55 +107,31 @@ def _verdict(
     return "mixed"
 
 
-def build_cohort_path(
-    company_series: list[list[tuple[date, float]]],
-    bench_series: list[tuple[date, float]],
-    start: date,
-    end: date,
-) -> list[dict]:
-    """Equal-weight index, 100 at first date. Delisted names hold last price (exit locked)."""
-    if not company_series or not bench_series:
-        return []
+def _index_to_100(
+    series: list[tuple[date, float]], start: date, end: date
+) -> dict[date, float]:
+    first = _first_on_or_after(series, start)
+    if first is None or first[1] <= 0:
+        return {}
+    px0 = first[1]
+    return {d: 100.0 * px / px0 for d, px in series if start <= d <= end}
 
-    by_date: dict[date, list[float]] = {}
-    for series in company_series:
-        first = _first_on_or_after(series, start)
-        if first is None:
-            continue
-        first_d, first_px = first
-        if first_px <= 0:
-            continue
-        last_ratio = None
-        for d, px in series:
-            if d < first_d or d > end:
-                continue
-            last_ratio = px / first_px
-            by_date.setdefault(d, []).append(last_ratio)
-        if last_ratio is None:
-            continue
-        # Carry last ratio forward is handled at join time via last-known.
 
-    bench_first = _first_on_or_after(bench_series, start)
-    if bench_first is None:
-        return []
-    _, bench_px0 = bench_first
-    bench_map = {d: px / bench_px0 for d, px in bench_series if start <= d <= end}
-
-    all_dates = sorted(set(by_date) | set(bench_map))
-    if not all_dates:
-        return []
-
+def _cohort_index(
+    company_series: list[list[tuple[date, float]]], start: date, end: date
+) -> dict[date, float]:
     indexed: list[list[tuple[date, float]]] = []
     for series in company_series:
         first = _first_on_or_after(series, start)
         if first is None or first[1] <= 0:
             continue
-        px_map = {d: px / first[1] for d, px in series if d >= first[0]}
-        indexed.append(sorted(px_map.items()))
-
-    last_vals = [None] * len(indexed)
+        indexed.append([(d, px / first[1]) for d, px in series if d >= first[0] and d <= end])
+    if not indexed:
+        return {}
+    all_dates = sorted({d for series in indexed for d, _ in series})
+    last_vals: list[float | None] = [None] * len(indexed)
     pointers = [0] * len(indexed)
-    points = []
+    out: dict[date, float] = {}
     for d in all_dates:
         ratios = []
         for i, series in enumerate(indexed):
@@ -164,13 +140,45 @@ def build_cohort_path(
                 pointers[i] += 1
             if last_vals[i] is not None:
                 ratios.append(last_vals[i])
-        if not ratios:
-            continue
-        cohort = 100.0 * mean(ratios)
-        bench = 100.0 * bench_map[d] if d in bench_map else None
-        points.append({"date": d.isoformat(), "cohort": round(cohort, 2), "benchmark": round(bench, 2) if bench else None})
+        if ratios:
+            out[d] = 100.0 * mean(ratios)
+    return out
 
+
+def _merge_series(maps: dict[str, dict[date, float]]) -> list[dict]:
+    nonempty = {k: v for k, v in maps.items() if v}
+    if "cohort" not in nonempty:
+        return []
+    all_dates = sorted(set().union(*(m.keys() for m in nonempty.values())))
+    last: dict[str, float | None] = {k: None for k in nonempty}
+    points = []
+    for d in all_dates:
+        row: dict = {"date": d.isoformat()}
+        for key, series in nonempty.items():
+            if d in series:
+                last[key] = series[d]
+            row[key] = round(last[key], 2) if last[key] is not None else None
+        if row.get("cohort") is None:
+            continue
+        if "spy" in row:
+            row["benchmark"] = row["spy"]
+        points.append(row)
     return _downsample_weekly_points(points)
+
+
+def build_cohort_path(
+    company_series: list[list[tuple[date, float]]],
+    bench_series: list[tuple[date, float]],
+    start: date,
+    end: date,
+) -> list[dict]:
+    """Equal-weight index, 100 at first date. Delisted names hold last price (exit locked)."""
+    return _merge_series(
+        {
+            "cohort": _cohort_index(company_series, start, end),
+            "benchmark": _index_to_100(bench_series, start, end),
+        }
+    )
 
 
 def _downsample_weekly_points(points: list[dict]) -> list[dict]:
@@ -339,8 +347,11 @@ def rescore_all(db: Session, as_of: date | None = None) -> int:
     return count
 
 
+def _benchmark_by_ticker(db: Session, ticker: str) -> Benchmark | None:
+    return db.query(Benchmark).filter(Benchmark.ticker == ticker).one_or_none()
+
+
 def cohort_chart_payload(db: Session, tech: Technology, universe: str, as_of: date) -> dict:
-    spy = db.query(Benchmark).filter(Benchmark.ticker == SPY_TICKER).one()
     q = (
         db.query(TechnologyCompanyMap)
         .filter(TechnologyCompanyMap.technology_id == tech.id)
@@ -349,16 +360,53 @@ def cohort_chart_payload(db: Session, tech: Technology, universe: str, as_of: da
         q = q.filter(TechnologyCompanyMap.mapping_confidence == "direct")
     mappings = q.all()
     company_series = [_load_company_series(db, m.company_id) for m in mappings]
-    bench = _load_benchmark_series(db, spy.id)
-    points = build_cohort_path(company_series, bench, tech.published_on, as_of)
-    sector_points = []
-    if tech.default_benchmark_id:
-        sector = _load_benchmark_series(db, tech.default_benchmark_id)
-        mixed = build_cohort_path(company_series, sector, tech.published_on, as_of)
-        sector_points = mixed
+    start, end = tech.published_on, as_of
+
+    spy = _benchmark_by_ticker(db, SPY_TICKER)
+    gold = _benchmark_by_ticker(db, "GLD")
+    oil = _benchmark_by_ticker(db, "USO")
+    nasdaq = _benchmark_by_ticker(db, "QQQ")
+
+    maps: dict[str, dict[date, float]] = {
+        "cohort": _cohort_index(company_series, start, end),
+    }
+    if spy:
+        maps["spy"] = _index_to_100(_load_benchmark_series(db, spy.id), start, end)
+    if tech.default_benchmark_id and (
+        not spy or tech.default_benchmark_id != spy.id
+    ):
+        maps["sector"] = _index_to_100(
+            _load_benchmark_series(db, tech.default_benchmark_id), start, end
+        )
+    if nasdaq:
+        maps["nasdaq"] = _index_to_100(_load_benchmark_series(db, nasdaq.id), start, end)
+    if gold:
+        maps["gold"] = _index_to_100(_load_benchmark_series(db, gold.id), start, end)
+    if oil:
+        maps["oil"] = _index_to_100(_load_benchmark_series(db, oil.id), start, end)
+
+    sector_ticker = tech.benchmark.ticker if tech.benchmark else None
+    sector_name = tech.benchmark.name if tech.benchmark else None
+    series = [
+        {"key": "cohort", "label": "MIT cohort", "ticker": None},
+        {"key": "spy", "label": "S&P 500", "ticker": "SPY"},
+    ]
+    if "sector" in maps and sector_ticker:
+        series.append(
+            {"key": "sector", "label": sector_name or sector_ticker, "ticker": sector_ticker}
+        )
+    series.extend(
+        [
+            {"key": "nasdaq", "label": "Nasdaq-100", "ticker": "QQQ"},
+            {"key": "gold", "label": "Gold", "ticker": "GLD"},
+            {"key": "oil", "label": "Oil", "ticker": "USO"},
+        ]
+    )
+    series = [s for s in series if s["key"] == "cohort" or maps.get(s["key"])]
     return {
-        "points": points,
-        "sector_points": sector_points,
+        "points": _merge_series(maps),
+        "series": series,
         "benchmark_ticker": "SPY",
-        "sector_ticker": tech.benchmark.ticker if tech.benchmark else None,
+        "sector_ticker": sector_ticker,
+        "score_vs": "SPY",
     }
