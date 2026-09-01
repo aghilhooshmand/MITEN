@@ -413,13 +413,47 @@ function watchItems() {
   });
 }
 
-function drawChart(points, keys) {
+function chartBox(width) {
+  const w = Math.max(260, Math.round(width || 0));
+  const h = w < 480 ? 220 : w < 800 ? 260 : 320;
+  return {
+    w,
+    h,
+    pad: {
+      l: w < 480 ? 30 : 44,
+      r: w < 480 ? 8 : 12,
+      t: 12,
+      b: 28,
+    },
+  };
+}
+
+function chartHostWidth(host) {
+  const measured = host && host.clientWidth;
+  if (measured > 40) return measured;
+  const gutter = window.innerWidth < 900 ? 48 : 72;
+  return Math.max(260, window.innerWidth - gutter);
+}
+
+function yearTicks(years, x, minGap) {
+  if (years.length <= 2) return years;
+  const last = years[years.length - 1];
+  const picked = [years[0]];
+  for (const item of years.slice(1, -1)) {
+    const prev = picked[picked.length - 1];
+    if (x(item.i) - x(prev.i) >= minGap && x(last.i) - x(item.i) >= minGap) {
+      picked.push(item);
+    }
+  }
+  picked.push(last);
+  return picked;
+}
+
+function drawChart(points, keys, width) {
   if (!points || points.length < 2) {
     return `<p class="empty">No overlapping price history for this cohort.</p>`;
   }
-  const w = 1100;
-  const h = 320;
-  const pad = { l: 44, r: 12, t: 12, b: 28 };
+  const { w, h, pad } = chartBox(width);
   const vals = [];
   for (const p of points) {
     for (const k of keys) {
@@ -432,6 +466,7 @@ function drawChart(points, keys) {
   const span = max - min || 1;
   const x = (i) => pad.l + (i / (points.length - 1)) * (w - pad.l - pad.r);
   const y = (v) => pad.t + (1 - (v - min) / span) * (h - pad.t - pad.b);
+  const stroke = w < 480 ? { cohort: 1.8, other: 1.3 } : { cohort: 2.2, other: 1.5 };
   const paths = keys
     .map((k) => {
       let d = "";
@@ -444,15 +479,15 @@ function drawChart(points, keys) {
         d += `${drawing ? "L" : "M"}${x(i).toFixed(1)},${y(p[k]).toFixed(1)} `;
         drawing = true;
       });
-      const width = k === "cohort" ? 2.2 : 1.5;
-      return `<path d="${d}" fill="none" stroke="${LINE[k]}" stroke-width="${width}" />`;
+      const sw = k === "cohort" ? stroke.cohort : stroke.other;
+      return `<path d="${d}" fill="none" stroke="${LINE[k]}" stroke-width="${sw}" />`;
     })
     .join("");
   const ticks = [min, min + span / 2, max];
   const axis = ticks
     .map((v) => {
       const yy = y(v);
-      return `<text class="chart-axis" x="4" y="${yy + 3}">${v.toFixed(0)}</text>
+      return `<text class="chart-axis" x="2" y="${yy + 3}">${v.toFixed(0)}</text>
         <line x1="${pad.l}" x2="${w - pad.r}" y1="${yy}" y2="${yy}" stroke="#1c2430" />`;
     })
     .join("");
@@ -461,10 +496,48 @@ function drawChart(points, keys) {
     const yr = p.date.slice(0, 4);
     if (years.length === 0 || years[years.length - 1].yr !== yr) years.push({ yr, i });
   });
-  const xlabels = years
-    .map(({ yr, i }) => `<text class="chart-axis" x="${x(i)}" y="${h - 6}">${yr}</text>`)
+  const labeled = yearTicks(years, x, w < 480 ? 56 : 48);
+  const xlabels = labeled
+    .map(({ yr, i }, idx) => {
+      const anchor = idx === 0 ? "start" : idx === labeled.length - 1 ? "end" : "middle";
+      return `<text class="chart-axis" text-anchor="${anchor}" x="${x(i)}" y="${h - 6}">${yr}</text>`;
+    })
     .join("");
-  return `<svg class="chart-svg" viewBox="0 0 ${w} ${h}" role="img">${axis}${paths}${xlabels}</svg>`;
+  return `<svg class="chart-svg" viewBox="0 0 ${w} ${h}" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Cohort versus market">${axis}${paths}${xlabels}</svg>`;
+}
+
+let chartObserver = null;
+let lastChartWidth = -1;
+
+function chartKeys() {
+  return ["cohort", "spy", "sector", "nasdaq", "gold", "oil"].filter((k) =>
+    k === "cohort" ? true : state.compareOn[k],
+  );
+}
+
+function paintResponsiveChart() {
+  const host = document.getElementById("chart-host");
+  if (!host || !state.db || state.selectedId == null) return;
+  const detail = detailOf(state.selectedId);
+  if (!detail) return;
+  const width = chartHostWidth(host);
+  if (width === lastChartWidth && host.querySelector("svg, .empty")) return;
+  lastChartWidth = width;
+  host.innerHTML = drawChart(detail.points, chartKeys(), width);
+}
+
+function observeChart() {
+  const host = document.getElementById("chart-host");
+  if (chartObserver) {
+    chartObserver.disconnect();
+    chartObserver = null;
+  }
+  lastChartWidth = -1;
+  if (!host) return;
+  paintResponsiveChart();
+  if (typeof ResizeObserver === "undefined") return;
+  chartObserver = new ResizeObserver(() => paintResponsiveChart());
+  chartObserver.observe(host);
 }
 
 function render() {
@@ -558,6 +631,7 @@ function render() {
       <a href="mailto:aghil.hooshmand@gmail.com">aghil.hooshmand@gmail.com</a>
     </footer>
   `;
+  observeChart();
 }
 
 function editionMeta(edition) {
@@ -690,7 +764,7 @@ function chartPanel(detail) {
     </div>
     <p class="chart-note">The score is always versus the S&amp;P 500. Toggle extra lines for context — sector ETF, Nasdaq, gold, and oil. Series come from charts.csv (weekly snapshot).</p>
     <div class="compare-toggles">${chips}</div>
-    <div class="chart">${drawChart(detail.points, keys)}</div>
+    <div class="chart" id="chart-host">${drawChart(detail.points, keys, chartHostWidth(null))}</div>
   `;
 }
 
