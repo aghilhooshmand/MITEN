@@ -17,6 +17,7 @@ const CAT = {
   industrial: "Industrial",
   other: "Other",
 };
+const SUBJECTS = ["ai", "biotech", "energy", "hardware", "consumer", "space", "industrial"];
 const VERDICT = {
   beat: "Beat market",
   lag: "Lagged",
@@ -122,6 +123,7 @@ const state = {
   compareOn: { cohort: true, spy: true, sector: true, nasdaq: false, gold: false, oil: false },
   menuOpen: false,
   db: null,
+  tab: "watch",
   sort: {
     ledger: { key: "list_index", dir: "asc" },
     ranking: { key: "score", dir: "desc" },
@@ -398,6 +400,29 @@ function scoreOf(techId, universe) {
 function isMapped(techId, universe) {
   const s = scoreOf(techId, universe);
   return Boolean(s && s.n_companies > 0);
+}
+
+function readTab() {
+  const raw = location.hash.replace("#", "");
+  if (raw === "dashboard") return "ledger";
+  if (raw === "watch" || raw === "ledger" || raw === "picture" || raw === "knowledge") return raw;
+  return "watch";
+}
+
+function goTab(next) {
+  state.tab = next;
+  if (location.hash !== `#${next}`) location.hash = next;
+  else render();
+}
+
+function tickersOf(techId) {
+  return state.db.mappings
+    .filter((m) => {
+      if (m.technology_id !== techId) return false;
+      if (state.universe === "direct" && m.confidence !== "direct") return false;
+      return true;
+    })
+    .map((m) => m.ticker);
 }
 
 function overview() {
@@ -844,6 +869,58 @@ function render() {
     ? `<p class="empty">Pick a year to see MIT’s list.</p>`
     : `${editionMeta(edition)}${mitList(picks, edition)}`;
 
+  const nav = `<nav class="nav" aria-label="MITEN sections">
+    <button type="button" class="nav-btn ${state.tab === "watch" ? "on" : ""}" data-tab="watch"><span class="nav-k">Watchlist</span><span class="nav-h">2026 live book</span></button>
+    <button type="button" class="nav-btn ${state.tab === "ledger" ? "on" : ""}" data-tab="ledger"><span class="nav-k">Dashboard</span><span class="nav-h">One year, scores, chart</span></button>
+    <button type="button" class="nav-btn ${state.tab === "picture" ? "on" : ""}" data-tab="picture"><span class="nav-k">Big picture</span><span class="nav-h">Time × subject × market</span></button>
+    <button type="button" class="nav-btn ${state.tab === "knowledge" ? "on" : ""}" data-tab="knowledge"><span class="nav-k">Knowledge</span><span class="nav-h">Keywords and measures</span></button>
+  </nav>`;
+
+  const ledgerFilters = state.tab === "ledger"
+    ? `<label><span class="tip-label"${tipAttr(TIPS.year)}>Year</span>
+        <select id="year">${yearOpts}</select>
+      </label>
+      <label class="grow"><span class="tip-label"${tipAttr(TIPS.breakthrough)}>MIT breakthrough</span>
+        <div class="break-select" id="break-select">
+          <button type="button" class="break-trigger" id="break-trigger" ${picks.length ? "" : "disabled"}>
+            ${esc(trigger)}
+          </button>
+          ${state.menuOpen && picks.length ? `<ul class="break-menu">${menu}</ul>` : ""}
+        </div>
+      </label>
+      <label class="check">
+        <input type="checkbox" id="mapped-only" ${state.mappedOnly ? "checked" : ""} />
+        <span class="tip-label"${tipAttr(TIPS.mappedOnly)}>Mapped only</span>
+      </label>`
+    : "";
+
+  const filters = state.tab === "knowledge"
+    ? ""
+    : `<div class="filters">
+      ${ledgerFilters}
+      <div class="segment">
+        <button type="button" class="${state.universe === "all" ? "on" : ""}" data-universe="all"${tipAttr(TIPS.universeAll)}>All mappings</button>
+        <button type="button" class="${state.universe === "direct" ? "on" : ""}" data-universe="direct"${tipAttr(TIPS.universeDirect)}>Direct only</button>
+      </div>
+    </div>`;
+
+  let main = "";
+  if (state.tab === "watch") {
+    main = watchPage();
+  } else if (state.tab === "ledger") {
+    main = `
+    ${panel("mit-list", "MIT 10 Breakthrough Technologies", edition ? `${edition.year} · ${picks.length} named` : "Year-by-year TR10 lists", mitBody, true, TIPS.panelMit)}
+    ${panel("pulse", "Market pulse", `as of ${ov.as_of}`, kpis(ov), true, TIPS.panelPulse)}
+    ${panel("ledger", "Technology ledger", `${rows.length} rows · click a name · click a column to sort`, ledgerTable(rows), true, TIPS.panelLedger)}
+    ${panel("chart", "Cohort vs market", detail ? `${detail.tech.year} ${detail.tech.name} · equal-weight vs SPY` : "Select a technology", chartPanel(detail), true, TIPS.panelChart)}
+    ${panel("names", "Mapped companies", detail ? `${detail.companies.length} names · click a column to sort` : "", namesTable(detail), true, TIPS.panelNames)}
+    ${panel("ranking", "Prediction ranking", "Click a column to sort · 50 means the mapped names matched SPY", rankTable(), false, TIPS.panelRank)}`;
+  } else if (state.tab === "picture") {
+    main = pictureBody();
+  } else {
+    main = `<div class="page-head"><h2>Knowledge</h2><p>The idea, the keywords, the measures, and how the score is computed.</p></div>${guideBody()}${panel("method", "How the score is computed", "", methodBody(), true)}`;
+  }
+
   const app = document.getElementById("app");
   app.innerHTML = `
     <header class="top">
@@ -859,47 +936,20 @@ function render() {
         MIT Technology Review’s annual 10 Breakthrough Technologies, then whether
         mapped public companies beat SPY after the call. This copy reads only
         CSV files in <code>data/</code>.
-        <a class="guide-jump" href="#panel-guide">How to read MITEN</a>
+        <button type="button" class="guide-jump" data-tab="knowledge">How to read MITEN</button>
       </p>
     </header>
-    <div class="filters">
-      <label><span class="tip-label"${tipAttr(TIPS.year)}>Year</span>
-        <select id="year">${yearOpts}</select>
-      </label>
-      <label class="grow"><span class="tip-label"${tipAttr(TIPS.breakthrough)}>MIT breakthrough</span>
-        <div class="break-select" id="break-select">
-          <button type="button" class="break-trigger" id="break-trigger" ${picks.length ? "" : "disabled"}>
-            ${esc(trigger)}
-          </button>
-          ${state.menuOpen && picks.length ? `<ul class="break-menu">${menu}</ul>` : ""}
-        </div>
-      </label>
-      <label class="check">
-        <input type="checkbox" id="mapped-only" ${state.mappedOnly ? "checked" : ""} />
-        <span class="tip-label"${tipAttr(TIPS.mappedOnly)}>Mapped only</span>
-      </label>
-      <div class="segment">
-        <button type="button" class="${state.universe === "all" ? "on" : ""}" data-universe="all"${tipAttr(TIPS.universeAll)}>All mappings</button>
-        <button type="button" class="${state.universe === "direct" ? "on" : ""}" data-universe="direct"${tipAttr(TIPS.universeDirect)}>Direct only</button>
-      </div>
-    </div>
-    <div class="banner">${esc(ov.disclaimer)}</div>
-    ${panel("mit-list", "MIT 10 Breakthrough Technologies", edition ? `${edition.year} · ${picks.length} named` : "Year-by-year TR10 lists", mitBody, true, TIPS.panelMit)}
-    ${panel("pulse", "Market pulse", `as of ${ov.as_of}`, kpis(ov), true, TIPS.panelPulse)}
-    ${panel("ledger", "Technology ledger", `${rows.length} rows · click a name · click a column to sort`, ledgerTable(rows), true, TIPS.panelLedger)}
-    ${panel("chart", "Cohort vs market", detail ? `${detail.tech.year} ${detail.tech.name} · equal-weight vs SPY` : "Select a technology", chartPanel(detail), true, TIPS.panelChart)}
-    ${panel("names", "Mapped companies", detail ? `${detail.companies.length} names · click a column to sort` : "", namesTable(detail), true, TIPS.panelNames)}
-    ${panel("ranking", "Prediction ranking", "Click a column to sort · 50 means the mapped names matched SPY", rankTable(), false, TIPS.panelRank)}
-    ${panel("watch", "2026 watchlist", "Live book · analog history, not a forecast", watchGrid(), true, TIPS.panelWatch)}
-    ${panel("method", "How the score is computed", "", methodBody(), false)}
-    ${panel("guide", "How to read MITEN", "Idea, keywords, measures · start here if a word is unclear", guideBody(), true, TIPS.panelGuide)}
+    ${nav}
+    ${filters}
+    ${state.tab === "knowledge" ? "" : `<div class="banner">${esc(ov.disclaimer)}</div>`}
+    ${main}
     <footer class="contact">
       <span>Aghil Hooshmand</span>
       <a href="https://www.linkedin.com/in/aghilhooshmand" target="_blank" rel="noreferrer">LinkedIn</a>
       <a href="mailto:aghil.hooshmand@gmail.com">aghil.hooshmand@gmail.com</a>
     </footer>
   `;
-  observeChart();
+  if (state.tab === "ledger") observeChart();
 }
 
 function editionMeta(edition) {
@@ -1167,6 +1217,92 @@ function watchGrid() {
   return `<p class="note-block">${esc(note)}</p><div class="watch-grid">${cards}</div>`;
 }
 
+function watchPage() {
+  return `<div class="page-head">
+    <h2>2026 watchlist</h2>
+    <p>Live book for this year’s MIT names. Analog excess is history, not a forecast. Click a card to open it on the Dashboard.</p>
+  </div>${watchGrid()}`;
+}
+
+function pictureBody() {
+  const years = [...state.db.years].map((y) => y.year).sort((a, b) => a - b);
+  const byCell = {};
+  for (const t of state.db.techs) {
+    const key = `${t.year}:${t.category}`;
+    if (!byCell[key]) byCell[key] = [];
+    byCell[key].push(t);
+  }
+  const selectedTech = state.selectedId ? state.db.techById[state.selectedId] : null;
+  const hot = new Set(selectedTech ? tickersOf(selectedTech.id) : []);
+  const bag = {};
+  for (const t of state.db.techs) {
+    for (const ticker of tickersOf(t.id)) {
+      if (!bag[ticker]) bag[ticker] = { ticker, years: new Set(), techs: [] };
+      bag[ticker].years.add(t.year);
+      bag[ticker].techs.push({ id: t.id, year: t.year, name: t.name });
+    }
+  }
+  const threads = Object.values(bag)
+    .map((row) => ({ ...row, years: [...row.years].sort((a, b) => a - b) }))
+    .sort((a, b) => b.years.length - a.years.length || a.ticker.localeCompare(b.ticker))
+    .filter((row) => row.years.length >= 2)
+    .slice(0, 16);
+  const head = `<tr><th>Subject</th>${years.map((y) => `<th>${String(y).slice(2)}</th>`).join("")}</tr>`;
+  const body = SUBJECTS.map((cat) => {
+    const cells = years
+      .map((y) => {
+        const items = byCell[`${y}:${cat}`] || [];
+        const marks = items
+          .map((t) => {
+            const s = scoreOf(t.id, state.universe);
+            const mapped = isMapped(t.id, state.universe);
+            const cls = mapped && s ? s.verdict || "none" : "none";
+            const tickers = tickersOf(t.id);
+            const tip = mapped && s
+              ? `${t.name} · ${verdictLabel(s.verdict)} · score ${fmtScore(s.prediction_score)}${tickers.length ? ` · ${tickers.join(", ")}` : ""}`
+              : `${t.name}${tickers.length ? ` · ${tickers.join(", ")}` : " · list only, no mapped public companies"}`;
+            return `<button type="button" class="mosaic-mark ${esc(cls)} ${t.id === state.selectedId ? "on" : ""}" data-open="${t.id}"${tipAttr(tip)} aria-label="${esc(t.name)}"></button>`;
+          })
+          .join("");
+        return `<td><div class="mosaic-cell">${marks}</div></td>`;
+      })
+      .join("");
+    return `<tr><th><span class="tip-label"${tipAttr(categoryTip(cat))}>${esc(catLabel(cat))}</span></th>${cells}</tr>`;
+  }).join("");
+  const threadRows = threads
+    .map((row) => {
+      const pills = row.years
+        .map((y) => {
+          const hit = row.techs.find((t) => t.year === y);
+          return `<button type="button" class="thread-year" data-open="${hit.id}"${tipAttr(`${y} ${hit.name}`)}>${y}</button>`;
+        })
+        .join("");
+      return `<div class="thread ${row.ticker && hot.has(row.ticker) ? "hot" : ""}">
+        <span class="thread-ticker mono">${esc(row.ticker)}</span>
+        <span class="thread-n muted">${row.years.length} years</span>
+        <div class="thread-years">${pills}</div>
+      </div>`;
+    })
+    .join("");
+  return `<div class="picture">
+    <div class="page-head">
+      <h2>Big picture</h2>
+      <p>Years run left to right. Subjects are rows. Each square is one MIT-named technology. Color is that cohort versus SPY after the list date. Grey means list-only. Click a square to open it on the Dashboard.</p>
+    </div>
+    <div class="mosaic-legend">
+      <span><i class="mosaic-mark beat"></i> Beat SPY</span>
+      <span><i class="mosaic-mark mixed"></i> Mixed</span>
+      <span><i class="mosaic-mark lag"></i> Lagged</span>
+      <span><i class="mosaic-mark too_early"></i> Too early</span>
+      <span><i class="mosaic-mark none"></i> List only</span>
+    </div>
+    <div class="mosaic-wrap"><table class="mosaic"><thead>${head}</thead><tbody>${body}</tbody></table></div>
+    <h3 class="picture-h">Companies that keep showing up</h3>
+    <p class="note-block">Same listed name, different MIT technologies. Click a year to open that edition.</p>
+    <div class="threads">${threadRows}</div>
+  </div>`;
+}
+
 function methodBody() {
   return `<ol class="method">
     <li>MIT names a <em>technology</em>, not a ticker. Mappings are editorial, stored with confidence (<code>direct</code> vs <code>exposed</code>), author, and timestamp.</li>
@@ -1186,11 +1322,10 @@ function guideBody() {
     <p>MITEN comes from <em>MIT Ten</em> — the annual ten. The two T’s collapsed into one T. The mark is meant to read history, focus on the present list, and only then think about the future. The 2026 list is a watchlist, not a scorecard.</p>
     <h3>How to use this page</h3>
     <ol class="method">
-      <li>Choose a <em>Year</em> — that is one MIT edition (2001–2026; 2002 was unpublished).</li>
-      <li>Choose an <em>MIT breakthrough</em> — one named technology from that year’s ten.</li>
-      <li>Read the gold <em>cohort</em> line against <em>SPY</em> on the chart. Extra indexes (sector ETF, Nasdaq, gold, oil) are context only.</li>
-      <li>Open <em>Mapped companies</em> to see which tickers we used and why.</li>
-      <li>Use <em>Prediction ranking</em> to compare technologies across years. Click any column title to sort.</li>
+      <li><em>Watchlist</em> is 2026 — names MIT just called, with historical analogs. Not a scorecard yet.</li>
+      <li><em>Dashboard</em> is one MIT edition: pick a year and a named technology, then read the gold cohort line against SPY, the mapped companies, and the ranking.</li>
+      <li><em>Big picture</em> is the whole archive at once: year × subject × each MIT name, colored by whether the mapped companies beat SPY. Repeating tickers sit in the strip underneath.</li>
+      <li>Hover any dotted label for a short definition. This Knowledge tab is the long version.</li>
     </ol>
     <h3>Keywords</h3>
     <dl>
@@ -1270,6 +1405,21 @@ function guideBody() {
 }
 
 function onAppClick(e) {
+  const tabBtn = e.target.closest("[data-tab]");
+  if (tabBtn) {
+    goTab(tabBtn.getAttribute("data-tab"));
+    return;
+  }
+  const openTech = e.target.closest("[data-open]");
+  if (openTech) {
+    const id = Number(openTech.getAttribute("data-open"));
+    state.selectedId = id;
+    state.menuOpen = false;
+    const tech = state.db.techById[id];
+    if (tech) state.year = String(tech.year);
+    goTab("ledger");
+    return;
+  }
   const sortHead = e.target.closest("[data-sort]");
   if (sortHead) {
     e.stopPropagation();
@@ -1317,6 +1467,10 @@ function onAppClick(e) {
     state.menuOpen = false;
     const tech = state.db.techById[state.selectedId];
     if (tech) state.year = String(tech.year);
+    if (state.tab === "watch") {
+      goTab("ledger");
+      return;
+    }
     render();
   }
 }
@@ -1376,10 +1530,15 @@ document.addEventListener("mouseout", (e) => {
 loadDb()
   .then((db) => {
     state.db = db;
+    state.tab = readTab();
     const app = document.getElementById("app");
     app.addEventListener("click", onAppClick);
     app.addEventListener("change", onAppChange);
     document.addEventListener("mousedown", onDocClick);
+    window.addEventListener("hashchange", () => {
+      state.tab = readTab();
+      render();
+    });
     render();
   })
   .catch((err) => {

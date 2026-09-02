@@ -4,9 +4,9 @@ MIT’s 10 Breakthrough Technologies versus mapped public companies. Did the nam
 categories later beat SPY?
    
 Not a stock-picker. The unit of analysis is a **technology cohort versus SPY**, with
-company mappings stored so they can be audited. In the app, open **How to read MITEN**
-at the bottom (or the link in the header) for the keywords: mapped only, all mappings,
-direct, cohort, and every measure.
+company mappings stored so they can be audited. The app has four sections: **Watchlist**
+(2026), **Dashboard** (one MIT year), **Big picture** (year × subject × market), and
+**Knowledge** (keywords and measures). Open **Knowledge** if a word is unclear.
 
 ## Contact
 

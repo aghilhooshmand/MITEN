@@ -168,7 +168,10 @@ def archive(
     years = db.query(YearMeta).order_by(YearMeta.year.desc()).all()
     techs = (
         db.query(Technology)
-        .options(joinedload(Technology.scores))
+        .options(
+            joinedload(Technology.scores),
+            joinedload(Technology.mappings).joinedload(TechnologyCompanyMap.company),
+        )
         .order_by(Technology.year.desc(), Technology.list_index.asc())
         .all()
     )
@@ -176,6 +179,9 @@ def archive(
     for t in techs:
         score = _pick_score(t, universe)
         mapped = bool(score and score.n_companies > 0)
+        maps = t.mappings
+        if universe == "direct":
+            maps = [m for m in maps if m.mapping_confidence == "direct"]
         by_year.setdefault(t.year, []).append(
             {
                 "id": t.id,
@@ -186,6 +192,7 @@ def archive(
                 "verification_status": t.verification_status,
                 "mapped": mapped,
                 "score": _score_dict(score) if mapped else None,
+                "tickers": [m.company.ticker for m in maps],
             }
         )
     return {

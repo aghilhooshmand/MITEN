@@ -41,6 +41,7 @@ export type ArchiveItem = {
   verification_status: string;
   mapped: boolean;
   score: Score | null;
+  tickers?: string[];
 };
 
 export type ArchiveYear = {

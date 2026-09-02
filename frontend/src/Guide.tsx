@@ -24,21 +24,19 @@ export function Guide() {
       <h3>How to use this page</h3>
       <ol className="method">
         <li>
-          Choose a <em>Year</em> — that is one MIT edition (2001–2026; 2002 was unpublished).
+          <em>Watchlist</em> is 2026 — names MIT just called, with historical analogs. Not a scorecard
+          yet.
         </li>
         <li>
-          Choose an <em>MIT breakthrough</em> — one named technology from that year’s ten.
+          <em>Dashboard</em> is one MIT edition: pick a year and a named technology, then read the
+          gold cohort line against SPY, the mapped companies, and the ranking.
         </li>
         <li>
-          Read the gold <em>cohort</em> line against <em>SPY</em> on the chart. Extra indexes (sector
-          ETF, Nasdaq, gold, oil) are context only.
+          <em>Big picture</em> is the whole archive at once: year × subject × each MIT name, colored
+          by whether the mapped companies beat SPY. Repeating tickers sit in the strip underneath.
         </li>
         <li>
-          Open <em>Mapped companies</em> to see which tickers we used and why.
-        </li>
-        <li>
-          Use <em>Prediction ranking</em> to compare technologies across years. Click any column
-          title to sort.
+          Hover any dotted label for a short definition. This Knowledge tab is the long version.
         </li>
       </ol>
 

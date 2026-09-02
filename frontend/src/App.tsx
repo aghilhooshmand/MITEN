@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { Guide } from "./Guide";
+import { Picture } from "./Picture";
 import { ExplainTip } from "./ExplainTip";
 import {
   CartesianGrid,
@@ -50,6 +51,22 @@ import type {
   Watchlist,
 } from "./types";
 
+type Tab = "watch" | "ledger" | "picture" | "knowledge";
+
+function readTab(): Tab {
+  const raw = window.location.hash.replace("#", "");
+  if (raw === "dashboard") return "ledger";
+  if (raw === "watch" || raw === "ledger" || raw === "picture" || raw === "knowledge") return raw;
+  return "watch";
+}
+
+const NAV: { id: Tab; label: string; hint: string }[] = [
+  { id: "watch", label: "Watchlist", hint: "2026 live book" },
+  { id: "ledger", label: "Dashboard", hint: "One year, scores, chart" },
+  { id: "picture", label: "Big picture", hint: "Time × subject × market" },
+  { id: "knowledge", label: "Knowledge", hint: "Keywords and measures" },
+];
+
 export default function App() {
   const [universe, setUniverse] = useState<Universe>("all");
   const [year, setYear] = useState("2026");
@@ -74,6 +91,7 @@ export default function App() {
   const [ledgerSort, setLedgerSort] = useState<SortSpec>({ key: "list_index", dir: "asc" });
   const [rankSort, setRankSort] = useState<SortSpec>({ key: "score", dir: "desc" });
   const [namesSort, setNamesSort] = useState<SortSpec>({ key: "ticker", dir: "asc" });
+  const [tab, setTab] = useState<Tab>(() => readTab());
 
   useEffect(() => {
     setLoading(true);
@@ -116,6 +134,25 @@ export default function App() {
       .then(setDetail)
       .catch((err: Error) => setError(err.message));
   }, [selectedId, universe]);
+
+  useEffect(() => {
+    const onHash = () => setTab(readTab());
+    window.addEventListener("hashchange", onHash);
+    return () => window.removeEventListener("hashchange", onHash);
+  }, []);
+
+  function goTab(next: Tab) {
+    setTab(next);
+    if (window.location.hash !== `#${next}`) {
+      window.location.hash = next;
+    }
+  }
+
+  function openOnDashboard(id: number, yearNum: number) {
+    setYear(String(yearNum));
+    setSelectedId(id);
+    goTab("ledger");
+  }
 
   const years = useMemo(() => {
     const fromMeta = overview?.years.map((y) => y.year) ?? [];
@@ -194,73 +231,95 @@ export default function App() {
         <p className="lede">
           MIT Technology Review’s annual 10 Breakthrough Technologies, then whether
           mapped public companies beat SPY after the call.{" "}
-          <a className="guide-jump" href="#panel-guide">
+          <button type="button" className="guide-jump" onClick={() => goTab("knowledge")}>
             How to read MITEN
-          </a>
+          </button>
         </p>
       </header>
 
-      <div className="filters">
-        <label>
-          <ExplainTip text={TIPS.year}>
-            <span className="tip-label">Year</span>
-          </ExplainTip>
-          <select value={year} onChange={(e) => setYear(e.target.value)}>
-            {years.length === 0 ? <option value={year}>{year}</option> : null}
-            {years.map((y) => (
-              <option key={y} value={y}>
-                {y}
-              </option>
-            ))}
-          </select>
-        </label>
-        <label className="grow">
-          <ExplainTip text={TIPS.breakthrough}>
-            <span className="tip-label">MIT breakthrough</span>
-          </ExplainTip>
-          <BreakthroughSelect
-            key={year}
-            items={mitPicks}
-            selectedId={selectedId}
-            emptyLabel={year === "2002" ? "No list published" : "No verified list this year"}
-            onChange={setSelectedId}
-          />
-        </label>
-        <label className="check">
-          <input
-            type="checkbox"
-            checked={mappedOnly}
-            onChange={(e) => setMappedOnly(e.target.checked)}
-          />
-          <ExplainTip text={TIPS.mappedOnly}>
-            <span className="tip-label">Mapped only</span>
-          </ExplainTip>
-        </label>
-        <div className="segment">
-          <ExplainTip text={TIPS.universeAll}>
-            <button
-              className={universe === "all" ? "on" : ""}
-              type="button"
-              onClick={() => setUniverse("all")}
-            >
-              All mappings
-            </button>
-          </ExplainTip>
-          <ExplainTip text={TIPS.universeDirect}>
-            <button
-              className={universe === "direct" ? "on" : ""}
-              type="button"
-              onClick={() => setUniverse("direct")}
-            >
-              Direct only
-            </button>
-          </ExplainTip>
+      <nav className="nav" aria-label="MITEN sections">
+        {NAV.map((item) => (
+          <button
+            key={item.id}
+            type="button"
+            className={`nav-btn ${tab === item.id ? "on" : ""}`}
+            onClick={() => goTab(item.id)}
+          >
+            <span className="nav-k">{item.label}</span>
+            <span className="nav-h">{item.hint}</span>
+          </button>
+        ))}
+      </nav>
+
+      {tab !== "knowledge" ? (
+        <div className="filters">
+          {tab === "ledger" ? (
+            <>
+              <label>
+                <ExplainTip text={TIPS.year}>
+                  <span className="tip-label">Year</span>
+                </ExplainTip>
+                <select value={year} onChange={(e) => setYear(e.target.value)}>
+                  {years.length === 0 ? <option value={year}>{year}</option> : null}
+                  {years.map((y) => (
+                    <option key={y} value={y}>
+                      {y}
+                    </option>
+                  ))}
+                </select>
+              </label>
+              <label className="grow">
+                <ExplainTip text={TIPS.breakthrough}>
+                  <span className="tip-label">MIT breakthrough</span>
+                </ExplainTip>
+                <BreakthroughSelect
+                  key={year}
+                  items={mitPicks}
+                  selectedId={selectedId}
+                  emptyLabel={year === "2002" ? "No list published" : "No verified list this year"}
+                  onChange={setSelectedId}
+                />
+              </label>
+              <label className="check">
+                <input
+                  type="checkbox"
+                  checked={mappedOnly}
+                  onChange={(e) => setMappedOnly(e.target.checked)}
+                />
+                <ExplainTip text={TIPS.mappedOnly}>
+                  <span className="tip-label">Mapped only</span>
+                </ExplainTip>
+              </label>
+            </>
+          ) : null}
+          <div className="segment">
+            <ExplainTip text={TIPS.universeAll}>
+              <button
+                className={universe === "all" ? "on" : ""}
+                type="button"
+                onClick={() => setUniverse("all")}
+              >
+                All mappings
+              </button>
+            </ExplainTip>
+            <ExplainTip text={TIPS.universeDirect}>
+              <button
+                className={universe === "direct" ? "on" : ""}
+                type="button"
+                onClick={() => setUniverse("direct")}
+              >
+                Direct only
+              </button>
+            </ExplainTip>
+          </div>
         </div>
-      </div>
+      ) : null}
 
       {error ? <div className="banner error">{error}</div> : null}
-      {overview ? <div className="banner">{overview.disclaimer}</div> : null}
+      {overview && tab !== "knowledge" ? <div className="banner">{overview.disclaimer}</div> : null}
 
+      {tab === "ledger" ? (
+        <>
       <Panel
         id="mit-list"
         title="MIT 10 Breakthrough Technologies"
@@ -873,97 +932,112 @@ export default function App() {
           </table>
         </div>
       </Panel>
+        </>
+      ) : null}
 
-      <Panel id="watch" title="2026 watchlist" titleTip={TIPS.panelWatch} subtitle="Live book · analog history, not a forecast">
-        {watch ? (
-          <>
-            <p className="note-block">{watch.note}</p>
-            <div className="watch-grid">
-              {watch.items.map((item) => (
-                <button
-                  key={item.id}
-                  type="button"
-                  className={`watch-card ${item.id === selectedId ? "selected" : ""}`}
-                  onClick={() => setSelectedId(item.id)}
-                >
-                  <div className="watch-top">
-                    <ExplainTip text={categoryTip(item.category)}>
-                      <span className="muted">{categoryLabel(item.category)}</span>
-                    </ExplainTip>
-                    <ExplainTip text={verifyTip(item.verification_status)}>
-                      <span className={`pill ${item.verification_status}`}>
-                        {item.verification_status}
-                      </span>
-                    </ExplainTip>
-                  </div>
-                  <h3>{item.name}</h3>
-                  <p>{item.description}</p>
-                  <div className="tickers">
-                    {item.companies.map((c) => (
-                      <span key={c.ticker} className="mono">
-                        {c.ticker}
-                      </span>
-                    ))}
-                  </div>
-                  <div className="watch-analog">
-                    <ExplainTip text={TIPS.analogExcess}>
-                      <span className="tip-label">Analog excess</span>
-                    </ExplainTip>{" "}
-                    <span className={signedClass(item.historical_analog_excess)}>
-                      {fmtPp(item.historical_analog_excess)}
-                    </span>
-                  </div>
-                  {item.analogies.slice(0, 2).map((a) => (
-                    <div key={a.id} className="hint">
-                      {a.year} {a.name}
+      {tab === "watch" ? (
+        <div>
+          <div className="page-head">
+            <h2>2026 watchlist</h2>
+            <p>
+              Live book for this year’s MIT names. Analog excess is history, not a forecast.
+              Click a card to open it on the Dashboard.
+            </p>
+          </div>
+          {watch ? (
+            <>
+              <p className="note-block">{watch.note}</p>
+              <div className="watch-grid">
+                {watch.items.map((item) => (
+                  <button
+                    key={item.id}
+                    type="button"
+                    className={`watch-card ${item.id === selectedId ? "selected" : ""}`}
+                    onClick={() => openOnDashboard(item.id, 2026)}
+                  >
+                    <div className="watch-top">
+                      <ExplainTip text={categoryTip(item.category)}>
+                        <span className="muted">{categoryLabel(item.category)}</span>
+                      </ExplainTip>
+                      <ExplainTip text={verifyTip(item.verification_status)}>
+                        <span className={`pill ${item.verification_status}`}>
+                          {item.verification_status}
+                        </span>
+                      </ExplainTip>
                     </div>
-                  ))}
-                </button>
-              ))}
-            </div>
-          </>
-        ) : (
-          <p className="empty">No 2026 items seeded.</p>
-        )}
-      </Panel>
+                    <h3>{item.name}</h3>
+                    <p>{item.description}</p>
+                    <div className="tickers">
+                      {item.companies.map((c) => (
+                        <span key={c.ticker} className="mono">
+                          {c.ticker}
+                        </span>
+                      ))}
+                    </div>
+                    <div className="watch-analog">
+                      <ExplainTip text={TIPS.analogExcess}>
+                        <span className="tip-label">Analog excess</span>
+                      </ExplainTip>{" "}
+                      <span className={signedClass(item.historical_analog_excess)}>
+                        {fmtPp(item.historical_analog_excess)}
+                      </span>
+                    </div>
+                    {item.analogies.slice(0, 2).map((a) => (
+                      <div key={a.id} className="hint">
+                        {a.year} {a.name}
+                      </div>
+                    ))}
+                  </button>
+                ))}
+              </div>
+            </>
+          ) : (
+            <p className="empty">No 2026 items seeded.</p>
+          )}
+        </div>
+      ) : null}
 
-      <Panel id="method" title="How the score is computed" defaultOpen={false}>
-        <ol className="method">
-          <li>
-            MIT names a <em>technology</em>, not a ticker. Mappings are editorial, stored with
-            confidence (<code>direct</code> vs <code>exposed</code>), author, and timestamp so
-            they cannot be silently rewritten after looking at the chart.
-          </li>
-          <li>
-            Each mapped company is held from the list date (or IPO if later) to the latest
-            price, or to delisting. Slack and Fitbit stay in at their acquisition exits.
-          </li>
-          <li>
-            Excess return is company total return minus SPY over the <em>same dates</em>. The
-            category number is the average of those excesses — not “NVIDIA went up.” Gold,
-            oil, Nasdaq, and the sector ETF are extra chart lines for context; they do not
-            change the prediction score.
-          </li>
-          <li>
-            Dispersion (σ of company returns) and hit rate (% that beat SPY) punish one-name
-            miracles. Prediction score is 50 when in line with SPY, then squeezed by sample
-            size and dispersion.
-          </li>
-          <li>
-            2026 is a watchlist. Analog rows are hand-picked resemblances, not a similarity
-            model. This does not tell you which ticker to buy.
-          </li>
-        </ol>
-      </Panel>
+      {tab === "picture" ? (
+        <Picture archive={archive} selectedId={selectedId} onOpen={openOnDashboard} />
+      ) : null}
 
-      <Panel
-        id="guide"
-        title="How to read MITEN"
-        titleTip={TIPS.panelGuide}
-        subtitle="Idea, keywords, measures · start here if a word is unclear"
-      >
-        <Guide />
-      </Panel>
+      {tab === "knowledge" ? (
+        <div>
+          <div className="page-head">
+            <h2>Knowledge</h2>
+            <p>The idea, the keywords, the measures, and how the score is computed.</p>
+          </div>
+          <Guide />
+          <Panel id="method" title="How the score is computed" defaultOpen>
+            <ol className="method">
+              <li>
+                MIT names a <em>technology</em>, not a ticker. Mappings are editorial, stored with
+                confidence (<code>direct</code> vs <code>exposed</code>), author, and timestamp so
+                they cannot be silently rewritten after looking at the chart.
+              </li>
+              <li>
+                Each mapped company is held from the list date (or IPO if later) to the latest
+                price, or to delisting. Slack and Fitbit stay in at their acquisition exits.
+              </li>
+              <li>
+                Excess return is company total return minus SPY over the <em>same dates</em>. The
+                category number is the average of those excesses — not “NVIDIA went up.” Gold,
+                oil, Nasdaq, and the sector ETF are extra chart lines for context; they do not
+                change the prediction score.
+              </li>
+              <li>
+                Dispersion (σ of company returns) and hit rate (% that beat SPY) punish one-name
+                miracles. Prediction score is 50 when in line with SPY, then squeezed by sample
+                size and dispersion.
+              </li>
+              <li>
+                2026 is a watchlist. Analog rows are hand-picked resemblances, not a similarity
+                model. This does not tell you which ticker to buy.
+              </li>
+            </ol>
+          </Panel>
+        </div>
+      ) : null}
 
       <footer className="contact">
         <span>Aghil Hooshmand</span>
