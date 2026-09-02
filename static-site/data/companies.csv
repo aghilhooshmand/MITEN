@@ -1,95 +1,130 @@
-id,ticker,name,sector,exchange,country,ipo_date,delisted_date,delisted_reason
-6,AAPL,Apple,Hardware,NASDAQ,US,,,
-67,ADBE,Adobe,Software,NASDAQ,US,,,
-60,ALB,Albemarle,Materials,NYSE,US,,,
-9,AMD,Advanced Micro Devices,Semiconductors,NASDAQ,US,,,
-73,AMGN,Amgen,Biotech,NASDAQ,US,,,
-4,AMZN,Amazon,Internet,NASDAQ,US,,,
-94,ANET,Arista Networks,Networking,NYSE,US,,,
-63,APD,Air Products,Chemicals,NYSE,US,,,
-53,ASTS,AST SpaceMobile,Telecom,NASDAQ,US,,,
-11,AVGO,Broadcom,Semiconductors,NASDAQ,US,,,
-33,BA,Boeing,Aerospace,NYSE,US,,,
-62,BE,Bloom Energy,Hydrogen,NYSE,US,,,
-12,BIDU,Baidu,Internet,NASDAQ,CN,,,
-41,BMRN,BioMarin,Biotech,NASDAQ,US,,,
-56,BNTX,BioNTech,Biotech,NASDAQ,DE,,,
-45,BWXT,BWX Technologies,Nuclear,NYSE,US,,,
-46,BYND,Beyond Meat,Food,NASDAQ,US,,,
-74,CARR,Carrier,Industrials,NYSE,US,,,
-42,CEG,Constellation Energy,Utilities,NASDAQ,US,,,
-49,COIN,Coinbase,Crypto,NASDAQ,US,,,
-37,CRM,Salesforce,Software,NYSE,US,,,
-18,CRSP,CRISPR Therapeutics,Biotech,NASDAQ,US,,,
-92,CRWD,CrowdStrike,Cybersecurity,NASDAQ,US,,,
-16,CSIQ,Canadian Solar,Solar,NASDAQ,CA,,,
-24,DDD,3D Systems,Hardware,NYSE,US,,,
-23,DE,Deere & Company,Industrials,NYSE,US,,,
-80,DLR,Digital Realty,Data Centers,NYSE,US,,,
-19,EDIT,Editas Medicine,Biotech,NASDAQ,US,,,
-14,ENPH,Enphase Energy,Solar,NASDAQ,US,,,
-79,EQIX,Equinix,Data Centers,NASDAQ,US,,,
-27,EXAS,Exact Sciences,Diagnostics,NASDAQ,US,,,
-70,F,Ford,Autos,NYSE,US,,,
-90,FIT,Fitbit,Consumer Electronics,NYSE,US,,2021-01-14,Acquired by Alphabet
-66,FLNC,Fluence Energy,Energy Storage,NASDAQ,US,,,
-13,FSLR,First Solar,Solar,NASDAQ,US,,,
-84,GEV,GE Vernova,Energy Equipment,NYSE,US,,,
-26,GH,Guardant Health,Diagnostics,NASDAQ,US,,,
-35,GM,General Motors,Autos,NYSE,US,,,
-2,GOOGL,Alphabet,Internet,NASDAQ,US,,,
-17,GRMN,Garmin,Consumer Electronics,NYSE,US,,,
-78,GTLB,GitLab,Software,NASDAQ,US,,,
-88,HON,Honeywell,Industrials,NASDAQ,US,,,
-7,IBM,IBM,IT Services,NYSE,US,,,
-22,ILMN,Illumina,Life Sciences,NASDAQ,US,,,
-8,INTC,Intel,Semiconductors,NASDAQ,US,,,
-38,IONQ,IonQ,Quantum,NYSE,US,,,
-54,IRDM,Iridium Communications,Telecom,NASDAQ,US,,,
-48,IRTC,iRhythm Technologies,Medtech,NASDAQ,US,,,
-75,JCI,Johnson Controls,Industrials,NYSE,US,,,
-69,LCID,Lucid Group,Autos,NASDAQ,US,,,
-71,LLY,Eli Lilly,Pharma,NYSE,US,,,
-34,LMT,Lockheed Martin,Aerospace,NYSE,US,,,
-30,MA,Mastercard,Payments,NYSE,US,,,
-91,MBLY,Mobileye,Autos,NASDAQ,US,,,
-5,META,Meta Platforms,Internet,NASDAQ,US,,,
-55,MRNA,Moderna,Biotech,NASDAQ,US,,,
-3,MSFT,Microsoft,Software,NASDAQ,US,,,
-52,MSTR,Strategy (MicroStrategy),Software,NASDAQ,US,,,
-83,NOC,Northrop Grumman,Aerospace,NYSE,US,,,
-36,NOW,ServiceNow,Software,NYSE,US,,,
-20,NTLA,Intellia Therapeutics,Biotech,NASDAQ,US,,,
-28,NTRA,Natera,Diagnostics,NASDAQ,US,,,
-58,NVAX,Novavax,Biotech,NASDAQ,US,,,
-1,NVDA,NVIDIA,Semiconductors,NASDAQ,US,,,
-72,NVO,Novo Nordisk,Pharma,NYSE,DK,,,
-44,OKLO,Oklo,Nuclear,NYSE,US,,,
-93,OKTA,Okta,Cybersecurity,NASDAQ,US,,,
-57,PFE,Pfizer,Pharma,NYSE,US,,,
-77,PLTR,Palantir,Software,NASDAQ,US,,,
-61,PLUG,Plug Power,Hydrogen,NASDAQ,US,,,
-50,PYPL,PayPal,Payments,NASDAQ,US,,,
-59,QS,QuantumScape,Batteries,NYSE,US,,,
-86,REGN,Regeneron,Biotech,NASDAQ,US,,,
-39,RGTI,Rigetti Computing,Quantum,NASDAQ,US,,,
-68,RIVN,Rivian,Autos,NASDAQ,US,,,
-32,RKLB,Rocket Lab,Aerospace,NASDAQ,US,,,
-87,RUN,Sunrun,Solar,NASDAQ,US,,,
-64,RXRX,Recursion Pharmaceuticals,Biotech,NASDAQ,US,,,
-65,SDGR,Schrödinger,Life Sciences,NASDAQ,US,,,
-15,SEDG,SolarEdge,Solar,NASDAQ,US,,,
-43,SMR,NuScale Power,Nuclear,NYSE,US,,,
-82,SNAP,Snap,Internet,NYSE,US,,,
-40,SRPT,Sarepta Therapeutics,Biotech,NASDAQ,US,,,
-25,SSYS,Stratasys,Hardware,NASDAQ,US,,,
-31,TSLA,Tesla,Autos,NASDAQ,US,,,
-10,TSM,TSMC,Semiconductors,NYSE,TW,,,
-47,TSN,Tyson Foods,Food,NYSE,US,,,
-76,TT,Trane Technologies,Industrials,NYSE,US,,,
-29,V,Visa,Payments,NYSE,US,,,
-81,VRT,Vertiv,Electrical Equipment,NYSE,US,,,
-21,VRTX,Vertex Pharmaceuticals,Biotech,NASDAQ,US,,,
-85,VST,Vistra,Utilities,NYSE,US,,,
-89,WORK,Slack Technologies,Software,NYSE,US,,2021-07-21,Acquired by Salesforce
-51,XYZ,Block,Payments,NYSE,US,,,
+id,ticker,name,sector,exchange,country,ipo_date,delisted_date,delisted_reason,market_cap,market_cap_as_of
+6,AAPL,Apple,Hardware,NASDAQ,US,,,,4745005814660,2026-09-02
+67,ADBE,Adobe,Software,NASDAQ,US,,,,113716794662,2026-09-02
+109,AFRM,Affirm,Payments,NASDAQ,US,,,,23599243468,2026-09-02
+113,AGCO,AGCO,Industrials,NYSE,US,,,,8566281069,2026-09-02
+105,AI,C3.ai,Software,NYSE,US,,,,1655301517,2026-09-02
+60,ALB,Albemarle,Materials,NYSE,US,,,,15994404633,2026-09-02
+9,AMD,Advanced Micro Devices,Semiconductors,NASDAQ,US,,,,750301830140,2026-09-02
+73,AMGN,Amgen,Biotech,NASDAQ,US,,,,236861691390,2026-09-02
+4,AMZN,Amazon,Internet,NASDAQ,US,,,,2749647036023,2026-09-02
+94,ANET,Arista Networks,Networking,NYSE,US,,,,238699369952,2026-09-02
+63,APD,Air Products,Chemicals,NYSE,US,,,,67990347650,2026-09-02
+122,ARRY,Array Technologies,Solar,NASDAQ,US,,,,670683028,2026-09-02
+53,ASTS,AST SpaceMobile,Telecom,NASDAQ,US,,,,16728242990,2026-09-02
+121,AUR,Aurora Innovation,Autos,NASDAQ,US,,,,10942687839,2026-09-02
+125,AVAV,AeroVironment,Aerospace,NASDAQ,US,,,,7327096311,2026-09-02
+11,AVGO,Broadcom,Semiconductors,NASDAQ,US,,,,1758782212751,2026-09-02
+33,BA,Boeing,Aerospace,NYSE,US,,,,162547501207,2026-09-02
+62,BE,Bloom Energy,Hydrogen,NYSE,US,,,,62919878364,2026-09-02
+98,BEAM,Beam Therapeutics,Biotech,NASDAQ,US,,,,2997408085,2026-09-02
+12,BIDU,Baidu,Internet,NASDAQ,CN,,,,32175234537,2026-09-02
+41,BMRN,BioMarin,Biotech,NASDAQ,US,,,,12551321824,2026-09-02
+56,BNTX,BioNTech,Biotech,NASDAQ,DE,,,,25609029015,2026-09-02
+45,BWXT,BWX Technologies,Nuclear,NYSE,US,,,,14800614034,2026-09-02
+46,BYND,Beyond Meat,Food,NASDAQ,US,,,,214064860,2026-09-02
+74,CARR,Carrier,Industrials,NYSE,US,,,,47192609513,2026-09-02
+118,CCJ,Cameco,Uranium,NYSE,CA,,,,41924405488,2026-09-02
+114,CDNA,CareDx,Diagnostics,NASDAQ,US,,,,2533424963,2026-09-02
+42,CEG,Constellation Energy,Utilities,NASDAQ,US,,,,99315900542,2026-09-02
+129,CLF,Cleveland-Cliffs,Materials,NYSE,US,,,,6584032120,2026-09-02
+49,COIN,Coinbase,Crypto,NASDAQ,US,,,,46651646657,2026-09-02
+97,CRDO,Credo Technology,Semiconductors,NASDAQ,US,,,,38832940953,2026-09-02
+37,CRM,Salesforce,Software,NYSE,US,,,,212424517944,2026-09-02
+18,CRSP,CRISPR Therapeutics,Biotech,NASDAQ,US,,,,5494076513,2026-09-02
+92,CRWD,CrowdStrike,Cybersecurity,NASDAQ,US,,,,220217673968,2026-09-02
+16,CSIQ,Canadian Solar,Solar,NASDAQ,CA,,,,859572831,2026-09-02
+24,DDD,3D Systems,Hardware,NYSE,US,,,,546623712,2026-09-02
+23,DE,Deere & Company,Industrials,NYSE,US,,,,182288353152,2026-09-02
+80,DLR,Digital Realty,Data Centers,NYSE,US,,,,67992938282,2026-09-02
+19,EDIT,Editas Medicine,Biotech,NASDAQ,US,,,,471490697,2026-09-02
+14,ENPH,Enphase Energy,Solar,NASDAQ,US,,,,4696420910,2026-09-02
+79,EQIX,Equinix,Data Centers,NASDAQ,US,,,,101394034444,2026-09-02
+27,EXAS,Exact Sciences,Diagnostics,NASDAQ,US,,,,,
+70,F,Ford,Autos,NYSE,US,,,,55188324639,2026-09-02
+90,FIT,Fitbit,Consumer Electronics,NYSE,US,,2021-01-14,Acquired by Alphabet,,
+66,FLNC,Fluence Energy,Energy Storage,NASDAQ,US,,,,1491764597,2026-09-02
+13,FSLR,First Solar,Solar,NASDAQ,US,,,,21456342518,2026-09-02
+84,GEV,GE Vernova,Energy Equipment,NYSE,US,,,,239308720338,2026-09-02
+26,GH,Guardant Health,Diagnostics,NASDAQ,US,,,,22063192801,2026-09-02
+35,GM,General Motors,Autos,NYSE,US,,,,77448182971,2026-09-02
+2,GOOGL,Alphabet,Internet,NASDAQ,US,,,,4097272632719,2026-09-02
+115,GRAL,GRAIL,Diagnostics,NASDAQ,US,,,,3563918851,2026-09-02
+17,GRMN,Garmin,Consumer Electronics,NYSE,US,,,,53067234920,2026-09-02
+78,GTLB,GitLab,Software,NASDAQ,US,,,,7615701025,2026-09-02
+88,HON,Honeywell,Industrials,NASDAQ,US,,,,66551061945,2026-09-02
+110,HOOD,Robinhood,Brokerage,NASDAQ,US,,,,93064007998,2026-09-02
+7,IBM,IBM,IT Services,NYSE,US,,,,218009892095,2026-09-02
+22,ILMN,Illumina,Life Sciences,NASDAQ,US,,,,31276630737,2026-09-02
+8,INTC,Intel,Semiconductors,NASDAQ,US,,,,467495212659,2026-09-02
+38,IONQ,IonQ,Quantum,NYSE,US,,,,15306024589,2026-09-02
+54,IRDM,Iridium Communications,Telecom,NASDAQ,US,,,,4951458238,2026-09-02
+48,IRTC,iRhythm Technologies,Medtech,NASDAQ,US,,,,4033023366,2026-09-02
+75,JCI,Johnson Controls,Industrials,NYSE,US,,,,84349499697,2026-09-02
+69,LCID,Lucid Group,Autos,NASDAQ,US,,,,1793019375,2026-09-02
+71,LLY,Eli Lilly,Pharma,NYSE,US,,,,1034420030960,2026-09-02
+34,LMT,Lockheed Martin,Aerospace,NYSE,US,,,,125665565008,2026-09-02
+107,LUNR,Intuitive Machines,Aerospace,NASDAQ,US,,,,2361858031,2026-09-02
+30,MA,Mastercard,Payments,NYSE,US,,,,509049354747,2026-09-02
+91,MBLY,Mobileye,Autos,NASDAQ,US,,,,7107568027,2026-09-02
+5,META,Meta Platforms,Internet,NASDAQ,US,,,,1473834195436,2026-09-02
+55,MRNA,Moderna,Biotech,NASDAQ,US,,,,61590122301,2026-09-02
+3,MSFT,Microsoft,Software,NASDAQ,US,,,,3720346720321,2026-09-02
+52,MSTR,Strategy (MicroStrategy),Software,NASDAQ,US,,,,49612532609,2026-09-02
+120,MTLS,Materialise,Hardware,NASDAQ,BE,,,,408497287,2026-09-02
+83,NOC,Northrop Grumman,Aerospace,NYSE,US,,,,75706803370,2026-09-02
+36,NOW,ServiceNow,Software,NYSE,US,,,,147738873489,2026-09-02
+20,NTLA,Intellia Therapeutics,Biotech,NASDAQ,US,,,,1777507159,2026-09-02
+28,NTRA,Natera,Diagnostics,NASDAQ,US,,,,46235685376,2026-09-02
+58,NVAX,Novavax,Biotech,NASDAQ,US,,,,1669250728,2026-09-02
+1,NVDA,NVIDIA,Semiconductors,NASDAQ,US,,,,5250523738952,2026-09-02
+72,NVO,Novo Nordisk,Pharma,NYSE,DK,,,,199476874472,2026-09-02
+44,OKLO,Oklo,Nuclear,NYSE,US,,,,7167259827,2026-09-02
+93,OKTA,Okta,Cybersecurity,NASDAQ,US,,,,29095445766,2026-09-02
+126,ORA,Ormat Technologies,Geothermal,NYSE,US,,,,6598006856,2026-09-02
+117,OTLY,Oatly,Food,NASDAQ,US,,,,469110186,2026-09-02
+104,PATH,UiPath,Software,NYSE,US,,,,9398701309,2026-09-02
+57,PFE,Pfizer,Pharma,NYSE,US,,,,162725676617,2026-09-02
+77,PLTR,Palantir,Software,NASDAQ,US,,,,432358277321,2026-09-02
+61,PLUG,Plug Power,Hydrogen,NASDAQ,US,,,,2920138011,2026-09-02
+100,PRME,Prime Medicine,Biotech,NASDAQ,US,,,,647515363,2026-09-02
+50,PYPL,PayPal,Payments,NASDAQ,US,,,,44826151102,2026-09-02
+106,QBTS,D-Wave Quantum,Quantum,NYSE,US,,,,6160156832,2026-09-02
+95,QCOM,Qualcomm,Semiconductors,NASDAQ,US,,,,177949558390,2026-09-02
+59,QS,QuantumScape,Batteries,NYSE,US,,,,3364843436,2026-09-02
+101,QURE,uniQure,Biotech,NASDAQ,US,,,,3319876520,2026-09-02
+127,RDDT,Reddit,Internet,NYSE,US,,,,27828231088,2026-09-02
+108,RDW,Redwire,Aerospace,NYSE,US,,,,2564924225,2026-09-02
+86,REGN,Regeneron,Biotech,NASDAQ,US,,,,84816378968,2026-09-02
+102,RGNX,REGENXBIO,Biotech,NASDAQ,US,,,,615242929,2026-09-02
+39,RGTI,Rigetti Computing,Quantum,NASDAQ,US,,,,5003193441,2026-09-02
+68,RIVN,Rivian,Autos,NASDAQ,US,,,,22492514666,2026-09-02
+32,RKLB,Rocket Lab,Aerospace,NASDAQ,US,,,,39981930904,2026-09-02
+87,RUN,Sunrun,Solar,NASDAQ,US,,,,1996657504,2026-09-02
+64,RXRX,Recursion Pharmaceuticals,Biotech,NASDAQ,US,,,,1785782678,2026-09-02
+65,SDGR,Schrödinger,Life Sciences,NASDAQ,US,,,,1558949298,2026-09-02
+15,SEDG,SolarEdge,Solar,NASDAQ,US,,,,1998971655,2026-09-02
+96,SMCI,Super Micro Computer,Hardware,NASDAQ,US,,,,24117198645,2026-09-02
+43,SMR,NuScale Power,Nuclear,NYSE,US,,,,3779687513,2026-09-02
+82,SNAP,Snap,Internet,NYSE,US,,,,9047907597,2026-09-02
+103,SOUN,SoundHound AI,Software,NASDAQ,US,,,,3042152389,2026-09-02
+40,SRPT,Sarepta Therapeutics,Biotech,NASDAQ,US,,,,2253024349,2026-09-02
+25,SSYS,Stratasys,Hardware,NASDAQ,US,,,,664785343,2026-09-02
+128,SYM,Symbotic,Hardware,NASDAQ,US,,,,4963760780,2026-09-02
+112,TRMB,Trimble,Industrials,NASDAQ,US,,,,13739592609,2026-09-02
+31,TSLA,Tesla,Autos,NASDAQ,US,,,,1406394317065,2026-09-02
+10,TSM,TSMC,Semiconductors,NYSE,TW,,,,2147200241382,2026-09-02
+47,TSN,Tyson Foods,Food,NYSE,US,,,,19370191733,2026-09-02
+76,TT,Trane Technologies,Industrials,NYSE,US,,,,96843200013,2026-09-02
+111,U,Unity Software,Software,NYSE,US,,,,18008438332,2026-09-02
+119,UEC,Uranium Energy,Uranium,NYSE,US,,,,5735570797,2026-09-02
+29,V,Visa,Payments,NYSE,US,,,,695792527081,2026-09-02
+116,VCYT,Veracyte,Diagnostics,NASDAQ,US,,,,3491369471,2026-09-02
+99,VERV,Verve Therapeutics,Biotech,NASDAQ,US,,2025-07-25,Acquired by Eli Lilly,,
+124,VKTX,Viking Therapeutics,Biotech,NASDAQ,US,,,,3927704175,2026-09-02
+81,VRT,Vertiv,Electrical Equipment,NYSE,US,,,,98545423112,2026-09-02
+21,VRTX,Vertex Pharmaceuticals,Biotech,NASDAQ,US,,,,138807881216,2026-09-02
+85,VST,Vistra,Utilities,NYSE,US,,,,46344508340,2026-09-02
+89,WORK,Slack Technologies,Software,NYSE,US,,2021-07-21,Acquired by Salesforce,,
+51,XYZ,Block,Payments,NYSE,US,,,,46789912949,2026-09-02
+123,ZM,Zoom Communications,Software,NASDAQ,US,,,,27690274619,2026-09-02

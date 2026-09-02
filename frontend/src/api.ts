@@ -1,5 +1,6 @@
 import type {
   Archive,
+  CompanyMap,
   Overview,
   RankedScore,
   TechDetail,
@@ -49,6 +50,10 @@ export function fetchWatchlist(universe: Universe) {
 
 export function fetchArchive(universe: Universe) {
   return getJson<Archive>(`/api/archive?universe=${universe}`);
+}
+
+export function fetchCompanyMap(universe: Universe) {
+  return getJson<CompanyMap>(`/api/company-map?universe=${universe}`);
 }
 
 export function fetchCategories() {

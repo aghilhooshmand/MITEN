@@ -43,7 +43,7 @@ Base paths are relative (`./data/…`), so the site also works at
 | `meta.csv` | Snapshot date, disclaimer, 2026 watchlist note |
 | `years.csv` | One row per MIT year (2002 has no list) |
 | `technologies.csv` | All 250 TR10 names |
-| `companies.csv` | Listed names used in mappings |
+| `companies.csv` | Listed names used in mappings, plus latest market cap when exported |
 | `mappings.csv` | Technology → company, with `direct` / `exposed` notes |
 | `scores.csv` | Precomputed cohort stats vs SPY (`all` and `direct`) |
 | `score_companies.csv` | Per-name returns inside each score |

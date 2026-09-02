@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState, type CSSProperties } from "react";
 import { Guide } from "./Guide";
 import { Picture } from "./Picture";
+import { CompanyMap } from "./CompanyMap";
 import { ExplainTip } from "./ExplainTip";
 import {
   CartesianGrid,
@@ -14,6 +15,7 @@ import {
 } from "recharts";
 import {
   fetchArchive,
+  fetchCompanyMap,
   fetchOverview,
   fetchScores,
   fetchTechnologies,
@@ -41,6 +43,7 @@ import {
 import { cmpMap, cmpNum, cmpStr, cmpVerdict, nextSort, sortMark, type SortSpec } from "./sort";
 import type {
   Archive,
+  CompanyMap as CompanyMapData,
   ArchiveItem,
   ChartSeries,
   Overview,
@@ -78,6 +81,7 @@ export default function App() {
   const [ranking, setRanking] = useState<RankedScore[]>([]);
   const [watch, setWatch] = useState<Watchlist | null>(null);
   const [archive, setArchive] = useState<Archive | null>(null);
+  const [companyMap, setCompanyMap] = useState<CompanyMapData | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
   const [compareOn, setCompareOn] = useState<Record<string, boolean>>({
@@ -105,13 +109,15 @@ export default function App() {
       fetchScores(universe),
       fetchWatchlist(universe),
       fetchArchive(universe),
+      fetchCompanyMap(universe),
     ])
-      .then(([ov, list, scores, wl, arch]) => {
+      .then(([ov, list, scores, wl, arch, cmap]) => {
         setOverview(ov);
         setTechs(list);
         setRanking(scores);
         setWatch(wl);
         setArchive(arch);
+        setCompanyMap(cmap);
         setError(null);
         const edition = arch.years.find((y) => String(y.year) === year);
         const picks = edition?.technologies ?? [];
@@ -724,6 +730,15 @@ export default function App() {
         ) : (
           <p className="empty">Pick a row in the ledger.</p>
         )}
+      </Panel>
+
+      <Panel
+        id="map"
+        title="Follow-through map"
+        titleTip={TIPS.panelMap}
+        subtitle="Each bubble is one company in one MIT year · area is market cap · click to open"
+      >
+        <CompanyMap data={companyMap} selectedId={selectedId} onOpen={openOnDashboard} />
       </Panel>
 
       <Panel

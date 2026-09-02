@@ -1058,6 +1058,102 @@ i.mosaic-mark {
   border-color: var(--gold-dim);
 }
 
+.map-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+  margin-bottom: 10px;
+}
+
+.map-filters label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.map-filters select {
+  background: var(--bg-2);
+  color: var(--text);
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  padding: 6px 8px;
+  min-width: 120px;
+}
+
+.map-filters .grow {
+  flex: 1 1 220px;
+}
+
+.map-filters .grow select {
+  width: 100%;
+}
+
+.map-quads {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px 16px;
+  font-size: 11px;
+  color: var(--muted);
+  margin: 0 0 6px;
+}
+
+.map-plot {
+  width: 100%;
+  min-height: 280px;
+}
+
+.map-svg .map-bubble {
+  cursor: pointer;
+}
+
+.map-legend {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 14px 18px;
+  margin-top: 8px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.map-swatches {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 14px;
+}
+
+.map-swatches span {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.map-swatches i {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  display: inline-block;
+}
+
+.map-size-key {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.map-dot {
+  display: inline-block;
+  border-radius: 50%;
+  background: rgba(212, 168, 75, 0.55);
+  border: 1px solid var(--gold-dim);
+}
+
+.map-dot.sm { width: 8px; height: 8px; }
+.map-dot.md { width: 14px; height: 14px; }
+.map-dot.lg { width: 22px; height: 22px; }
+
 .contact {
   display: flex;
   flex-wrap: wrap;

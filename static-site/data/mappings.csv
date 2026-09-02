@@ -224,3 +224,71 @@ technology_id,company_id,ticker,confidence,role_note,added_by,added_at
 163,5,META,exposed,Open-weights models make interpretability a product risk topic.,seed-v1,2026-09-01T00:00:00
 164,22,ILMN,exposed,Sequencing is the measurement layer; Colossal etc. are private.,seed-v1,2026-09-01T00:00:00
 164,18,CRSP,exposed,Gene-editing tools that such projects would use.,seed-v1,2026-09-01T00:00:00
+31,9,AMD,direct,"The other public GPU company in 2013; much smaller than NVIDIA then, still a compute pure-play.",seed-v2,2026-09-02T00:00:00
+32,122,ARRY,exposed,Utility-scale solar trackers; listed later. Downstream of cell efficiency.,seed-v2,2026-09-02T00:00:00
+36,112,TRMB,direct,Precision-ag guidance and see-and-spray; closer to the named drone/sensing stack than Deere as a whole.,seed-v2,2026-09-02T00:00:00
+36,113,AGCO,exposed,Smaller farm-equipment OEM with precision-ag products; not a drone maker.,seed-v2,2026-09-02T00:00:00
+40,98,BEAM,direct,"Base-editing company; listed later, so the window starts at IPO.",seed-v2,2026-09-02T00:00:00
+40,100,PRME,direct,Prime-editing company; listed later.,seed-v2,2026-09-02T00:00:00
+43,111,U,exposed,Unity ships the real-time 3D stack used in VR apps; not a headset maker. Listed 2020.,seed-v2,2026-09-02T00:00:00
+50,114,CDNA,direct,Transplant cfDNA testing; a smaller liquid-biopsy specialist.,seed-v2,2026-09-02T00:00:00
+50,115,GRAL,direct,GRAIL galleri multi-cancer blood test; listed 2024 so the window starts then.,seed-v2,2026-09-02T00:00:00
+50,116,VCYT,exposed,"Genomic diagnostics company; tissue and some liquid assays, not a pure biopsy name.",seed-v2,2026-09-02T00:00:00
+58,103,SOUN,direct,"Voice-AI specialist; listed much later, so returns start at IPO.",seed-v2,2026-09-02T00:00:00
+59,107,LUNR,exposed,"Lunar lander company; listed later. Adjacent commercial space, not a booster specialist.",seed-v2,2026-09-02T00:00:00
+59,108,RDW,exposed,Space infrastructure manufacturer; listed later.,seed-v2,2026-09-02T00:00:00
+64,121,AUR,direct,Aurora is a public autonomy-stack company; listed later.,seed-v2,2026-09-02T00:00:00
+66,121,AUR,direct,Public truck-and-robotaxi autonomy company; listed later.,seed-v2,2026-09-02T00:00:00
+68,106,QBTS,exposed,D-Wave annealing systems; listed later. Different architecture than the MIT gate-model story.,seed-v2,2026-09-02T00:00:00
+71,101,QURE,direct,Hemophilia gene-therapy specialist; smaller than the large-cap genetic names.,seed-v2,2026-09-02T00:00:00
+71,102,RGNX,direct,AAV gene-therapy platform company.,seed-v2,2026-09-02T00:00:00
+75,120,MTLS,direct,Additive software and manufacturing services; smaller than the US incumbents.,seed-v2,2026-09-02T00:00:00
+78,104,PATH,direct,RPA / automation software that later embedded models; listed 2021.,seed-v2,2026-09-02T00:00:00
+78,105,AI,direct,C3.ai sells enterprise AI applications; smaller than the cloud parents.,seed-v2,2026-09-02T00:00:00
+83,116,VCYT,exposed,Genomic classifiers sold into clinics; not a consumer polygenic-score app.,seed-v2,2026-09-02T00:00:00
+86,118,CCJ,exposed,"Uranium miner; fuel-cycle exposure, not a reactor designer.",seed-v2,2026-09-02T00:00:00
+86,119,UEC,exposed,Smaller US uranium developer.,seed-v2,2026-09-02T00:00:00
+90,117,OTLY,direct,Public oat-milk / alt-protein name; smaller than Beyond Meat at listing.,seed-v2,2026-09-02T00:00:00
+94,103,SOUN,direct,Voice assistant / conversational AI specialist; listed later.,seed-v2,2026-09-02T00:00:00
+97,109,AFRM,direct,"Consumer buy-now-pay-later; digital credit, not a wallet rail. Listed around this window.",seed-v2,2026-09-02T00:00:00
+97,110,HOOD,exposed,Retail brokerage and crypto app; listed 2021.,seed-v2,2026-09-02T00:00:00
+100,107,LUNR,exposed,"Lunar comms/landing; adjacent commercial space, listed later.",seed-v2,2026-09-02T00:00:00
+101,106,QBTS,exposed,"Public quantum hardware; annealing, not Sycamore.",seed-v2,2026-09-02T00:00:00
+102,95,QCOM,direct,Snapdragon NPUs / on-device AI silicon shipping at list time.,seed-v2,2026-09-02T00:00:00
+106,96,SMCI,exposed,"AI-server assembler; more concentrated than the cloud parents, listed long before 2021.",seed-v2,2026-09-02T00:00:00
+106,77,PLTR,exposed,Enterprise software that later sold AIP; not a model lab.,seed-v2,2026-09-02T00:00:00
+113,123,ZM,direct,The named video-meeting company of the remote-work wave.,seed-v2,2026-09-02T00:00:00
+113,104,PATH,exposed,Desktop automation that benefited if work stayed digital.,seed-v2,2026-09-02T00:00:00
+125,99,VERV,direct,Verve is the named in-vivo CRISPR/base-editing cholesterol program; smaller than Vertex/Regeneron.,seed-v2,2026-09-02T00:00:00
+128,125,AVAV,direct,US-listed small unmanned systems company shipping loitering and tactical drones.,seed-v2,2026-09-02T00:00:00
+128,34,LMT,exposed,Prime that sells larger unmanned systems; not the cheap-drone story.,seed-v2,2026-09-02T00:00:00
+135,96,SMCI,exposed,AI-server OEM; more concentrated than the hyperscalers.,seed-v2,2026-09-02T00:00:00
+135,104,PATH,direct,Enterprise automation that now ships AI agents; smaller than the cloud parents.,seed-v2,2026-09-02T00:00:00
+135,105,AI,direct,C3.ai enterprise applications; a smaller AI-software name.,seed-v2,2026-09-02T00:00:00
+136,122,ARRY,exposed,Tracker hardware attached to high-efficiency utility arrays.,seed-v2,2026-09-02T00:00:00
+138,124,VKTX,direct,Smaller obesity-pipeline biotech (VK2735); not yet commercial.,seed-v2,2026-09-02T00:00:00
+141,98,BEAM,direct,Base-editing peer; not the first approved CRISPR therapy.,seed-v2,2026-09-02T00:00:00
+139,126,ORA,direct,Operating geothermal producer; closest listed name while Fervo etc. stay private.,seed-v2,2026-09-02T00:00:00
+142,1,NVDA,direct,Accelerators inside the first exascale machines.,seed-v2,2026-09-02T00:00:00
+142,96,SMCI,exposed,Builds the GPU servers those machines resemble commercially.,seed-v2,2026-09-02T00:00:00
+144,127,RDDT,direct,"Public square competitor listed in 2024; not a Twitter clone, included as the listed alternative.",seed-v2,2026-09-02T00:00:00
+144,5,META,exposed,"Threads; incumbent response, not a killer.",seed-v2,2026-09-02T00:00:00
+137,111,U,exposed,Unity runtime used by spatial apps; not a headset.,seed-v2,2026-09-02T00:00:00
+147,95,QCOM,direct,On-device NPUs in phones and PCs.,seed-v2,2026-09-02T00:00:00
+149,121,AUR,direct,Public autonomy company aiming at driverless trucking and ride-hail.,seed-v2,2026-09-02T00:00:00
+151,128,SYM,direct,Warehouse robots that learn SKU handling; smaller than the industrial conglomerates.,seed-v2,2026-09-02T00:00:00
+151,104,PATH,exposed,Software automation adjacent to physical robots.,seed-v2,2026-09-02T00:00:00
+153,129,CLF,exposed,US steelmaker investing in DRI / lower-coal routes; not a pure green-steel name.,seed-v2,2026-09-02T00:00:00
+155,96,SMCI,direct,AI-server assembler whose revenue is concentrated on GPU racks.,seed-v2,2026-09-02T00:00:00
+155,97,CRDO,exposed,High-speed connectivity silicon for AI clusters; smaller than NVIDIA.,seed-v2,2026-09-02T00:00:00
+156,118,CCJ,exposed,Uranium supply; not a reactor OEM.,seed-v2,2026-09-02T00:00:00
+156,119,UEC,exposed,Smaller US uranium developer.,seed-v2,2026-09-02T00:00:00
+157,116,VCYT,exposed,"Genomic classifiers; adjacent diagnostics, not embryo ranking.",seed-v2,2026-09-02T00:00:00
+158,103,SOUN,direct,Voice companions and assistants; smaller than the platform owners.,seed-v2,2026-09-02T00:00:00
+159,107,LUNR,exposed,Commercial lunar lander company; adjacent orbital infrastructure.,seed-v2,2026-09-02T00:00:00
+159,108,RDW,exposed,Space infrastructure manufacturer.,seed-v2,2026-09-02T00:00:00
+161,104,PATH,direct,Automation platform embedding codegen; smaller than Microsoft.,seed-v2,2026-09-02T00:00:00
+161,105,AI,direct,Enterprise AI applications including developer tools.,seed-v2,2026-09-02T00:00:00
+162,98,BEAM,direct,Base-editing specialist; closer to one-patient editing than Vertex.,seed-v2,2026-09-02T00:00:00
+162,100,PRME,direct,Prime-editing company.,seed-v2,2026-09-02T00:00:00
+162,99,VERV,direct,In-vivo cardiovascular gene editing.,seed-v2,2026-09-02T00:00:00

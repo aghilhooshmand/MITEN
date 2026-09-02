@@ -157,8 +157,6 @@ def upsert_static(db: Session) -> None:
             db.add(row)
         row.role_note = note
         row.mapping_confidence = confidence
-        row.added_by = ADDED_BY
-        row.added_at = added_at
 
     db.flush()
     for src_slug, dst_slug, note in ANALOGIES:
@@ -339,6 +337,51 @@ def resolve_aliases(frames: dict[str, pd.DataFrame]) -> dict[str, pd.DataFrame]:
     return out
 
 
+def tickers_missing_prices(db: Session) -> list[str]:
+    priced = {
+        ticker
+        for (ticker,) in db.query(Company.ticker)
+        .join(StockPrice, StockPrice.company_id == Company.id)
+        .distinct()
+        .all()
+    }
+    return [c.ticker for c in db.query(Company).all() if c.ticker not in priced]
+
+
+def fetch_market_caps(db: Session) -> int:
+    """Latest Yahoo market cap for listed names. Delisted names stay empty."""
+    today = date.today()
+    updated = 0
+    companies = db.query(Company).all()
+    print(f"Fetching market caps for {len(companies)} companies…")
+    for company in companies:
+        if company.delisted_date is not None:
+            continue
+        cap = None
+        try:
+            ticker = yf.Ticker(company.ticker)
+            fast = getattr(ticker, "fast_info", None)
+            if fast is not None:
+                cap = getattr(fast, "market_cap", None)
+            if cap is None:
+                info = ticker.info or {}
+                cap = info.get("marketCap")
+        except Exception as exc:
+            print(f"  {company.ticker}: {exc}")
+            continue
+        if cap is None:
+            print(f"  {company.ticker}: no market cap")
+            continue
+        company.market_cap = float(cap)
+        company.market_cap_as_of = today
+        updated += 1
+        print(f"  {company.ticker}: {company.market_cap:,.0f}")
+        time.sleep(0.12)
+    db.commit()
+    print(f"Wrote market cap for {updated} companies.")
+    return updated
+
+
 def main() -> None:
     print("Creating tables…")
     Base.metadata.create_all(bind=engine)
@@ -350,11 +393,26 @@ def main() -> None:
             n_scores = rescore_all(db)
             print(f"Static-only seed complete. {n_scores} score rows.")
             return
+        if "--caps-only" in sys.argv:
+            fetch_market_caps(db)
+            return
         if "--benchmarks" in sys.argv:
             tickers = [b.ticker for b in db.query(Benchmark).all()]
             frames = download_prices(tickers)
             n_bm = persist_benchmark_prices(db, frames)
             print(f"Wrote {n_bm} benchmark rows.")
+            return
+        if "--update" in sys.argv:
+            missing = tickers_missing_prices(db)
+            if missing:
+                print(f"Downloading {len(missing)} tickers with no prices…")
+                frames = download_prices(missing)
+                persist_equity_prices(db, frames)
+            else:
+                print("All mapped tickers already have prices.")
+            fetch_market_caps(db)
+            n_scores = rescore_all(db)
+            print(f"Update complete. {n_scores} score rows.")
             return
         equity_tickers = [c.ticker for c in db.query(Company).all()]
         bench_tickers = [b.ticker for b in db.query(Benchmark).all()]
@@ -364,6 +422,7 @@ def main() -> None:
         n_eq = persist_equity_prices(db, frames)
         n_bm = persist_benchmark_prices(db, frames)
         print(f"Wrote {n_eq} equity rows and {n_bm} benchmark rows.")
+        fetch_market_caps(db)
         n_scores = rescore_all(db)
         print(f"Wrote {n_scores} score rows.")
     finally:

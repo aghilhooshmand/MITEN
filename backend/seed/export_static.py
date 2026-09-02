@@ -136,6 +136,8 @@ def export(db: Session) -> None:
             "ipo_date",
             "delisted_date",
             "delisted_reason",
+            "market_cap",
+            "market_cap_as_of",
         ],
         [
             {
@@ -148,6 +150,8 @@ def export(db: Session) -> None:
                 "ipo_date": c.ipo_date.isoformat() if c.ipo_date else "",
                 "delisted_date": c.delisted_date.isoformat() if c.delisted_date else "",
                 "delisted_reason": c.delisted_reason,
+                "market_cap": "" if c.market_cap is None else int(c.market_cap),
+                "market_cap_as_of": c.market_cap_as_of.isoformat() if c.market_cap_as_of else "",
             }
             for c in companies
         ],

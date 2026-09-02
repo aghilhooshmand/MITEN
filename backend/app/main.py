@@ -62,6 +62,18 @@ def _pick_score(tech: Technology, universe: str) -> TechnologyScore | None:
     return None
 
 
+def _size_band(market_cap: float | None) -> str:
+    if market_cap is None:
+        return "unknown"
+    if market_cap >= 100_000_000_000:
+        return "mega"
+    if market_cap >= 20_000_000_000:
+        return "large"
+    if market_cap >= 2_000_000_000:
+        return "mid"
+    return "small"
+
+
 @app.get("/api/health")
 def health():
     return {"ok": True}
@@ -405,3 +417,55 @@ def watchlist(
 def categories(db: Session = Depends(get_db)):
     rows = db.query(Technology.category).distinct().order_by(Technology.category).all()
     return [r[0] for r in rows]
+
+
+@app.get("/api/company-map")
+def company_map(
+    universe: str = Query("all", pattern="^(all|direct)$"),
+    db: Session = Depends(get_db),
+):
+    """One bubble per mapping: company follow-through vs the MIT category score."""
+    scores = (
+        db.query(TechnologyScore)
+        .options(joinedload(TechnologyScore.technology))
+        .filter(TechnologyScore.universe == universe)
+        .all()
+    )
+    companies = {c.id: c for c in db.query(Company).all()}
+    points = []
+    cap_dates = [c.market_cap_as_of for c in companies.values() if c.market_cap_as_of]
+    for score in scores:
+        tech = score.technology
+        details = (score.details_json or {}).get("companies") or []
+        for row in details:
+            company = companies.get(row.get("company_id"))
+            market_cap = company.market_cap if company else None
+            points.append(
+                {
+                    "technology_id": tech.id,
+                    "year": tech.year,
+                    "technology": tech.name,
+                    "category": tech.category,
+                    "prediction_score": score.prediction_score,
+                    "cohort_excess": score.mean_excess_return,
+                    "window_years": score.window_years,
+                    "verdict": score.verdict,
+                    "company_id": row.get("company_id"),
+                    "ticker": row.get("ticker"),
+                    "name": row.get("name"),
+                    "confidence": row.get("confidence"),
+                    "total_return": row.get("total_return"),
+                    "spy_return": row.get("spy_return"),
+                    "excess_return": row.get("excess_return"),
+                    "market_cap": market_cap,
+                    "size_band": _size_band(market_cap),
+                    "delisted": bool(row.get("delisted")),
+                }
+            )
+    return {
+        "universe": universe,
+        "as_of": max((s.as_of for s in scores), default=date.today()).isoformat(),
+        "market_cap_as_of": max(cap_dates).isoformat() if cap_dates else None,
+        "n_points": len(points),
+        "points": points,
+    }

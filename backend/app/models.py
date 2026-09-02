@@ -98,6 +98,8 @@ class Company(Base):
     delisted_date: Mapped[Optional[date]] = mapped_column(Date, nullable=True)
     delisted_reason: Mapped[Optional[str]] = mapped_column(String(200), nullable=True)
     country: Mapped[str] = mapped_column(String(8), nullable=False, default="US")
+    market_cap: Mapped[Optional[float]] = mapped_column(Float, nullable=True)
+    market_cap_as_of: Mapped[Optional[date]] = mapped_column(Date, nullable=True)
 
     mappings: Mapped[list["TechnologyCompanyMap"]] = relationship(
         back_populates="company"

@@ -18,6 +18,25 @@ const CAT = {
   other: "Other",
 };
 const SUBJECTS = ["ai", "biotech", "energy", "hardware", "consumer", "space", "industrial"];
+const SUBJECT_COLOR = {
+  ai: "#d4a84b",
+  biotech: "#3dcf8a",
+  energy: "#6ea0ff",
+  hardware: "#c084fc",
+  consumer: "#f0a36b",
+  space: "#7dd3fc",
+  industrial: "#94a3b8",
+  other: "#8b93a7",
+};
+const MAP_AXES = [
+  { key: "excess_return", label: "Company vs SPY", kind: "return" },
+  { key: "total_return", label: "Company return", kind: "return" },
+  { key: "spy_return", label: "SPY over same dates", kind: "return" },
+  { key: "prediction_score", label: "MIT prediction score", kind: "score" },
+  { key: "cohort_excess", label: "Category vs SPY", kind: "return" },
+  { key: "window_years", label: "Years since MIT list", kind: "years" },
+  { key: "market_cap", label: "Market cap", kind: "cap" },
+];
 const VERDICT = {
   beat: "Beat market",
   lag: "Lagged",
@@ -38,6 +57,14 @@ const TIPS = {
   panelChart: "Equal-weight mapped companies versus market indexes, all rebased to 100 on the list date (or IPO). The prediction score uses SPY only.",
   panelNames: "The editorial map from this technology to listed companies, with each name’s return versus SPY. Click a column title to sort.",
   panelRank: "Every scored technology in the archive, not just this year. Default order is prediction score. Click a column title to sort.",
+  panelMap: "Each bubble is one mapped company in one MIT year. Position is follow-through versus the category call. Area is latest market cap. This is a map of the editorial list, not a buy list.",
+  mapSubject: "Limit bubbles to one editorial subject (AI, biotech, energy, …) or keep All.",
+  mapYear: "Limit bubbles to one MIT edition year, or keep All years.",
+  mapTech: "Limit bubbles to one named MIT technology, or keep All names in the current subject/year filter.",
+  mapSize: "Filter by latest market cap. Smaller keeps names under $20B so megacaps do not dominate the eye. The prediction score still equal-weights every name.",
+  mapX: "Horizontal measure. Default is this company’s excess versus SPY after the MIT list date (or IPO).",
+  mapY: "Vertical measure. Default is the MIT technology’s prediction score (50 = the category matched SPY).",
+  mapBubble: "Bubble area scales with latest market cap (square-root so area, not radius, tracks size). Tiny dots are small/unknown caps; large dots are megacaps if you leave size on All.",
   panelWatch: "2026 names and hand-picked historical analogs. Analog excess is history, not a forecast, and not a buy list.",
   panelGuide: "Plain-language tour of the project: the idea, the keywords (cohort, mapped only, all mappings, direct), and every measure on the page.",
   kpiTechnologies: "How many MIT TR10 names are in this archive across all years, including list-only items.",
@@ -129,6 +156,12 @@ const state = {
     ranking: { key: "score", dir: "desc" },
     names: { key: "ticker", dir: "asc" },
   },
+  mapSubject: "all",
+  mapYear: "all",
+  mapTech: "all",
+  mapSize: "all",
+  mapX: "excess_return",
+  mapY: "prediction_score",
 };
 
 function parseCsv(text) {
@@ -212,6 +245,14 @@ function fmtPp(v, digits = 1) {
 
 function fmtScore(v) {
   return v == null || Number.isNaN(v) ? "—" : v.toFixed(1);
+}
+
+function fmtCap(v) {
+  if (v == null || Number.isNaN(v) || v <= 0) return "—";
+  if (v >= 1e12) return `$${(v / 1e12).toFixed(1)}T`;
+  if (v >= 1e9) return `$${(v / 1e9).toFixed(1)}B`;
+  if (v >= 1e6) return `$${(v / 1e6).toFixed(0)}M`;
+  return `$${v.toFixed(0)}`;
 }
 
 function fmtNum(v, digits = 0) {
@@ -324,7 +365,12 @@ async function loadDb() {
   );
   const parsed = Object.fromEntries(names.map((name, i) => [name, parseCsv(texts[i])]));
   const meta = Object.fromEntries(parsed.meta.map((r) => [r.key, r.value]));
-  const companies = Object.fromEntries(parsed.companies.map((c) => [c.ticker, c]));
+  const companies = Object.fromEntries(
+    parsed.companies.map((c) => [
+      c.ticker,
+      { ...c, market_cap: num(c.market_cap) },
+    ]),
+  );
   const techs = parsed.technologies.map((t) => ({
     ...t,
     id: Number(t.id),
@@ -423,6 +469,198 @@ function tickersOf(techId) {
       return true;
     })
     .map((m) => m.ticker);
+}
+
+function sizeBand(cap) {
+  if (cap == null) return "unknown";
+  if (cap >= 1e11) return "mega";
+  if (cap >= 2e10) return "large";
+  if (cap >= 2e9) return "mid";
+  return "small";
+}
+
+function mapAxis(key) {
+  return MAP_AXES.find((a) => a.key === key) || MAP_AXES[0];
+}
+
+function formatMapAxis(key, value) {
+  const kind = mapAxis(key).kind;
+  if (kind === "return") return fmtPp(value);
+  if (kind === "score") return fmtScore(value);
+  if (kind === "years") return `${value.toFixed(1)}y`;
+  return fmtCap(value);
+}
+
+function companyMapRows() {
+  const rows = [];
+  for (const row of state.db.scoreCompanies) {
+    if (row.universe !== state.universe) continue;
+    const tech = state.db.techById[row.technology_id];
+    const score = scoreOf(row.technology_id, state.universe);
+    const company = state.db.companies[row.ticker] || {};
+    if (!tech || !score) continue;
+    const marketCap = company.market_cap;
+    rows.push({
+      technology_id: tech.id,
+      year: tech.year,
+      technology: tech.name,
+      category: tech.category,
+      prediction_score: score.prediction_score,
+      cohort_excess: score.mean_excess_return,
+      window_years: score.window_years,
+      ticker: row.ticker,
+      name: row.name || company.name || row.ticker,
+      confidence: row.confidence,
+      total_return: row.total_return,
+      spy_return: row.spy_return,
+      excess_return: row.excess_return,
+      market_cap: marketCap,
+      size_band: sizeBand(marketCap),
+    });
+  }
+  return rows;
+}
+
+function mapValue(row, key) {
+  const v = row[key];
+  return v == null || Number.isNaN(v) ? null : v;
+}
+
+function filteredMapRows() {
+  return companyMapRows().filter((row) => {
+    if (state.mapSubject !== "all" && row.category !== state.mapSubject) return false;
+    if (state.mapYear !== "all" && String(row.year) !== state.mapYear) return false;
+    if (state.mapTech !== "all" && String(row.technology_id) !== state.mapTech) return false;
+    if (state.mapSize === "smaller" && row.size_band !== "mid" && row.size_band !== "small") return false;
+    if (state.mapSize === "small" && row.size_band !== "small") return false;
+    if (state.mapSize === "mega" && row.size_band !== "mega") return false;
+    return mapValue(row, state.mapX) != null && mapValue(row, state.mapY) != null;
+  });
+}
+
+function drawMapSvg(rows) {
+  const w = 800;
+  const h = 420;
+  const pad = { l: 58, r: 16, t: 16, b: 36 };
+  const xs = rows.map((r) => mapValue(r, state.mapX));
+  const ys = rows.map((r) => mapValue(r, state.mapY));
+  let x0 = Math.min(...xs);
+  let x1 = Math.max(...xs);
+  let y0 = Math.min(...ys);
+  let y1 = Math.max(...ys);
+  if (x0 === x1) {
+    x0 -= 1;
+    x1 += 1;
+  }
+  if (y0 === y1) {
+    y0 -= 1;
+    y1 += 1;
+  }
+  const xPad = (x1 - x0) * 0.06;
+  const yPad = (y1 - y0) * 0.08;
+  x0 -= xPad;
+  x1 += xPad;
+  y0 -= yPad;
+  y1 += yPad;
+  const sx = (v) => pad.l + ((v - x0) / (x1 - x0)) * (w - pad.l - pad.r);
+  const sy = (v) => pad.t + (1 - (v - y0) / (y1 - y0)) * (h - pad.t - pad.b);
+  const caps = rows.map((r) => Math.sqrt(r.market_cap && r.market_cap > 0 ? r.market_cap : 5e8));
+  const z0 = Math.min(...caps);
+  const z1 = Math.max(...caps);
+  const zr = (z) => 4 + ((z - z0) / (z1 - z0 || 1)) * 16;
+  const xKind = mapAxis(state.mapX).kind;
+  const yKind = mapAxis(state.mapY).kind;
+  const xRef = xKind === "score" ? 50 : xKind === "return" ? 0 : null;
+  const yRef = yKind === "score" ? 50 : yKind === "return" ? 0 : null;
+  const ticks = [];
+  for (let i = 0; i <= 4; i += 1) {
+    const xv = x0 + ((x1 - x0) * i) / 4;
+    const yv = y0 + ((y1 - y0) * i) / 4;
+    ticks.push(`<text class="chart-axis" x="${sx(xv)}" y="${h - 8}" text-anchor="middle">${esc(formatMapAxis(state.mapX, xv))}</text>`);
+    ticks.push(`<text class="chart-axis" x="${pad.l - 8}" y="${sy(yv) + 3}" text-anchor="end">${esc(formatMapAxis(state.mapY, yv))}</text>`);
+  }
+  const refs = [];
+  if (xRef != null && xRef >= x0 && xRef <= x1) {
+    refs.push(`<line x1="${sx(xRef)}" x2="${sx(xRef)}" y1="${pad.t}" y2="${h - pad.b}" stroke="#8b93a7" stroke-dasharray="4 4" />`);
+  }
+  if (yRef != null && yRef >= y0 && yRef <= y1) {
+    refs.push(`<line x1="${pad.l}" x2="${w - pad.r}" y1="${sy(yRef)}" y2="${sy(yRef)}" stroke="#8b93a7" stroke-dasharray="4 4" />`);
+  }
+  const dots = rows
+    .map((row) => {
+      const x = sx(mapValue(row, state.mapX));
+      const y = sy(mapValue(row, state.mapY));
+      const r = zr(Math.sqrt(row.market_cap && row.market_cap > 0 ? row.market_cap : 5e8));
+      const fill = SUBJECT_COLOR[row.category] || SUBJECT_COLOR.other;
+      const on = row.technology_id === state.selectedId;
+      const tip = `${row.ticker} · ${row.name} · ${row.year} ${row.technology} · ${formatMapAxis(state.mapX, mapValue(row, state.mapX))} × ${formatMapAxis(state.mapY, mapValue(row, state.mapY))} · cap ${fmtCap(row.market_cap)}`;
+      return `<circle class="map-bubble" cx="${x}" cy="${y}" r="${r}" fill="${fill}" fill-opacity="${on ? 0.95 : 0.55}" stroke="${on ? "#e7ecf3" : "none"}" stroke-width="${on ? 1.5 : 0}" data-open="${row.technology_id}"${tipAttr(tip)}></circle>`;
+    })
+    .join("");
+  return `<svg class="chart-svg map-svg" viewBox="0 0 ${w} ${h}" role="img">
+    <rect x="0" y="0" width="${w}" height="${h}" fill="transparent" />
+    ${refs.join("")}
+    ${ticks.join("")}
+    ${dots}
+  </svg>`;
+}
+
+function mapPanel() {
+  const all = companyMapRows();
+  const years = [...new Set(all.map((r) => r.year))].sort((a, b) => a - b);
+  const techs = [];
+  const seen = new Set();
+  for (const row of all) {
+    if (state.mapSubject !== "all" && row.category !== state.mapSubject) continue;
+    if (state.mapYear !== "all" && String(row.year) !== state.mapYear) continue;
+    if (seen.has(row.technology_id)) continue;
+    seen.add(row.technology_id);
+    techs.push(row);
+  }
+  techs.sort((a, b) => a.year - b.year || a.technology.localeCompare(b.technology));
+  const rows = filteredMapRows();
+  const subjectOpts = [`<option value="all" ${state.mapSubject === "all" ? "selected" : ""}>All</option>`]
+    .concat(SUBJECTS.map((s) => `<option value="${s}" ${state.mapSubject === s ? "selected" : ""}>${catLabel(s)}</option>`))
+    .join("");
+  const yearOpts = [`<option value="all" ${state.mapYear === "all" ? "selected" : ""}>All</option>`]
+    .concat(years.map((y) => `<option value="${y}" ${String(y) === state.mapYear ? "selected" : ""}>${y}</option>`))
+    .join("");
+  const techOpts = [`<option value="all" ${state.mapTech === "all" ? "selected" : ""}>All</option>`]
+    .concat(techs.map((t) => `<option value="${t.technology_id}" ${String(t.technology_id) === state.mapTech ? "selected" : ""}>${t.year} · ${esc(t.technology)}</option>`))
+    .join("");
+  const axisOpts = (cur) =>
+    MAP_AXES.map((a) => `<option value="${a.key}" ${cur === a.key ? "selected" : ""}>${esc(a.label)}</option>`).join("");
+  const sizeOpts = [
+    ["all", "All caps"],
+    ["smaller", "Under $20B"],
+    ["small", "Under $2B"],
+    ["mega", "$100B+"],
+  ]
+    .map(([v, lab]) => `<option value="${v}" ${state.mapSize === v ? "selected" : ""}>${lab}</option>`)
+    .join("");
+  const swatches = SUBJECTS.map((s) => `<span><i style="background:${SUBJECT_COLOR[s]}"></i>${catLabel(s)}</span>`).join("");
+  const quads =
+    state.mapX === "excess_return" && state.mapY === "prediction_score"
+      ? `<div class="map-quads" aria-hidden="true"><span>Category beat · this name lagged</span><span>Aligned: both beat SPY</span><span>Both lagged</span><span>This name beat · category lagged</span></div>`
+      : "";
+  return `<div class="company-map">
+    <div class="map-filters">
+      <label><span class="tip-label"${tipAttr(TIPS.mapSubject)}>Subject</span><select id="map-subject">${subjectOpts}</select></label>
+      <label><span class="tip-label"${tipAttr(TIPS.mapYear)}>Year</span><select id="map-year">${yearOpts}</select></label>
+      <label class="grow"><span class="tip-label"${tipAttr(TIPS.mapTech)}>MIT tech</span><select id="map-tech">${techOpts}</select></label>
+      <label><span class="tip-label"${tipAttr(TIPS.mapSize)}>Size</span><select id="map-size">${sizeOpts}</select></label>
+      <label><span class="tip-label"${tipAttr(TIPS.mapX)}>X</span><select id="map-x">${axisOpts(state.mapX)}</select></label>
+      <label><span class="tip-label"${tipAttr(TIPS.mapY)}>Y</span><select id="map-y">${axisOpts(state.mapY)}</select></label>
+    </div>
+    <p class="chart-note"><span class="tip-label"${tipAttr(TIPS.mapBubble)}>Default view:</span> right = this name beat SPY after MIT named the category; up = the MIT category itself beat SPY. Area is latest market cap. Click a bubble to open that technology.</p>
+    ${quads}
+    ${rows.length ? `<div class="map-plot">${drawMapSvg(rows)}</div>` : `<p class="empty">No mapped companies with both measures after these filters.</p>`}
+    <div class="map-legend">
+      <div class="map-swatches">${swatches}</div>
+      <div class="map-size-key"><span class="muted">Cap</span><i class="map-dot sm"></i><span>$2B</span><i class="map-dot md"></i><span>$20B</span><i class="map-dot lg"></i><span>$100B+</span></div>
+      <span class="muted">${rows.length} bubbles</span>
+    </div>
+  </div>`;
 }
 
 function overview() {
@@ -913,6 +1151,7 @@ function render() {
     ${panel("pulse", "Market pulse", `as of ${ov.as_of}`, kpis(ov), true, TIPS.panelPulse)}
     ${panel("ledger", "Technology ledger", `${rows.length} rows · click a name · click a column to sort`, ledgerTable(rows), true, TIPS.panelLedger)}
     ${panel("chart", "Cohort vs market", detail ? `${detail.tech.year} ${detail.tech.name} · equal-weight vs SPY` : "Select a technology", chartPanel(detail), true, TIPS.panelChart)}
+    ${panel("map", "Follow-through map", "Each bubble is one company in one MIT year · area is market cap · click to open", mapPanel(), true, TIPS.panelMap)}
     ${panel("names", "Mapped companies", detail ? `${detail.companies.length} names · click a column to sort` : "", namesTable(detail), true, TIPS.panelNames)}
     ${panel("ranking", "Prediction ranking", "Click a column to sort · 50 means the mapped names matched SPY", rankTable(), false, TIPS.panelRank)}`;
   } else if (state.tab === "picture") {
@@ -1323,7 +1562,7 @@ function guideBody() {
     <h3>How to use this page</h3>
     <ol class="method">
       <li><em>Watchlist</em> is 2026 — names MIT just called, with historical analogs. Not a scorecard yet.</li>
-      <li><em>Dashboard</em> is one MIT edition: pick a year and a named technology, then read the gold cohort line against SPY, the mapped companies, and the ranking.</li>
+      <li><em>Dashboard</em> is one MIT edition: pick a year and a named technology, then read the gold cohort line against SPY, the follow-through map (every mapped company as a bubble), the mapped-company table, and the ranking.</li>
       <li><em>Big picture</em> is the whole archive at once: year × subject × each MIT name, colored by whether the mapped companies beat SPY. Repeating tickers sit in the strip underneath.</li>
       <li>Hover any dotted label for a short definition. This Knowledge tab is the long version.</li>
     </ol>
@@ -1346,7 +1585,9 @@ function guideBody() {
       <dt>SPY</dt>
       <dd>The SPDR S&amp;P 500 ETF — a stand-in for the US large-cap market. Every prediction score is versus SPY on the <em>same dates</em> as the company. If both the cohort and the market went up, beating SPY still means the cohort went up more.</dd>
       <dt>Equal-weight</dt>
-      <dd>In the cohort, a $10 billion company and a $2 trillion company each count as one name. That is deliberate: the question is about the mapped set, not about market-cap indexes.</dd>
+      <dd>In the cohort score, a $10 billion company and a $2 trillion company each count as one name. That is deliberate: the question is about the mapped set, not about market-cap indexes. The follow-through map is the exception — there, bubble area is latest market cap so you can see which names are whales.</dd>
+      <dt>Follow-through map</dt>
+      <dd>A bubble chart of every mapping (one company × one MIT year). Default X is that company’s excess versus SPY after the list date. Default Y is the MIT technology’s prediction score (50 = the category matched SPY). Upper-right means the category beat SPY and this name did too. Size is market cap. Filters let you hide megacaps and look at smaller listed names. It is a diagnostic of the editorial list, not a stock picker.</dd>
       <dt>List date</dt>
       <dd>The day we treat as MIT’s call for that year. Returns start there, or at IPO if the company listed later.</dd>
       <dt>Universe</dt>
@@ -1400,7 +1641,7 @@ function guideBody() {
       <dd>Our editorial bucket — AI, biotech, energy, and so on. It chooses the sector ETF. It is not MIT’s taxonomy.</dd>
     </dl>
     <h3>What this is not</h3>
-    <p>Not investment advice. Not a claim that MIT “picks stocks.” Not a live trading system. The mappings were written with hindsight (dated seed-v1 / 2026-09-01); that bias is visible on purpose. Prices are US-listed Yahoo Finance history. Many MIT names have no public cohort here (private firms, China listings, unverified years).</p>
+    <p>Not investment advice. Not a claim that MIT “picks stocks.” Not a live trading system. The mappings were written with hindsight (dated seed-v1 / 2026-09-01, with a later seed-v2 pass for smaller listed names); that bias is visible on purpose. Prices are US-listed Yahoo Finance history. Many MIT names have no public cohort here (private firms, China listings, unverified years).</p>
   </div>`;
 }
 
@@ -1485,6 +1726,38 @@ function onAppChange(e) {
   }
   if (e.target.id === "mapped-only") {
     state.mappedOnly = e.target.checked;
+    render();
+    return;
+  }
+  if (e.target.id === "map-subject") {
+    state.mapSubject = e.target.value;
+    state.mapTech = "all";
+    render();
+    return;
+  }
+  if (e.target.id === "map-year") {
+    state.mapYear = e.target.value;
+    state.mapTech = "all";
+    render();
+    return;
+  }
+  if (e.target.id === "map-tech") {
+    state.mapTech = e.target.value;
+    render();
+    return;
+  }
+  if (e.target.id === "map-size") {
+    state.mapSize = e.target.value;
+    render();
+    return;
+  }
+  if (e.target.id === "map-x") {
+    state.mapX = e.target.value;
+    render();
+    return;
+  }
+  if (e.target.id === "map-y") {
+    state.mapY = e.target.value;
     render();
   }
 }

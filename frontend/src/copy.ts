@@ -22,6 +22,17 @@ export const TIPS = {
     "The editorial map from this technology to listed companies, with each name’s return versus SPY. Click a column title to sort.",
   panelRank:
     "Every scored technology in the archive, not just this year. Default order is prediction score. Click a column title to sort.",
+  panelMap:
+    "Each bubble is one mapped company in one MIT year. Position is follow-through versus the category call. Area is latest market cap. This is a map of the editorial list, not a buy list.",
+  mapSubject: "Limit bubbles to one editorial subject (AI, biotech, energy, …) or keep All.",
+  mapYear: "Limit bubbles to one MIT edition year, or keep All years.",
+  mapTech: "Limit bubbles to one named MIT technology, or keep All names in the current subject/year filter.",
+  mapSize:
+    "Filter by latest market cap. Smaller keeps names under $20B so megacaps do not dominate the eye. The prediction score still equal-weights every name.",
+  mapX: "Horizontal measure. Default is this company’s excess versus SPY after the MIT list date (or IPO).",
+  mapY: "Vertical measure. Default is the MIT technology’s prediction score (50 = the category matched SPY).",
+  mapBubble:
+    "Bubble area scales with latest market cap (square-root so area, not radius, tracks size). Tiny dots are small/unknown caps; large gold-ish dots are megacaps if you leave size on All.",
   panelWatch:
     "2026 names and hand-picked historical analogs. Analog excess is history, not a forecast, and not a buy list.",
   panelGuide:

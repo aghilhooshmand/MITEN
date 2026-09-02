@@ -39,3 +39,12 @@ def ensure_schema() -> None:
                     "ADD COLUMN list_index INT NOT NULL DEFAULT 0"
                 )
             )
+    if "companies" in inspector.get_table_names():
+        company_cols = {c["name"] for c in inspector.get_columns("companies")}
+        with engine.begin() as conn:
+            if "market_cap" not in company_cols:
+                conn.execute(text("ALTER TABLE companies ADD COLUMN market_cap DOUBLE NULL"))
+            if "market_cap_as_of" not in company_cols:
+                conn.execute(
+                    text("ALTER TABLE companies ADD COLUMN market_cap_as_of DATE NULL")
+                )

@@ -168,3 +168,32 @@ export type Watchlist = {
   note: string;
   items: WatchItem[];
 };
+
+export type CompanyMapPoint = {
+  technology_id: number;
+  year: number;
+  technology: string;
+  category: string;
+  prediction_score: number | null;
+  cohort_excess: number | null;
+  window_years: number | null;
+  verdict: string;
+  company_id: number | null;
+  ticker: string;
+  name: string;
+  confidence: string;
+  total_return: number | null;
+  spy_return: number | null;
+  excess_return: number | null;
+  market_cap: number | null;
+  size_band: "mega" | "large" | "mid" | "small" | "unknown";
+  delisted: boolean;
+};
+
+export type CompanyMap = {
+  universe: string;
+  as_of: string;
+  market_cap_as_of: string | null;
+  n_points: number;
+  points: CompanyMapPoint[];
+};

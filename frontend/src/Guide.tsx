@@ -29,7 +29,8 @@ export function Guide() {
         </li>
         <li>
           <em>Dashboard</em> is one MIT edition: pick a year and a named technology, then read the
-          gold cohort line against SPY, the mapped companies, and the ranking.
+          gold cohort line against SPY, the follow-through map (every mapped company as a bubble),
+          the mapped-company table, and the ranking.
         </li>
         <li>
           <em>Big picture</em> is the whole archive at once: year × subject × each MIT name, colored
@@ -91,8 +92,18 @@ export function Guide() {
         </dd>
         <dt>Equal-weight</dt>
         <dd>
-          In the cohort, a $10 billion company and a $2 trillion company each count as one name.
-          That is deliberate: the question is about the mapped set, not about market-cap indexes.
+          In the cohort score, a $10 billion company and a $2 trillion company each count as one
+          name. That is deliberate: the question is about the mapped set, not about market-cap
+          indexes. The follow-through map is the exception — there, bubble area is latest market
+          cap so you can see which names are whales.
+        </dd>
+        <dt>Follow-through map</dt>
+        <dd>
+          A bubble chart of every mapping (one company × one MIT year). Default X is that company’s
+          excess versus SPY after the list date. Default Y is the MIT technology’s prediction score
+          (50 = the category matched SPY). Upper-right means the category beat SPY and this name
+          did too. Size is market cap. Filters let you hide megacaps and look at smaller listed
+          names. It is a diagnostic of the editorial list, not a stock picker.
         </dd>
         <dt>List date</dt>
         <dd>
@@ -201,7 +212,8 @@ export function Guide() {
       <h3>What this is not</h3>
       <p>
         Not investment advice. Not a claim that MIT “picks stocks.” Not a live trading system. The
-        mappings were written with hindsight (dated seed-v1 / 2026-09-01); that bias is visible on
+        mappings were written with hindsight (dated seed-v1 / 2026-09-01, with a later seed-v2
+        pass for smaller listed names); that bias is visible on purpose.
         purpose. Prices are US-listed Yahoo Finance history. Many MIT names have no public cohort
         here (private firms, China listings, unverified years).
       </p>
